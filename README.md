@@ -4,42 +4,55 @@
 
 ### Meeting Schedule
 
-We have decided to meet on *foo* at *bar* o'clock
+We have decided to meet on *Friday* at *3:30* o'clock
 
 ### Communication and Software Repository
 
-We will be communicating via *slack* and will be working in a *gitlab* repo via the *SFU CSIL gitlab*
+We will be communicating via *slack* at least once a day
+We will be working in a *GitHub* repo
 
-### Methodology
+### Details of our software methodology
+
+We will be using the *incremental development* methodology as it is the efficient and effective methodology as we will be testing for each release and helps us make sure it is able to submit by each release
 
 #### Our Roles
 
-Calvin:
+Gabe: Project Manager
 
-Mathieu: 
+Calvin: Designer
 
-Harman:
+Mathieu: Developer
 
-Gabe: 
+Harman: Developer
 
-Lina: 
-
+Lina: Tester
 
 ### Testing methods
 
-our testing methods
+To automate and test our software, we'll be using the *Jest* javascript library 
 
 ### Main language and libraries
 
-We will be using *Javascript* and ---
+We will be using *Javascript* and *Node.js* in order to render the virtual machine
 
 ### Use cases for future releases
 
-We will be 
+#### Runnable Emulator
+
+- [ ] Have memory, register and intial opcodes set up
+- [ ] Output graphics
+- [ ] Input keyboard commands
+- [ ] External Rom inputs
+
+#### First Game
+
+- [ ] First playable with keyboard input
 
 ### Work breakdown
 
-- [ ] This is an incomplete item
-- [x] This is a complete item
+First Header test | Second Header
+------------ | -----------------
+Content from cell 1 | Content  what does adding more text here changefrom cell 2
+Content in the first column | Will fill in the rest after
 
 ### Timeline
