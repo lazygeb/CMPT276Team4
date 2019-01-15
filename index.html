@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+
   <title>CMPT276 Group 4</title>
   <link rel="stylesheet" href="normalize.css">
   <link rel="stylesheet" href="main.css">
@@ -13,9 +15,120 @@
 
 
 <body>
- 
+
+	<div id="emuWrapper">
+		<h1> Group 4's Chip8 Interpreter </h1>
+		<canvas id="target"></canvas>
+
+		<section id="controls">
+			<form id="gameWrapper">
+    			<h2 class ="identifier">Game: </h2>
+      			<select name="games">
+  					<option value="snake">SNAKE</option>
+  					<option value="flappy_bird">FLAPPY BIRD</option>
+				</select>
+			</form>
+
+			<section id="stepControl">
+				<h2>Step Controls: </h2>
+				<p>Step forward</p>
+				<p>Pause</p>
+				<p>Step backward</p>
+			</section>
+
+			<section id="keyboardInput">
+				<ul>
+					<h2>Controls:</h2>
+				</ul>
+				<ul>
+					<li>1</li>
+					<li>2</li>
+					<li>3</li>
+					<li>4</li>
+				</ul>
+				<ul>
+					<li>q</li>
+					<li>w</li>
+					<li>e</li>
+					<li>r</li>
+				</ul>
+				<ul>
+					<li>a</li>
+					<li>s</li>
+					<li>d</li>
+					<li>f</li>
+				</ul>
+				<ul>
+					<li>z</li>
+					<li>x</li>
+					<li>c</li>
+					<li>v</li>
+				</ul>
+			</section>
+		</section>
+
+		<section id="visualizerWrapper">
+			<div class="visualizer" id="instructions">
+				<h2 class="inline">Current Instruction: </h2>
+				<p class="inline" id="currInstruction">test</p>
+			</div>
+			<section class="visualizer" id="stack">
+				<h3>Stack:</h3>
+				<div class="mriWrapper">
+					<div><p>0: </p> <p id="V0">0x0</p></div>
+					<div><p>1: </p> <p id="V1">0x0</p></div>
+					<div><p>2: </p> <p id="V2">0x0</p></div>
+					<div><p>3: </p> <p id="V3">0x0</p></div>
+					<div><p>4: </p> <p id="V4">0x0</p></div>
+					<div><p>5: </p> <p id="V5">0x0</p></div>
+					<div><p>6: </p> <p id="V6">0x0</p></div>
+					<div><p>7: </p> <p id="V7">0x0</p></div>
+				</div>
+				<div class="mriWrapper">
+					<div><p>8: </p> <p id="V0">0x0</p></div>
+					<div><p>9: </p> <p id="V1">0x0</p></div>
+					<div><p>a: </p> <p id="V2">0x0</p></div>
+					<div><p>b: </p> <p id="V3">0x0</p></div>
+					<div><p>c: </p> <p id="V4">0x0</p></div>
+					<div><p>d: </p> <p id="V5">0x0</p></div>
+					<div><p>e: </p> <p id="V6">0x0</p></div>
+					<div><p>f: </p> <p id="V7">0x0</p></div>
+				</div>
+			</section>
+			<section class="visualizer" id="memory">
+				<h3>Registers:</h3>
+				<div class="mriWrapper">
+					<p id="PC">PC: </p>
+					<p id="I">I: </p>
+				</div>
+				<br>
+				<div class="mriWrapper">
+					<div><p>V0: </p> <p id="V0">0x0</p></div>
+					<div><p>V1: </p> <p id="V1">0x0</p></div>
+					<div><p>V2: </p> <p id="V2">0x0</p></div>
+					<div><p>V3: </p> <p id="V3">0x0</p></div>
+					<div><p>V4: </p> <p id="V4">0x0</p></div>
+					<div><p>V5: </p> <p id="V5">0x0</p></div>
+					<div><p>V6: </p> <p id="V6">0x0</p></div>
+					<div><p>V7: </p> <p id="V7">0x0</p></div>
+				</div>
+				<div class="mriWrapper">
+					<div><p>V8: </p> <p id="V8">0x0</p></div>
+					<div><p>V9: </p> <p id="V9">0x0</p></div>
+					<div><p>VA: </p> <p id="VA">0x0</p></div>
+					<div><p>VB: </p> <p id="VB">0x0</p></div>
+					<div><p>VC: </p> <p id="VC">0x0</p></div>
+					<div><p>VD: </p> <p id="VD">0x0</p></div>
+					<div><p>VE: </p> <p id="VE">0x0</p></div>
+					<div><p>VF: </p> <p id="VF">0x0</p></div>
+				</div>
+				
+			</section>
+		</section>
+	</div>
+
+
 
 
 </body>
-
 </html>

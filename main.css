@@ -1,0 +1,112 @@
+body {
+	font-family: 'Lato', sans-serif;
+}
+
+p, h1, h2 {
+	display: block;
+}
+
+h2 {
+	font-size: 1.1rem;
+}
+
+h3 {
+	font-size: .8rem;
+	margin: .25rem;
+	margin-bottom: 0;
+}
+
+#emuWrapper {
+	margin: 0 auto;
+	width: 600px;
+}
+
+canvas {
+	width: 600px;
+	height: 300px;
+	border: 1px solid black;
+}
+
+section, #gameWrapper {
+	display: inline-block;
+	vertical-align: top;
+	width: 49%;
+}
+
+select {
+	border-radius: 3px;
+}
+
+#stepControl p{
+	background: lightgrey;
+	border-radius: 3px;
+	margin: .2rem 1rem;
+	margin-left: 0;
+	transition: .5s;
+}
+
+#stepControl p:hover{
+	background: white;
+	cursor: pointer;
+}
+
+ul {
+	padding: 0;
+	margin: 1rem 0;
+	width: 100px;
+}
+
+li {
+	font-family: monospace;
+	font-size: 1.3rem;
+	display: inline;
+	text-decoration: none;
+	padding: 2px 6px;
+    border-radius: 3px;
+}
+
+#visualizerWrapper  {
+	float: right;
+}
+
+.visualizer {
+	display: block;
+	width: 100%;
+	margin: 1rem 0;
+}
+
+#instructions {
+	border: none;
+	height: auto;
+}
+
+.inline {
+	display: inline;
+}
+
+.visualizer p {
+	line-height: .2rem;
+	font-size: 0.65rem;
+}
+
+#stack, #memory {
+	display: inline-block;
+	border: 1px solid black;
+	width: 45%;
+	height: 240px;
+	margin: 1rem 0;
+	margin-top: 0;
+}
+
+.mriWrapper {
+	display: inline-block;
+	margin: 0;
+	margin-right: 1rem;
+	margin-left: .5rem;
+	padding: 0;
+	vertical-align: top;
+}
+
+.mriWrapper div > * {
+	display: inline;
+}
