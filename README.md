@@ -3,7 +3,7 @@
 ## Release 0
 
 ## **Introduction** 
----
+
 Chip-8 is an interpreter, which was developed in the 70s to run programs such as games like Pong, Tetris, and Pac-Man (en.wikipedia.org/wiki/CHIP-8).
 
 The goal of this project is to develop an interpreter like the original Chip-8 and two games to play with it. Our first game will be snake, which is more of a classic game. Whereas, our second game will be more of a newer, contempory game with retro aspects. This game will be a recreation of the hit game Flappy Bird. In order to simplify the development of these games, we will create an assembler and visualizer to help debug the game.
@@ -17,7 +17,7 @@ The goal of this project is to develop an interpreter like the original Chip-8 a
 - [ ] External Rom inputs
 
 ## **Table of Contents**
-----------------------------------------------------------
+
 - [Project Organization](#Project-Organization)
   - 
   - [Details of our software methodology](#Details-of-our-software-methodology)
@@ -39,7 +39,7 @@ The goal of this project is to develop an interpreter like the original Chip-8 a
   - [Work breakdown](#Work-breakdown)
 
 ## **Project Organization**
-----------------------------------------------------------
+
 ### Details of our software methodology
 
 For our use, it is the most efficient and effective methodology as we will be testing for each release and making sure it is able to submit by each release. It also allows for improvements on the features, which means we can get feedback and make any necessary changes if time permits. 
@@ -57,7 +57,6 @@ Harman: Developer
 Lina: Tester
 
 ## **Monitoring and Reporting Mechanisms**
-----------------------------------------------------------
 
 ### Meeting Schedule
 
@@ -69,7 +68,6 @@ We will be communicating via *Slack* at least once a day and use *Trello* to tra
 We will be working in a *GitHub* repo.
 
 ## **Hardware and Software Requirements**
-----------------------------------------------------------
 
 ### Testing Methods
 
@@ -88,7 +86,6 @@ We will be engaging in three types of testing to ensure the validation of our pr
 We will be using *Javascript* and *Node.js* in order to render the virtual machine
 
 ## **Work Breakdown and Project Schedule**
-----------------------------------------------------------
 
 ### Timeline
 
@@ -101,6 +98,7 @@ Deliverables for Release 1:
 - Emulator: Finish development and testing by Feb 3 
 
 Work Breakdown: **Emulator** 
+
 | Feature                 | Estimated Time Required | Finish Date |
 | ----------------------- | ----------------------- | ----------- |
 | Web Interface           | 1 day                   | Jan 20      |
