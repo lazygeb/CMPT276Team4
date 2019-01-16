@@ -18,20 +18,20 @@ The goal of this project is to develop an interpreter like the original Chip-8 a
 
 ## **Table of Contents**
 
-[Project Organization](##Project-Organization)
+- [Project Organization](##Project-Organization)
   - [Details of our software methodology](#Details-of-our-software-methodology)
   - [Our Roles](#Our-Roles)
 
-[Monitoring and Reporting Mechanisms](##Monitoring-and-Reporting-Mechanisms)
+- [Monitoring and Reporting Mechanisms](##Monitoring-and-Reporting-Mechanisms)
   - [Meeting Schedule](#Meeting-Schedule)
   - [Communication and Software Repository](#Communication-and-Software-Repository)
   
-[Hardware and Software Requirements](##Hardware-and-Software-Requirements)
+- [Hardware and Software Requirements](##Hardware-and-Software-Requirements)
 
   - [Testing Methods](#Testing-Methods)
   - [Main Language and Libraries](#Main-Language-and-Libraries)
   
-[Work Breakdown and Project Schedule](##Work-Breakdown-and-Project-Schedule)
+- [Work Breakdown and Project Schedule](##Work-Breakdown-and-Project-Schedule)
 
   - [Timeline](#Timeline)
   - [Work breakdown](#Work-breakdown)
