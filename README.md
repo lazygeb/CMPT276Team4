@@ -6,7 +6,7 @@
 
 Chip-8 is an interpreter, which was developed in the 70s to run programs such as games like Pong, Tetris, and Pac-Man (en.wikipedia.org/wiki/CHIP-8).
 
-The goal of this project is to develop an interpreter like the original Chip-8 and two games to play with it. Our first game will be snake, which is more of a classic game. Whereas, our second game will be more of a newer, contempory game with retro aspects. This game will be a recreation of the hit game Flappy Bird. In order to simplify the development of these games, we will create an assembler and visualizer to help debug the game.
+The goal of this project is to develop an interpreter like the original Chip-8 and two games to play with it. Our first game will be snake, which is more of a classic game. Whereas, our second game will be more of a newer, contempory game with retro aspects. This game will be a recreation of the hit game Flappy Bird. In order to simplify the development of these games, we will create an assembler and visualizer to help create and debug the game.
 
 ### **Planned Use Cases for Release 1**
 #### Runnable Emulator
@@ -18,27 +18,25 @@ The goal of this project is to develop an interpreter like the original Chip-8 a
 
 ## **Table of Contents**
 
-- [Project Organization](##Project-Organization)
-  - [Details of our software methodology](#Details-of-our-software-methodology)
-  - [Our Roles](#Our-Roles)
+  - [Project Organization](#Project-Organization)
+    - [Details of our software methodology](#Details-of-our-software-methodology)
+    - [Our Roles](#Our-Roles)
 
-- [Monitoring and Reporting Mechanisms](##Monitoring-and-Reporting-Mechanisms)
-  - [Meeting Schedule](#Meeting-Schedule)
-  - [Communication and Software Repository](#Communication-and-Software-Repository)
+  - [Monitoring and Reporting Mechanisms](#Monitoring-and-Reporting-Mechanisms)
+    - [Meeting Schedule](#Meeting-Schedule)
+    - [Communication and Software Repository](#Communication-and-Software-Repository)
   
-- [Hardware and Software Requirements](##Hardware-and-Software-Requirements)
-
-  - [Testing Methods](#Testing-Methods)
-  - [Main Language and Libraries](#Main-Language-and-Libraries)
+  - [Hardware and Software Requirements](#Hardware-and-Software-Requirements)
+    - [Testing Methods](#Testing-Methods)
+    - [Main Language and Libraries](#Main-Language-and-Libraries)
   
-- [Work Breakdown and Project Schedule](##Work-Breakdown-and-Project-Schedule)
-
-  - [Timeline](#Timeline)
-  - [Work breakdown](#Work-breakdown)
+  - [Work Breakdown and Project Schedule](#Work-Breakdown-and-Project-Schedule)
+    - [Timeline](#Timeline)
+    - [Work breakdown](#Work-breakdown)
 
 ## **Project Organization**
 
-### Details of our software methodology
+### Details of Our Software Methodology
 
 For our use, it is the most efficient and effective methodology as we will be testing for each release and making sure it is able to submit by each release. It also allows for improvements on the features, which means we can get feedback and make any necessary changes if time permits. 
 
@@ -89,7 +87,7 @@ We will be using *Javascript* and *Node.js* in order to render the virtual machi
 
 ![Image of First Gantt Timeline](img/gantt_timeline.png)
 
-### Work breakdown
+### Work Breakdown
 
 ### **Release 1: Feb 6 2019**
 Deliverables for Release 1:  
