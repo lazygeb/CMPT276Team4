@@ -38,7 +38,7 @@ The goal of this project is to develop an interpreter like the original Chip-8 a
 
 ### Details of Our Software Methodology
 
-For our use, it is the most efficient and effective methodology as we will be testing for each release and making sure it is able to submit by each release. It also allows for improvements on the features, which means we can get feedback and make any necessary changes if time permits. 
+For our use, *incremental development* is the most efficient and effective methodology as we will be testing for each release and making sure it is able to submit by each release. It also allows for improvements on the features, which means we can get feedback and make any necessary changes if time permits. 
 
 ### Our Roles
 
