@@ -1,4 +1,5 @@
 # :boom: CMPT276-Chip8-Group4 :boom:
+Team 4 Members: Gabriele Dal Cengio, Lina Dang-Nguyen, Nishan Ghimire, Mathieu Laflamme, Harman Singh, Calvin So
 
 ## Release 0
 
@@ -89,7 +90,7 @@ We will be using *Javascript* and *Node.js* in order to render the virtual machi
 
 ### Timeline
 
-![Image of First Gantt Timeline](img/gantt_timeline.png)
+![Image of First Gantt Timeline](https://drive.google.com/uc?export=view&id=1HQbJUf6tgeNsAtPzt2ZwVwv1xCfX5Iw1)
 
 ### Work Breakdown
 
