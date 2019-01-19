@@ -4,7 +4,7 @@
 
 ## **Introduction** 
 
-Chip-8 is an interpreter, which was developed in the 70s to run programs such as games like Pong, Tetris, and Pac-Man (en.wikipedia.org/wiki/CHIP-8).
+Chip-8 is an interpreter, which was developed in the 70s to run programs such as games like Pong, Tetris, and Pac-Man.
 
 The goal of this project is to develop an interpreter like the original Chip-8 and two games to play with it. Our first game will be snake, which is more of a classic game. Whereas, our second game will be more of a newer, contempory game with retro aspects. This game will be a recreation of the hit game Flappy Bird. In order to simplify the development of these games, we will create an assembler and visualizer to help create and debug the game.
 
@@ -33,6 +33,8 @@ The goal of this project is to develop an interpreter like the original Chip-8 a
   - [Work Breakdown and Project Schedule](#Work-Breakdown-and-Project-Schedule)
     - [Timeline](#Timeline)
     - [Work breakdown](#Work-breakdown)
+
+  - [References](#References)
 
 ## **Project Organization**
 
@@ -155,3 +157,9 @@ Work Breakdown: **Flappy Bird**
 | -------------- | ----------------------- | ----------- |
 | Flappy Bird    | 2 weeks                 | Mar 27      |
 | System Testing | 1 weeks                 | April 3     |
+
+## **References**
+Chip 8 information and history: https://en.wikipedia.org/wiki/CHIP-8
+Cowgod's Chip 8 Technical Reference: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+
+
