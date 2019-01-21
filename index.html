@@ -10,7 +10,11 @@
   <title>CMPT276 Group 4</title>
   <link rel="stylesheet" href="normalize.css">
   <link rel="stylesheet" href="main.css">
-  <script src="main.js"></script>
+ <!-- <script src="main.js"></script>
+	<script src="cpu.js"></script>
+	<script> const demoClass = document.getElementsByClassName('mriWrapper');
+				console.log(demoClass);
+	</script> -->
 </head>
 
 
@@ -75,24 +79,24 @@
 			<section class="visualizer" id="stack">
 				<h3>Stack:</h3>
 				<div class="mriWrapper">
-					<div><p>0: </p> <p id="V0">0x0</p></div>
-					<div><p>1: </p> <p id="V1">0x0</p></div>
-					<div><p>2: </p> <p id="V2">0x0</p></div>
-					<div><p>3: </p> <p id="V3">0x0</p></div>
-					<div><p>4: </p> <p id="V4">0x0</p></div>
-					<div><p>5: </p> <p id="V5">0x0</p></div>
-					<div><p>6: </p> <p id="V6">0x0</p></div>
-					<div><p>7: </p> <p id="V7">0x0</p></div>
+					<div><p>0: </p> <p id="V0-Stack">0x0</p></div>
+					<div><p>1: </p> <p id="V1-Stack">0x0</p></div>
+					<div><p>2: </p> <p id="V2-Stack">0x0</p></div>
+					<div><p>3: </p> <p id="V3-Stack">0x0</p></div>
+					<div><p>4: </p> <p id="V4-Stack">0x0</p></div>
+					<div><p>5: </p> <p id="V5-Stack">0x0</p></div>
+					<div><p>6: </p> <p id="V6-Stack">0x0</p></div>
+					<div><p>7: </p> <p id="V7-Stack">0x0</p></div>
 				</div>
 				<div class="mriWrapper">
-					<div><p>8: </p> <p id="V0">0x0</p></div>
-					<div><p>9: </p> <p id="V1">0x0</p></div>
-					<div><p>a: </p> <p id="V2">0x0</p></div>
-					<div><p>b: </p> <p id="V3">0x0</p></div>
-					<div><p>c: </p> <p id="V4">0x0</p></div>
-					<div><p>d: </p> <p id="V5">0x0</p></div>
-					<div><p>e: </p> <p id="V6">0x0</p></div>
-					<div><p>f: </p> <p id="V7">0x0</p></div>
+					<div><p>8: </p> <p id="V8-Stack">0x0</p></div>
+					<div><p>9: </p> <p id="V9-Stack">0x0</p></div>
+					<div><p>a: </p> <p id="VA-Stack">0x0</p></div>
+					<div><p>b: </p> <p id="VB-Stack">0x0</p></div>
+					<div><p>c: </p> <p id="VC-Stack">0x0</p></div>
+					<div><p>d: </p> <p id="VD-Stack">0x0</p></div>
+					<div><p>e: </p> <p id="VE-Stack">0x0</p></div>
+					<div><p>f: </p> <p id="VF-Stack">0x0</p></div>
 				</div>
 			</section>
 			<section class="visualizer" id="memory">
@@ -103,24 +107,24 @@
 				</div>
 				<br>
 				<div class="mriWrapper">
-					<div><p>V0: </p> <p id="V0">0x0</p></div>
-					<div><p>V1: </p> <p id="V1">0x0</p></div>
-					<div><p>V2: </p> <p id="V2">0x0</p></div>
-					<div><p>V3: </p> <p id="V3">0x0</p></div>
-					<div><p>V4: </p> <p id="V4">0x0</p></div>
-					<div><p>V5: </p> <p id="V5">0x0</p></div>
-					<div><p>V6: </p> <p id="V6">0x0</p></div>
-					<div><p>V7: </p> <p id="V7">0x0</p></div>
+					<div><p>V0: </p> <p id="V0-Reg">0x0</p></div>
+					<div><p>V1: </p> <p id="V1-Reg">0x0</p></div>
+					<div><p>V2: </p> <p id="V2-Reg">0x0</p></div>
+					<div><p>V3: </p> <p id="V3-Reg">0x0</p></div>
+					<div><p>V4: </p> <p id="V4-Reg">0x0</p></div>
+					<div><p>V5: </p> <p id="V5-Reg">0x0</p></div>
+					<div><p>V6: </p> <p id="V6-Reg">0x0</p></div>
+					<div><p>V7: </p> <p id="V7-Reg">0x0</p></div>
 				</div>
 				<div class="mriWrapper">
-					<div><p>V8: </p> <p id="V8">0x0</p></div>
-					<div><p>V9: </p> <p id="V9">0x0</p></div>
-					<div><p>VA: </p> <p id="VA">0x0</p></div>
-					<div><p>VB: </p> <p id="VB">0x0</p></div>
-					<div><p>VC: </p> <p id="VC">0x0</p></div>
-					<div><p>VD: </p> <p id="VD">0x0</p></div>
-					<div><p>VE: </p> <p id="VE">0x0</p></div>
-					<div><p>VF: </p> <p id="VF">0x0</p></div>
+					<div><p>V8: </p> <p id="V8-Reg">0x0</p></div>
+					<div><p>V9: </p> <p id="V9-Reg">0x0</p></div>
+					<div><p>VA: </p> <p id="VA-Reg">0x0</p></div>
+					<div><p>VB: </p> <p id="VB-Reg">0x0</p></div>
+					<div><p>VC: </p> <p id="VC-Reg">0x0</p></div>
+					<div><p>VD: </p> <p id="VD-Reg">0x0</p></div>
+					<div><p>VE: </p> <p id="VE-Reg">0x0</p></div>
+					<div><p>VF: </p> <p id="VF-Reg">0x0</p></div>
 				</div>
 				
 			</section>
@@ -129,6 +133,10 @@
 
 
 
-
+<script src = "cpu.js"></script>
+<script src = "main.js"></script>
 </body>
+<footer>
+
+</footer>
 </html>

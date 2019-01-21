@@ -32,4 +32,6 @@ int main(int argc, char **argv)
  }
  */
 
+document.getElementById("V1-Stack").innerHTML = "0x12";
 initializeCPU();
+oneCycle();
