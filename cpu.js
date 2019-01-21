@@ -17,6 +17,25 @@ var stackPointer = 0x00;
 
 var keypad = new Array(16); //(0x0-0xF)
 
+var font = [ //draws sprite (8x5
+    0xF0, 0x90, 0x90, 0x90, 0xF0, //sprite: 0, index 0
+    0x20, 0x60, 0x20, 0x20, 0x70, //sprite: 1, index 5
+    0xF0, 0x10, 0xF0, 0x80, 0xF0, //sprite: 2, index 10
+    0xF0, 0x10, 0xF0, 0x10, 0xF0, //sprite: 3, index 15
+    0x90, 0x90, 0xF0, 0x10, 0x10, //sprite: 4, index 20
+    0xF0, 0x80, 0xF0, 0x10, 0xF0, //sprite: 5, index 25
+    0xF0, 0x80, 0xF0, 0x90, 0xF0, //sprite: 6, index 30
+    0xF0, 0x10, 0x20, 0x40, 0x40, //sprite: 7, index 35
+    0xF0, 0x90, 0xF0, 0x90, 0xF0, //sprite: 8, index 40
+    0xF0, 0x90, 0xF0, 0x10, 0xF0, //sprite: 9, index 45
+    0xF0, 0x90, 0xF0, 0x90, 0x90, //sprite: A, index 50
+    0xE0, 0x90, 0xE0, 0x90, 0xE0, //sprite: B, index 55
+    0xF0, 0x80, 0x80, 0x80, 0xF0, //sprite: C, index 60
+    0xE0, 0x90, 0x90, 0x90, 0xE0, //sprite: D, index 65
+    0xF0, 0x80, 0xF0, 0x80, 0xF0, //sprite: E, index 70
+    0xF0, 0x80, 0xF0, 0x80, 0x80, //sprite: F, index 75
+            ];
+
 //emulation cycle
 function initializeCPU() {
     //initialize registers and memory once
@@ -97,6 +116,7 @@ function oneCycle() {
                 console.log("skips next instruction !=");
                 programCounter += 2;
             }
+            break;
         case 0x5: //opcode 0x5xy0 --> SE Vx, Vy -- if register Vx & Vy are equal, skip next instruction
             reg1 = opcode & 0x0F00;
             reg1 = reg1 >> 8; // reg1 = x
@@ -133,7 +153,7 @@ function oneCycle() {
                     break;
                 case 0x1: //opcode 8xy1 --> OR Vx, Vy -- set Vx = Vx OR Vy (bitwise OR operation)
                     register[reg1] = register[reg1] | register[reg2];
-                     break;
+                    break;
                 case 0x2: //opcode 8xy2 --> AND Vx, Vy -- set Vx = Vx and Vy
                     register[reg1] = register[reg1] & register[reg2];
                     break;
@@ -142,7 +162,7 @@ function oneCycle() {
                     break;
                 case 0x4: //opcode 8xy4 --> ADD Vx, Vy -- set Vx = Vx + Vy, set VF = carry
                     tempVal = register[reg1] + register[reg2];
-                    if (tempVal > 255){
+                    if (tempVal > 255) {
                         register[0xF] = 1;
                         tempVal = tempVal & 0x0FF;
                     }
@@ -151,19 +171,17 @@ function oneCycle() {
                 case 0x5: //opcode 8xy5 --> SUB Vx, Vy -- set Vx = Vx - Vy, set VF = NOT borrow
                     if (register[reg1] > register[reg2]) {
                         register[0xF] = 1;
-                    }
-                    else {
+                    } else {
                         register[0xF] = 0;
                     }
                     register[reg1] = register[reg1] - register[reg2];
                     break;
                 case 0x6: //opcode 8xy6 --> SHR Vx {, Vy} -- set Vx = Vx SHR 1 => if the least-sig bit of Vx is 1,
-                          // set VF to 1, otherwise 0. the Vx is divided by 2
+                    // set VF to 1, otherwise 0. the Vx is divided by 2
                     tempVal = register[reg1] & 0x01; //only keep the least significant bit
                     if (tempVal === 0x1) {
                         register[0xF] = 1;
-                    }
-                    else {
+                    } else {
                         register[0xF] = 0;
                     }
                     register[reg1] = register[reg1] / 2; //shift to the right by 1
@@ -171,8 +189,7 @@ function oneCycle() {
                 case 0x7: //opcode 8xy7 --> SUBN Vx, Vy -- set Vx = Vy - Vx, set VF = Not borrow
                     if (register[reg2] > register[reg1]) {
                         register[0xF] = 1;
-                    }
-                    else {
+                    } else {
                         register[0xF] = 0;
                     }
                     register[reg1] = register[reg2] - register[reg1];
@@ -182,13 +199,42 @@ function oneCycle() {
                     tempVal = tempVal >> 15; //tempVal = most sig bit
                     if (tempVal === 0x1) {
                         register[0xF] = 1;
-                    }
-                    else {
+                    } else {
                         register[0xF] = 0;
                     }
                     register[reg1] = register[reg1] * 2; //shift to the left by 1
                     break;
             }
+            break;
+        case 0x9: //opcode 9xy0 --> SNE Vx, Vy -- skip next instruction if Vx != Vy
+            reg1 = opcode & 0x0F00;
+            reg1 = reg1 >> 8; //Vx
+            reg2 = opcode & 0x00F0;
+            reg2 = reg2 >> 4; //Vy
+            if (register[reg1] !== register[reg2]) {
+                programCounter += 2;
+            }
+            break;
+        case 0xA: //opcode Annn --> LD I, addr -- set register I = nnn
+            tempVal = opcode & 0x0FFF;
+            indexRegister = tempVal;
+            break;
+        case 0xB: //opcode Bnnn --> JP V0, addr -- jump to location nnn + V0
+            tempVal = opcode & 0x0FFF;
+            tempVal += register[0x0];
+            programCounter = tempVal;
+            break;
+        case 0xC: //opcode Cxkk --> RND Vx, byte -- set Vx = random byte (0 to 255) AND kk
+            tempVal = Math.random() * (255);
+            tempVal = Math.floor(tempVal);
+            reg1 = opcode & 0x0F00;
+            reg1 = reg1 >> 8; //Vx
+            tempVal = tempVal & (opcode & 0x00FF); //random & kk
+            register[reg1] = tempVal;
+            break;
+        case 0xD: //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision
+
+
     }
 
 
