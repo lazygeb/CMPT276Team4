@@ -233,7 +233,44 @@ function oneCycle() {
             register[reg1] = tempVal;
             break;
         case 0xD: //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision
+            reg1 = opcode & 0x0F00;
+            reg1 = reg1 >> 8; //x coordinate
+            var xCoord = register[reg1];
+            reg2 = opcode & 0x00F0;
+            reg2 = reg2 >> 4; //y coordinate
+            var yCoord = register[reg2];
+            tempVal = opcode & 0x000F; //n
+            register[0xF] = 0; //set VF to 0 initially
 
+            //read in 1 byte from memory at a time
+            for (i = 0; i < tempVal; i++) { //loop through each memory location (every loop is one row (y axis))
+                var currIndex = indexRegister + i;
+                var currByte = memory[currIndex]; //load in current memory location
+                var currYCoord = yCoord + i;
+                for (j = 0; j < 8; j++) { //loop through each bit and properly adjust graphics array
+                    var currXCoord = xCoord + j;
+                    //wrap around if necessary
+                    if (currYCoord < 0) {
+                        currYCoord = currYCoord + 64; //wraps to bottom
+                    }
+                    else if (currYCoord > 63) {
+                        currYCoord = currYCoord - 64; //wraps to top
+                    }
+                    if (currXCoord < 0) {
+                        currXCoord = currXCoord + 32; //wraps to the right
+                    }
+                    else if (currXCoord > 31) {
+                        currXCoord = currXCoord - 32; //wraps to the left
+                    }
+                    var currPixel = graphics[currXCoord  * currYCoord]; //index of graphics array
+                    graphics[currXCoord * currYCoord] ^= ((currByte >>> (7-j)) & 0x01); //should only keep 1 bit (from left to right)
+                    if (currPixel === 1 && graphics[currXCoord * currYCoord] === 0) {
+                        register[0xF] = 1; //if a pixel is flipped from 1 to 0, set VF to 1 (collision)
+                    }
+                }
+            }
+            break;
+        
 
     }
 
