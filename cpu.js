@@ -1,6 +1,7 @@
 var opcode = 0x0000;
 var memory = new Array(4096);
 var register = new Array(16);
+var keyState = new Array(16);
 var indexRegister = 0x00;
 var programCounter = 0x00;
 var reg1 = 0x00;
@@ -46,13 +47,21 @@ function initializeCPU() {
     memory[0x200] = 0x82;                                           //rem
     memory[0x201] = 0x64;                                           //rem
     register[2] = 0xDD;                                              //rem
-    register[6] = 0xDE;                                              //rem
+    register[6] = 0xDE;                                             //rem
 
-    for (i = 0; i < graphics.length; i++) {
+    for (i = 0; i < graphics.length; i++) {                         //change to 0 not 1
         graphics[i] = 1;
+    }
+    for (i = 0; i < keyState.length; i++) {
+        keyState[i] = 0;
     }
 
     //load font set into memory
+}
+
+//check for keyPresses, call this every cycle
+function updateKeys() {
+
 }
 
 //gets called every cycle
@@ -66,18 +75,6 @@ function oneCycle() {
         //build large switch statement for all the opcodes
     //Execute OpCode
         //perform the actual action..
-    /*
-        switch (opcode) {
-            case 0x00E0: //CLS -- Clear the display. // works
-                for (i = 0; i < graphics.length; i++) {
-                graphics[i] = 0;
-            }
-            break;
-            case 0x00EE: // RET -- sets the program counter to the address at the top of the stack, then subtracts 1 from the stack pointer.
-                    programCounter = stack[stackPointer];
-                    stackPointer--;
-        }
-        */
     switch (opcode >> 12) {
         case 0x0: //opcodes that start with 0
             if ((opcode & 0x0FFF) === 0x0E0) { //opcode 0x00E0 --> CLS -- Clear the display // works
@@ -270,9 +267,29 @@ function oneCycle() {
                 }
             }
             break;
-        
+        case 0xE:
+            reg1 = opcode & 0x0F00;
+            reg1 = reg1 >>> 8;
+            tempVal = register[reg1];
+            switch(opcode & 0x00FF) {
+                case 0x9E: // opcode Ex9E --> SKP Vx -- skip next instruction if key with value Vx is pressed
+                    if (tempVal >= 0 && tempVal <= 16) {
+                        if (keyState[tempVal] === 1) { //Vx IS pressed
+                            programCounter += 2;
+                        }
+                    }
+                    break;
+                case 0xA1: // opcode ExA1 --> SKNP Vx -- skip next instruction if key with value Vx is NOT pressed
+                    if (tempVal >= 0 && tempVal <= 16) {
+                        if (keyState[tempVal] === 0) { //Vx NOT pressed
+                            programCounter += 2;
+                        }
+                    }
+                    break;
+            }
+            break;
 
-    }
+    }//increment programCounter by 2 after running oneCycle()
 
 
         console.log(opcode);
