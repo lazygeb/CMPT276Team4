@@ -18,7 +18,7 @@ var stackPointer = 0x00;
 
 var keypad = new Array(16); //(0x0-0xF)
 
-var font = [ //draws sprite (8x5
+var font = [ //draws sprite (8x5)
     0xF0, 0x90, 0x90, 0x90, 0xF0, //sprite: 0, index 0
     0x20, 0x60, 0x20, 0x20, 0x70, //sprite: 1, index 5
     0xF0, 0x10, 0xF0, 0x80, 0xF0, //sprite: 2, index 10
@@ -44,10 +44,10 @@ function initializeCPU() {
     stackPointer = 0; //stack starts at 0
     opcode = 0; //current opcode is 0
     indexRegister = 0;
-    memory[0x200] = 0x82;                                           //rem
-    memory[0x201] = 0x64;                                           //rem
-    register[2] = 0xDD;                                              //rem
-    register[6] = 0xDE;                                             //rem
+    memory[0x200] = 0x82;                                           //remove
+    memory[0x201] = 0x64;                                           //remove
+    register[2] = 0xDD;                                              //remove
+    register[6] = 0xDE;                                             //remove
 
     for (i = 0; i < graphics.length; i++) {                         //change to 0 not 1
         graphics[i] = 1;
@@ -57,6 +57,9 @@ function initializeCPU() {
     }
 
     //load font set into memory
+    for (i = 0; i < font.length; i++) {
+        memory[i] = font[i];
+    }
 }
 
 //check for keyPresses, call this every cycle
@@ -75,7 +78,7 @@ function oneCycle() {
         //build large switch statement for all the opcodes
     //Execute OpCode
         //perform the actual action..
-    switch (opcode >> 12) {
+    switch (opcode >> 12) { //first digit of opcode
         case 0x0: //opcodes that start with 0
             if ((opcode & 0x0FFF) === 0x0E0) { //opcode 0x00E0 --> CLS -- Clear the display // works
                 for (i = 0; i < graphics.length; i++) {
@@ -288,7 +291,48 @@ function oneCycle() {
                     break;
             }
             break;
-
+        case 0xF: //opcodes that start with F
+            reg1 = opcode & 0x0F00;
+            reg1 = reg1 >>> 8;
+            switch(opcode & 0x00FF) {
+                case 0x07: //opcode 0xFx07 --> LD Vx, DT -- set Vx = delay timer value
+                    register[reg1] = delayTimer;
+                    break;
+                case 0x0A: //opcode 0xFx0A --> LD Vx, K -- wait for a key press, store the value of the key in Vx
+                    register[reg1] = waitForKeyPressed();
+                    break;
+                case 0x15: //opcode 0xFx15 --> LD DT, Vx -- set delay timer = Vx
+                    delayTimer = register[reg1];
+                    break;
+                case 0x18: //opcode 0xFx18 --> LD ST, Vx -- set sound timer = Vx;
+                    soundTimer = register[reg1];
+                    break;
+                case 0x1E: //opcode 0xFx1E --> ADD I, Vx -- set I = I + Vx
+                    indexRegister += register[reg1];
+                    break;
+                case 0x29: //opcode 0xFx29 --> LD F, Vx -- set I = location of sprite for digit Vx
+                    indexRegister = register[reg1] * 5;
+                    break;
+                case 0x33: //opcode 0xFx33 --> LD B, Vx -- store BCD representation of Vx in memory locations I, I+1 & I + 2
+                    tempVal = register[reg1] / 100;
+                    memory[indexRegister] = tempVal; //hundreth digit of Vx
+                    tempVal = register[reg1] - (memory[indexRegister] * 100);
+                    memory[indexRegister + 1] = tempVal / 10; //thenth digit
+                    tempVal = tempVal - (memory[indexRegister + 1] * 10);
+                    memory[indexRegister + 2] = tempVal;
+                    break;
+                case 0x55: //opcode 0xFx55 --> LD [I], Vx -- Store registers V0 through Vx in memory starting at I
+                    for (i = 0; i < register[reg1]; i++) {
+                        memory[indexRegister + i] = register[i];
+                    }
+                    break;
+                case 0x65: //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx from memory starting at I
+                    for (i = 0; i < register[reg1]; i++) {
+                        register[i] = memory[indexRegister + i];
+                    }
+                    break;
+            }
+            break;
     }//increment programCounter by 2 after running oneCycle()
 
 
@@ -299,4 +343,3 @@ function oneCycle() {
     //update timers
         //update the delay and sound timers.
 }
-
