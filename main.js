@@ -33,5 +33,18 @@ int main(int argc, char **argv)
  */
 
 document.getElementById("V1-Stack").innerHTML = "0x12";
+
+function updateHTML() { //call this after every cycle
+    for (let i = 0; i < stack.length; i++) {
+        document.getElementById("V" + i + "-Stack").innerHTML = stack[i];
+    }
+    for (let i = 0; i < register.length; i++) {
+        document.getElementById("V" + i + "-Reg").innerHTML = register[i];
+    }
+    document.getElementById("PC").innerHTML = programCounter;
+    document.getElementById("I").innerHTML = indexRegister;
+}
 initializeCPU();
 oneCycle();
+updateHTML();
+

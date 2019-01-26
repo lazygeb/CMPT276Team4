@@ -1,24 +1,24 @@
-var opcode = 0x0000;
-var memory = new Array(4096);
-var register = new Array(16);
-var keyState = new Array(16);
-var indexRegister = 0x00;
-var programCounter = 0x00;
-var reg1 = 0x00;
-var reg2 = 0x00;
-var tempVal = 0x0;
+let opcode = 0x0000;
+let memory = new Array(4096);
+let register = new Array(16);
+let keyState = new Array(16); //(0x0 to 0xF)
+let indexRegister = 0x00;
+let programCounter = 0x00;
+let reg1 = 0x00;
+let reg2 = 0x00;
+let tempVal = 0x0;
 
 //Screen is 64 by 32, array holds pixel states 0 (off) or 1 (on)
-var graphics = new Array(64*32);
-var delayTimer = 0;
-var soundTimer = 0; //system makes a buzz when timer reaches 0
+let graphics = new Array(64*32);
+let delayTimer = 0;
+let soundTimer = 0; //system makes a buzz when timer reaches 0
 
-var stack = new Array(16);
-var stackPointer = 0x00;
+let stack = new Array(16);
+let stackPointer = 0x00;
 
-var keypad = new Array(16); //(0x0-0xF)
 
-var font = [ //draws sprite (8x5)
+
+const font = [ //draws sprite (8x5)
     0xF0, 0x90, 0x90, 0x90, 0xF0, //sprite: 0, index 0
     0x20, 0x60, 0x20, 0x20, 0x70, //sprite: 1, index 5
     0xF0, 0x10, 0xF0, 0x80, 0xF0, //sprite: 2, index 10
@@ -49,15 +49,23 @@ function initializeCPU() {
     register[2] = 0xDD;                                              //remove
     register[6] = 0xDE;                                             //remove
 
-    for (i = 0; i < graphics.length; i++) {                         //change to 0 not 1
+    for (let i = 0; i < graphics.length; i++) {                         //change to 0 not 1
         graphics[i] = 1;
     }
-    for (i = 0; i < keyState.length; i++) {
+    for (let i = 0; i < keyState.length; i++) {
         keyState[i] = 0;
     }
+    //set all registers to 0
+    for (let i = 0; i < register.length; i++) {
+        register[i] = 0xFF;
+    }
+    for (let i = 0; i < stack.length; i++) {
+        stack[i] = 0xAD;
+    }
+
 
     //load font set into memory
-    for (i = 0; i < font.length; i++) {
+    for (let i = 0; i < font.length; i++) {
         memory[i] = font[i];
     }
 }
@@ -81,7 +89,7 @@ function oneCycle() {
     switch (opcode >> 12) { //first digit of opcode
         case 0x0: //opcodes that start with 0
             if ((opcode & 0x0FFF) === 0x0E0) { //opcode 0x00E0 --> CLS -- Clear the display // works
-                for (i = 0; i < graphics.length; i++) {
+                for (let i = 0; i < graphics.length; i++) {
                     graphics[i] = 0;
                 }
             }
@@ -322,12 +330,12 @@ function oneCycle() {
                     memory[indexRegister + 2] = tempVal;
                     break;
                 case 0x55: //opcode 0xFx55 --> LD [I], Vx -- Store registers V0 through Vx in memory starting at I
-                    for (i = 0; i < register[reg1]; i++) {
+                    for (let i = 0; i < register[reg1]; i++) {
                         memory[indexRegister + i] = register[i];
                     }
                     break;
                 case 0x65: //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx from memory starting at I
-                    for (i = 0; i < register[reg1]; i++) {
+                    for (let i = 0; i < register[reg1]; i++) {
                         register[i] = memory[indexRegister + i];
                     }
                     break;
