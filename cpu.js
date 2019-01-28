@@ -12,11 +12,10 @@ var tempVal = 0x0;
 var graphics = new Array(64*32);
 var delayTimer = 0;
 var soundTimer = 0; //system makes a buzz when timer reaches 0
+var beep = new Audio('./Sound/button-10.wav'); //audio for buzz
 
 var stack = new Array(16);
 var stackPointer = 0x00;
-
-var keypad = new Array(16); //(0x0-0xF)
 
 var font = [ //draws sprite (8x5)
     0xF0, 0x90, 0x90, 0x90, 0xF0, //sprite: 0, index 0
@@ -63,8 +62,40 @@ function initializeCPU() {
 }
 
 //check for keyPresses, call this every cycle
-function updateKeys() {
+function updateKeys(){
+    //Reset KeyState  
+    for (i = 0; i < keyState.length; i++) {
+        keyState[i] = 0;
+    }
+    //Gets Keyboard Input if keys are pressed
+    document.addEventListener('keyup',logkey); 
+    function logkey(e) {
+        keyState[keyMap(e)] = 1; 
+        console.log(keyState[keyMap(e)]); //DELETE - USED FOR DEBUG
+    }
+}
 
+//Maps keyboard input to chip8 hex keyboard
+function keyMap(e){
+    switch(e.keyCode){
+        case 49: return 1;
+        case 50: return 2;
+        case 51: return 3;
+        case 52: return 12;
+        case 81: return 4;
+        case 87: return 5;
+        case 69: return 6;
+        case 82: return 13;
+        case 65: return 7;
+        case 83: return 8;
+        case 68: return 9;
+        case 70: return 14;
+        case 90: return 10;
+        case 88: return 0;
+        case 67: return 11;
+        case 86: return 15;
+        default: return 16; //unvalid key, does nothing 
+    }
 }
 
 //gets called every cycle
@@ -335,11 +366,13 @@ function oneCycle() {
             break;
     }//increment programCounter by 2 after running oneCycle()
 
-
-        console.log(opcode);
-        console.log(opcode & 0x0FFF); //removes the first digit in a 0xFFFF hex number
-        console.log(graphics[10]);
-
-    //update timers
-        //update the delay and sound timers.
+    // update delay time
+    if (delayTimer > 0) {
+        delayTimer--;
+    }
+    // update sound timer
+    if (soundTimer > 0) { //sound will ring
+        soundTimer--;
+        beep.play();
+    }
 }
