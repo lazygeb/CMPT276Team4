@@ -7,6 +7,7 @@ let programCounter = 0x00;
 let reg1 = 0x00;
 let reg2 = 0x00;
 let tempVal = 0x0;
+let drawFlag = false;
 
 //Screen is 64 by 32, array holds pixel states 0 (off) or 1 (on)
 let graphics = new Array(64*32);
@@ -63,6 +64,8 @@ function initializeCPU() {
         stack[i] = 0xAD;
     }
 
+    //loadMemory()
+
 
     //load font set into memory
     for (let i = 0; i < font.length; i++) {
@@ -92,6 +95,7 @@ function oneCycle() {
                 for (let i = 0; i < graphics.length; i++) {
                     graphics[i] = 0;
                 }
+                drawFlag = true;
             }
             else if ((opcode & 0x0FFF) === 0x00EE) { //opcode 0x00EE --> RET
                 programCounter = stack[stackPointer]; //sets the program counter to the address at the top of the stack
@@ -277,6 +281,7 @@ function oneCycle() {
                     }
                 }
             }
+            drawFlag = true;
             break;
         case 0xE:
             reg1 = opcode & 0x0F00;

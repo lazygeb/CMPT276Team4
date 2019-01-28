@@ -44,7 +44,18 @@ function updateHTML() { //call this after every cycle
     document.getElementById("PC").innerHTML = programCounter;
     document.getElementById("I").innerHTML = indexRegister;
 }
-initializeCPU();
-oneCycle();
-updateHTML();
+
+function main() {
+    initializeCPU();
+    //from here should be inside a loop
+        oneCycle();
+        updateKeys();
+        updateHTML();
+
+    if (drawFlag === true) {
+        updateDisplay(); //draws display on HTML page
+        drawFlag = false;
+    }
+}
+
 
