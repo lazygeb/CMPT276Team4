@@ -8,7 +8,14 @@ class Chip8{
     this.register = new Array(16);
     this.delayTimer = 0;
     this.soundTimer = 0;
-    this.pc = 0x200; // Program Counter
+    this.programCounter = 0x200; // Program Counter
+    this.drawFlag = false;
+    this.graphics = new Array(32*64);
+    this.stackPointer = 0;
+    this.indexRegister = 0;
+    this.keyState = new Uint8Array(16);
+
+
   }
 
   /**
@@ -17,8 +24,8 @@ class Chip8{
    * Responsible for loading program into the memory
    */
   loadProgram(program){
-    for(var i = 0; i < program.length;i++){
-      this.memory[i+0x200] = program[i];
+    for(let i = 0; i < program.length; i++){
+      this.memory[i + 0x200] = program[i];
     }
   }
 
@@ -27,7 +34,7 @@ class Chip8{
    * Loads all the required fonts into the memory
    */
   loadCharacters(){
-    var hexchrs = [
+    let hexchars = [
         0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
         0x20, 0x60, 0x20, 0x20, 0x70, // 1
         0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
@@ -46,8 +53,8 @@ class Chip8{
         0xF0, 0x80, 0xF0, 0x80, 0x80  // F
       ];
 
-    for(var i = 0; i<hexchrs.length;i++){
-      this.memory[i] = hexchrs[i];
+    for(let i = 0; i<hexchars.length;i++){
+      this.memory[i] = hexchars[i];
     }
   }
 
@@ -60,55 +67,87 @@ class Chip8{
 
     this.memory = new Uint8Array(4096);
     this.loadCharacters();
-
     this.stack = new Array(16);
     this.delayTimer = 0;
     this.soundTimer = 0;
-    this.pc = 0x200;
+    this.programCounter = 0x200; //Chip 8 expects programs to be loaded at 0x200
+    this.drawFlag = false;
+    this.graphics = new Array(32*64);
+    this.stackPointer = 0;  //top of stack is 0
+    this.indexRegister = 0;
+    this.keyState = new Uint8Array(16);
+    let program = [0x00, 0xE0];
+    this.loadProgram(program); //loads Array: program into memory
+
+    for (let i = 0; i < this.graphics.length; i++) {
+        this.graphics[i] = 0x0;
+    }
+    for (let i = 0; i < this.keyState.length; i++) { //following 3 loops can be combined into 1 (they all go to 16)
+        this.keyState[i] = 0x0;
+    }
+    for (let i = 0; i < this.register.length; i++) {
+        this.register[i] = 0x0;
+    }
+    for (let i = 0; i < this.stack.length; i++) {
+        this.stack[i] = 0x0
+    }
+  }
+
+  //check for key presses, call this every cycle
+  updateKeys() {
+
+  }
+
+  waitForKeyPressed() {
+      //Lina
   }
 
   /**
    * @method emulatorCycle
-   * Method for runnning CPU cycle 
+   * Method for running emulator
    */
-  emulatorCycle(){
-    for(var i = 0; i <10; i++){
-      var opcode = this.memory[this.pc] << 8 | this.memory[this.pc+1];
+  runEmulator(){
+    //for(let i = 0; i <10; i++){ //why does it only go to 10???        //un-comment
+        //read in 2 bytes from the memory at PC and PC+1
+      let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //combines PC and PC+1 into single opcode
       this.oneCycle(opcode);
-    }
+
+    //}                                                                 //un-comment
   }
 
   /**
    * @method oneCycle
    * @param {Integer} opcode
-   * This method runs takes opcode as input
-   * and run one cycle of Chip8 CPU 
+   * This method takes an opcode as input
+   * and runs one cycle of Chip8 CPU
    */
   oneCycle(opcode) {
+      let reg1 = 0x00;
+      let reg2 = 0x00;
+      let tempVal = 0x00;
     switch (opcode >> 12) { //first digit of opcode
         case 0x0: //opcodes that start with 0
             if ((opcode & 0x0FFF) === 0x0E0) { //opcode 0x00E0 --> CLS -- Clear the display // works
-                for (let i = 0; i < graphics.length; i++) {
-                    graphics[i] = 0;
+                for (let i = 0; i < this.graphics.length; i++) {
+                    this.graphics[i] = 0;
                 }
-                drawFlag = true;
+                this.drawFlag = true;
             }
             else if ((opcode & 0x0FFF) === 0x00EE) { //opcode 0x00EE --> RET
-                programCounter = stack[stackPointer]; //sets the program counter to the address at the top of the stack
-                stackPointer--;//then substracts 1 from the stack pointer
+                this.programCounter = this.stack[this.stackPointer]; //sets the program counter to the address at the top of the stack
+                this.stackPointer--;//then substracts 1 from the stack pointer
             }
             break;
         
         case 0x1: //opcode 0x1nnn --> JMP addr -- jump to location nnn
             tempVal = opcode & 0x0FFF;
-            programCounter = value; //sets program counter to address nnn
+            this.programCounter = value; //sets program counter to address nnn
             break;
         
         case 0x2: //opcode 0x2nnn --> Call addr -- call subroutine at address nnn
-            stackPointer++; //increment stack pointer
-            stack[stackPointer] = programCounter;
-            programCounter = opcode & 0x0FFF;
-            console.log("nnn = " + programCounter);
+            this.stackPointer++; //increment stack pointer
+            this.stack[this.stackPointer] = this.programCounter;
+            this.programCounter = opcode & 0x0FFF;
             break;
         
         case 0x3: //opcode 0x3xkk --> SE Vx, byte -- if this.register Vx == kk, skip next instruction (PC + 2)
@@ -116,17 +155,15 @@ class Chip8{
             reg1 = reg1 >> 8; //this.register number = x
             tempVal = opcode & 0x00FF; //kk == last 2 digits of opcode
             if (this.register[reg1] === tempVal) { //skips next instruction if this.register Vx == kk
-               programCounter += 2;
+               this.programCounter += 2;
             }
             break;
-        
-        case 0x4: //opcode 0x3xkk --> SNE Vx, byte -- if this.register Vx != kk, skip next instruction (PC + 2)
+        case 0x4: //opcode 0x4xkk --> SNE Vx, byte -- if this.register Vx != kk, skip next instruction (PC + 2)
             reg1 = opcode & 0x0F00;
             reg1 = reg1 >> 8; //this.register number =  x
             tempVal = opcode & 0x00FF; //kk == last 2 digits of opcode
             if (this.register[reg1] !== tempVal) { //skips next instruction if this.register Vx != kk
-                console.log("skips next instruction !=");
-                programCounter += 2;
+                this.programCounter += 2;
             }
             break;
         
@@ -136,8 +173,7 @@ class Chip8{
             reg2 = opcode & 0x00F0;
             reg2 = reg2 >> 4; // reg2 = y
             if (this.register[reg1] === this.register[reg2]) {
-                console.log("Skips cause regs are equal");
-                programCounter += 2;
+                this.programCounter += 2;
             }
             break;
         
@@ -146,7 +182,6 @@ class Chip8{
             reg1 = reg1 >> 8;
             tempVal = opcode & 0x00FF;
             this.register[reg1] = tempVal;
-            console.log("reg1: " + this.register[reg1]);
             break;
         
         case 0x7: //opcode 0x7xkk --> ADD Vx, byte -- add value kk to Vx and place in Vx
@@ -155,7 +190,6 @@ class Chip8{
             tempVal = opcode & 0x00FF;
             tempVal = tempVal + this.register[reg1];
             this.register[reg1] = tempVal;
-            console.log("reg1: " + this.register[reg1]);
             break;
         
         case 0x8: //opcodes 8xy0 through 8xyE
@@ -228,17 +262,17 @@ class Chip8{
             reg2 = opcode & 0x00F0;
             reg2 = reg2 >> 4; //Vy
             if (this.register[reg1] !== this.register[reg2]) {
-                programCounter += 2;
+                this.programCounter += 2;
             }
             break;
         case 0xA: //opcode Annn --> LD I, addr -- set this.register I = nnn
             tempVal = opcode & 0x0FFF;
-            indexRegister = tempVal;
+            this.indexRegister = tempVal;
             break;
         case 0xB: //opcode Bnnn --> JP V0, addr -- jump to location nnn + V0
             tempVal = opcode & 0x0FFF;
             tempVal += this.register[0x0];
-            programCounter = tempVal;
+            this.programCounter = tempVal;
             break;
         case 0xC: //opcode Cxkk --> RND Vx, byte -- set Vx = random byte (0 to 255) AND kk
             tempVal = Math.random() * (255);
@@ -251,20 +285,20 @@ class Chip8{
         case 0xD: //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision
             reg1 = opcode & 0x0F00;
             reg1 = reg1 >> 8; //x coordinate
-            var xCoord = this.register[reg1];
+            let xCoord = this.register[reg1];
             reg2 = opcode & 0x00F0;
             reg2 = reg2 >> 4; //y coordinate
-            var yCoord = this.register[reg2];
+            let yCoord = this.register[reg2];
             tempVal = opcode & 0x000F; //n
             this.register[0xF] = 0; //set VF to 0 initially
 
             //read in 1 byte from memory at a time
-            for (i = 0; i < tempVal; i++) { //loop through each memory location (every loop is one row (y axis))
-                var currIndex = indexRegister + i;
-                var currByte = memory[currIndex]; //load in current memory location
-                var currYCoord = yCoord + i;
-                for (j = 0; j < 8; j++) { //loop through each bit and properly adjust graphics array
-                    var currXCoord = xCoord + j;
+            for (let i = 0; i < tempVal; i++) { //loop through each memory location (every loop is one row (y axis))
+                let currIndex = this.indexRegister + i;
+                let currByte = this.memory[currIndex]; //load in current memory location
+                let currYCoord = yCoord + i;
+                for (let j = 0; j < 8; j++) { //loop through each bit and properly adjust graphics array
+                    let currXCoord = xCoord + j;
                     //wrap around if necessary
                     if (currYCoord < 0) {
                         currYCoord = currYCoord + 64; //wraps to bottom
@@ -278,14 +312,14 @@ class Chip8{
                     else if (currXCoord > 31) {
                         currXCoord = currXCoord - 32; //wraps to the left
                     }
-                    var currPixel = graphics[currXCoord  * currYCoord]; //index of graphics array
-                    graphics[currXCoord * currYCoord] ^= ((currByte >>> (7-j)) & 0x01); //should only keep 1 bit (from left to right)
-                    if (currPixel === 1 && graphics[currXCoord * currYCoord] === 0) {
+                    let currPixel = this.graphics[currXCoord  * currYCoord]; //index of graphics array
+                    this.graphics[currXCoord * currYCoord] ^= ((currByte >>> (7-j)) & 0x01); //should only keep 1 bit (from left to right)
+                    if (currPixel === 1 && this.graphics[currXCoord * currYCoord] === 0) {
                         this.register[0xF] = 1; //if a pixel is flipped from 1 to 0, set VF to 1 (collision)
                     }
                 }
             }
-            drawFlag = true;
+            this.drawFlag = true;
             break;
         case 0xE:
             reg1 = opcode & 0x0F00;
@@ -294,15 +328,15 @@ class Chip8{
             switch(opcode & 0x00FF) {
                 case 0x9E: // opcode Ex9E --> SKP Vx -- skip next instruction if key with value Vx is pressed
                     if (tempVal >= 0 && tempVal <= 16) {
-                        if (keyState[tempVal] === 1) { //Vx IS pressed
-                            programCounter += 2;
+                        if (this.keyState[tempVal] === 1) { //Vx IS pressed
+                            this.programCounter += 2;
                         }
                     }
                     break;
                 case 0xA1: // opcode ExA1 --> SKNP Vx -- skip next instruction if key with value Vx is NOT pressed
                     if (tempVal >= 0 && tempVal <= 16) {
-                        if (keyState[tempVal] === 0) { //Vx NOT pressed
-                            programCounter += 2;
+                        if (this.keyState[tempVal] === 0) { //Vx NOT pressed
+                            this.programCounter += 2;
                         }
                     }
                     break;
@@ -313,39 +347,39 @@ class Chip8{
             reg1 = reg1 >>> 8;
             switch(opcode & 0x00FF) {
                 case 0x07: //opcode 0xFx07 --> LD Vx, DT -- set Vx = delay timer value
-                    this.register[reg1] = delayTimer;
+                    this.register[reg1] = this.delayTimer;
                     break;
                 case 0x0A: //opcode 0xFx0A --> LD Vx, K -- wait for a key press, store the value of the key in Vx
-                    this.register[reg1] = waitForKeyPressed();
+                    this.register[reg1] = this.waitForKeyPressed();
                     break;
                 case 0x15: //opcode 0xFx15 --> LD DT, Vx -- set delay timer = Vx
-                    delayTimer = this.register[reg1];
+                    this.delayTimer = this.register[reg1];
                     break;
                 case 0x18: //opcode 0xFx18 --> LD ST, Vx -- set sound timer = Vx;
-                    soundTimer = this.register[reg1];
+                    this.soundTimer = this.register[reg1];
                     break;
                 case 0x1E: //opcode 0xFx1E --> ADD I, Vx -- set I = I + Vx
-                    indexRegister += this.register[reg1];
+                    this.indexRegister += this.register[reg1];
                     break;
                 case 0x29: //opcode 0xFx29 --> LD F, Vx -- set I = location of sprite for digit Vx
-                    indexRegister = this.register[reg1] * 5;
+                    this.indexRegister = this.register[reg1] * 5;
                     break;
                 case 0x33: //opcode 0xFx33 --> LD B, Vx -- store BCD representation of Vx in memory locations I, I+1 & I + 2
                     tempVal = this.register[reg1] / 100;
-                    memory[indexRegister] = tempVal; //hundreth digit of Vx
-                    tempVal = this.register[reg1] - (memory[indexRegister] * 100);
-                    memory[indexRegister + 1] = tempVal / 10; //thenth digit
-                    tempVal = tempVal - (memory[indexRegister + 1] * 10);
-                    memory[indexRegister + 2] = tempVal;
+                    this.memory[this.indexRegister] = tempVal; //hundredth digit of Vx
+                    tempVal = this.register[reg1] - (this.memory[this.indexRegister] * 100);
+                    this.memory[this.indexRegister + 1] = tempVal / 10; //tenth digit
+                    tempVal = tempVal - (this.memory[this.indexRegister + 1] * 10);
+                    this.memory[this.indexRegister + 2] = tempVal;
                     break;
                 case 0x55: //opcode 0xFx55 --> LD [I], Vx -- Store registers V0 through Vx in memory starting at I
                     for (let i = 0; i < this.register[reg1]; i++) {
-                        memory[indexRegister + i] = this.register[i];
+                        this.memory[this.indexRegister + i] = this.register[i];
                     }
                     break;
                 case 0x65: //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx from memory starting at I
                     for (let i = 0; i < this.register[reg1]; i++) {
-                        this.register[i] = memory[indexRegister + i];
+                        this.register[i] = this.memory[this.indexRegister + i];
                     }
                     break;
             }
@@ -355,5 +389,5 @@ class Chip8{
   }
 }
 
-var ch = new Chip8();
-ch.reset()
+let ch = new Chip8();
+ch.reset();

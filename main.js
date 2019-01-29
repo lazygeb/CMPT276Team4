@@ -35,27 +35,37 @@ int main(int argc, char **argv)
 document.getElementById("V1-Stack").innerHTML = "0x12";
 
 function updateHTML() { //call this after every cycle
-    for (let i = 0; i < stack.length; i++) {
-        document.getElementById("V" + i + "-Stack").innerHTML = stack[i];
+    for (let i = 0; i < this.stack.length; i++) {
+        document.getElementById("V" + i + "-Stack").innerHTML = this.stack[i];
     }
-    for (let i = 0; i < register.length; i++) {
-        document.getElementById("V" + i + "-Reg").innerHTML = register[i];
+    for (let i = 0; i < this.register.length; i++) {
+        document.getElementById("V" + i + "-Reg").innerHTML = this.register[i];
     }
-    document.getElementById("PC").innerHTML = programCounter;
-    document.getElementById("I").innerHTML = indexRegister;
+    document.getElementById("PC").innerHTML = this.programCounter;
+    document.getElementById("I").innerHTML = this.indexRegister;
+}
+
+function updateDisplay() {
+    //Gabe
 }
 
 function main() {
-    initializeCPU();
-    //from here should be inside a loop
-        oneCycle();
-        updateKeys();
-        updateHTML();
 
-    if (drawFlag === true) {
+    //from here should be inside a loop
+    let chip = new Chip8();
+    chip.reset();
+    chip.runEmulator();
+
+      //  oneCycle();
+      //  updateKeys();
+      //  updateHTML();
+
+    if (chip.drawFlag === true) {
         updateDisplay(); //draws display on HTML page
-        drawFlag = false;
+        chip.drawFlag = false;
     }
 }
+
+main();
 
 
