@@ -45,9 +45,10 @@ function updateHTML() { //call this after every cycle
     document.getElementById("I").innerHTML = this.indexRegister;
 }
 
-function updateDisplay() {
-    //Gabe
-}
+
+
+
+
 
 function main() {
 
@@ -56,12 +57,19 @@ function main() {
     chip.reset();
     chip.runEmulator();
 
-      //  oneCycle();
+	for (let i = 0; i < 64 * 32; i++) {
+	console.log(chip.graphics[i]);
+	}
+	
       //  updateKeys();
       //  updateHTML();
+	  //clearScreen();
+	  console.log("test");
 
     if (chip.drawFlag === true) {
-        updateDisplay(); //draws display on HTML page
+        chip.updateDisplay(); //draws display on HTML page
+		console.log("test");
+
         chip.drawFlag = false;
     }
 }

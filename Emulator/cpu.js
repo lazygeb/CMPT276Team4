@@ -10,10 +10,14 @@ class Chip8{
     this.soundTimer = 0;
     this.programCounter = 0x200; // Program Counter
     this.drawFlag = false;
-    this.graphics = new Array(32*64);
+	this.canvasWidth = 64;
+	this.canvasHeight = 32;
+    this.graphics = new Array(this.canvasWidth * this.canvasHeight);
     this.stackPointer = 0;
     this.indexRegister = 0;
     this.keyState = new Uint8Array(16);
+	this.ctx = document.getElementById("canvas").getContext("2d");
+	this.scale = Math.ceil(document.getElementById("canvas").width / 64);
 
 
   }
@@ -72,11 +76,14 @@ class Chip8{
     this.soundTimer = 0;
     this.programCounter = 0x200; //Chip 8 expects programs to be loaded at 0x200
     this.drawFlag = false;
-    this.graphics = new Array(32*64);
+	this.canvasWidth = 64;
+	this.canvasHeight = 32;
+    this.graphics = new Array(this.canvasWidth*this.canvasHeight);
     this.stackPointer = 0;  //top of stack is 0
     this.indexRegister = 0;
     this.keyState = new Uint8Array(16);
-    let program = [0x00, 0xE0];
+	//the first two are the same test ones as before. get red of 0x0000, ad 0x00e0 for the full maze program
+    let program = [0x0000, 0x00e0, 0x6000, 0x6100, 0xa222, 0xc201, 0x0000, 0x0e00,  0x3201, 0xa21e, 0xd014, 0x7004, 0x3040, 0x1204, 0x6000, 0x7104, 0x3120, 0x1204, 0x121c, 0x8040, 0x2010, 0x2040, 0x8010];
     this.loadProgram(program); //loads Array: program into memory
 
     for (let i = 0; i < this.graphics.length; i++) {
@@ -102,17 +109,46 @@ class Chip8{
       //Lina
   }
 
+  //draws single pixel at point specified by scale of canvas element
+  drawPixel(x, y) {
+	  this.ctx.fillStyle = "#fff";
+	  this.ctx.fillRect(x * this.scale, y * this.scale, this.scale, this.scale);
+  }
+
+  //clears canvas back to black
+  clearScreen() {
+	  this.ctx.fillStyle = "#000";
+	  this.ctx.fillRect(0, 0, 64 * this.scale, 32 * this.scale);
+  }
+
+  //updates entire canvas by drawing pixel for each object in graphics array. 
+  updateDisplay() {
+	  var x = 0; 
+	  var y = 0;
+	  this.ctx.fillStyle = "#000";
+	  this.ctx.fillRect(0, 0, 64 * this.scale, 32 * this.scale);
+	  for (let i = 0; i < this.graphics.length; i++) {
+		  if (this.graphics[i] !== 0x0) {
+		  this.ctx.fillStyle = "#fff";
+			  y = Math.ceil(i / 64); 
+			  x = i % 64;
+			  drawPixel(x, y);
+		  }
+	  }
+  }
+
   /**
    * @method emulatorCycle
    * Method for running emulator
    */
   runEmulator(){
-    //for(let i = 0; i <10; i++){ //why does it only go to 10???        //un-comment
+    for(let i = 0; i <10; i++){ //why does it only go to 10???        //un-comment
         //read in 2 bytes from the memory at PC and PC+1
       let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //combines PC and PC+1 into single opcode
       this.oneCycle(opcode);
-
-    //}                                                                 //un-comment
+	  console.log(opcode);
+	  this.programCounter += 2;
+    }                                                                 //un-comment
   }
 
   /**
@@ -141,7 +177,7 @@ class Chip8{
         
         case 0x1: //opcode 0x1nnn --> JMP addr -- jump to location nnn
             tempVal = opcode & 0x0FFF;
-            this.programCounter = value; //sets program counter to address nnn
+            this.programCounter = tempVal; //sets program counter to address nnn
             break;
         
         case 0x2: //opcode 0x2nnn --> Call addr -- call subroutine at address nnn
@@ -301,16 +337,16 @@ class Chip8{
                     let currXCoord = xCoord + j;
                     //wrap around if necessary
                     if (currYCoord < 0) {
-                        currYCoord = currYCoord + 64; //wraps to bottom
+                        currYCoord = currYCoord + this.canvasWidth; //wraps to bottom
                     }
                     else if (currYCoord > 63) {
-                        currYCoord = currYCoord - 64; //wraps to top
+                        currYCoord = currYCoord - this.canvasWidth; //wraps to top
                     }
                     if (currXCoord < 0) {
-                        currXCoord = currXCoord + 32; //wraps to the right
+                        currXCoord = currXCoord + this.canvasHeight; //wraps to the right
                     }
                     else if (currXCoord > 31) {
-                        currXCoord = currXCoord - 32; //wraps to the left
+                        currXCoord = currXCoord - this.canvasHeight; //wraps to the left
                     }
                     let currPixel = this.graphics[currXCoord  * currYCoord]; //index of graphics array
                     this.graphics[currXCoord * currYCoord] ^= ((currByte >>> (7-j)) & 0x01); //should only keep 1 bit (from left to right)
