@@ -56,22 +56,25 @@ function main() {
     let chip = new Chip8();
     chip.reset();
     chip.runEmulator();
+    //chip.test()
+    //chip.test();
 
-	for (let i = 0; i < 64 * 32; i++) {
-	console.log(chip.graphics[i]);
-	}
+	//for (let i = 0; i < 64 * 32; i++) {
+	//console.log(chip.graphics[i]);
+	//}
 	
       //  updateKeys();
       //  updateHTML();
 	  //clearScreen();
-	  console.log("test");
-
+	  //console.log("test");
+/*
     if (chip.drawFlag === true) {
         chip.updateDisplay(); //draws display on HTML page
 		console.log("test");
 
         chip.drawFlag = false;
     }
+*/
 }
 
 main();

@@ -18,7 +18,7 @@ class Chip8{
     this.keyState = new Uint8Array(16);
 	this.ctx = document.getElementById("canvas").getContext("2d");
 	this.scale = Math.ceil(document.getElementById("canvas").width / 64);
-
+    this.progLength = 0;
 
   }
 
@@ -39,22 +39,22 @@ class Chip8{
    */
   loadCharacters(){
     let hexchars = [
-        0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
-        0x20, 0x60, 0x20, 0x20, 0x70, // 1
-        0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
-        0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
-        0x90, 0x90, 0xF0, 0x10, 0x10, // 4
-        0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
-        0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
-        0xF0, 0x10, 0x20, 0x40, 0x40, // 7
-        0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
-        0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
-        0xF0, 0x90, 0xF0, 0x90, 0x90, // A
-        0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
-        0xF0, 0x80, 0x80, 0x80, 0xF0, // C
-        0xE0, 0x90, 0x90, 0x90, 0xE0, // D
-        0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
-        0xF0, 0x80, 0xF0, 0x80, 0x80  // F
+        0xF0, 0x90, 0x90, 0x90, 0xF0, // 0  index: 0
+        0x20, 0x60, 0x20, 0x20, 0x70, // 1  index: 5
+        0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2  index: 10
+        0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3  index: 15
+        0x90, 0x90, 0xF0, 0x10, 0x10, // 4  index: 20
+        0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5  index: 25
+        0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6  index: 30
+        0xF0, 0x10, 0x20, 0x40, 0x40, // 7  index: 35
+        0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8  index: 40
+        0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9  index: 45
+        0xF0, 0x90, 0xF0, 0x90, 0x90, // A  index: 50
+        0xE0, 0x90, 0xE0, 0x90, 0xE0, // B  index: 55
+        0xF0, 0x80, 0x80, 0x80, 0xF0, // C  index: 60
+        0xE0, 0x90, 0x90, 0x90, 0xE0, // D  index: 65
+        0xF0, 0x80, 0xF0, 0x80, 0xF0, // E  index: 70
+        0xF0, 0x80, 0xF0, 0x80, 0x80  // F  index: 75
       ];
 
     for(let i = 0; i<hexchars.length;i++){
@@ -83,9 +83,18 @@ class Chip8{
     this.indexRegister = 0;
     this.keyState = new Uint8Array(16);
 	//the first two are the same test ones as before. get red of 0x0000, ad 0x00e0 for the full maze program
-    let program = [0x0000, 0x00e0, 0x6000, 0x6100, 0xa222, 0xc201, 0x0000, 0x0e00,  0x3201, 0xa21e, 0xd014, 0x7004, 0x3040, 0x1204, 0x6000, 0x7104, 0x3120, 0x1204, 0x121c, 0x8040, 0x2010, 0x2040, 0x8010];
-    this.loadProgram(program); //loads Array: program into memory
+    let program = [0xA2, 0x1E, 0xC2, 0x01, 0x32, 0x01, 0xA2, 0x1A,
+                   0xD0, 0x14, 0x70, 0x04, 0x30, 0x40, 0x12, 0x00,
+                   0x60, 0x00, 0x71, 0x04, 0x31, 0x20, 0x12, 0x00,
+                    0x12, 0x18, 0x80, 0x40, 0x20, 0x10, 0x20, 0x40,
+                    0x80, 0x10]; //simple maze program, something about my rng opcode is wrong causing it to
+                                    //choose the same sprite every time (same diagonal)
 
+          //let program = [0x00, 0x0e, 0xF2, 0x29, 0xD1, 0x25];
+    this.loadProgram(program); //loads Array: program into memory
+    this.progLength = program.length;
+
+    //fill graphics array with 0's
     for (let i = 0; i < this.graphics.length; i++) {
         this.graphics[i] = 0x0;
     }
@@ -98,6 +107,7 @@ class Chip8{
     for (let i = 0; i < this.stack.length; i++) {
         this.stack[i] = 0x0
     }
+
   }
 
   //check for key presses, call this every cycle
@@ -123,16 +133,16 @@ class Chip8{
 
   //updates entire canvas by drawing pixel for each object in graphics array. 
   updateDisplay() {
-	  var x = 0; 
-	  var y = 0;
+	  let x = 0;
+	  let y = 0;
 	  this.ctx.fillStyle = "#000";
 	  this.ctx.fillRect(0, 0, 64 * this.scale, 32 * this.scale);
 	  for (let i = 0; i < this.graphics.length; i++) {
 		  if (this.graphics[i] !== 0x0) {
 		  this.ctx.fillStyle = "#fff";
-			  y = Math.ceil(i / 64); 
+			  y = Math.floor(i / 64);
 			  x = i % 64;
-			  drawPixel(x, y);
+			  this.drawPixel(x, y);
 		  }
 	  }
   }
@@ -142,13 +152,30 @@ class Chip8{
    * Method for running emulator
    */
   runEmulator(){
-    for(let i = 0; i <10; i++){ //why does it only go to 10???        //un-comment
+    for(let i = 0; i < 400; i++){    //how long should it loop for? What ends it? help plz
         //read in 2 bytes from the memory at PC and PC+1
+        console.log("curr OPcode: #" + i);
+
       let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //combines PC and PC+1 into single opcode
       this.oneCycle(opcode);
-	  console.log(opcode);
+	  console.log((opcode).toString(16)); //outputs opcode in hex (plz don't delete this)
 	  this.programCounter += 2;
+
+	  if (this.drawFlag) {
+	      this.updateDisplay();
+	      console.log("Display updated");
+	      this.drawFlag = false;
+      }
     }                                                                 //un-comment
+  }
+
+  test() {
+      this.graphics[10] = 1;
+
+      this.graphics[0] = 1;
+      this.graphics[1] = 1;
+      this.graphics[2] = 1;
+      this.updateDisplay();
   }
 
   /**
@@ -313,6 +340,7 @@ class Chip8{
         case 0xC: //opcode Cxkk --> RND Vx, byte -- set Vx = random byte (0 to 255) AND kk
             tempVal = Math.random() * (255);
             tempVal = Math.floor(tempVal);
+            console.log("random Num: " + tempVal);
             reg1 = opcode & 0x0F00;
             reg1 = reg1 >> 8; //Vx
             tempVal = tempVal & (opcode & 0x00FF); //random & kk
@@ -326,6 +354,8 @@ class Chip8{
             reg2 = reg2 >> 4; //y coordinate
             let yCoord = this.register[reg2];
             tempVal = opcode & 0x000F; //n
+            console.log("n: " + tempVal);
+            console.log("index:" + this.indexRegister);
             this.register[0xF] = 0; //set VF to 0 initially
 
             //read in 1 byte from memory at a time
@@ -337,19 +367,19 @@ class Chip8{
                     let currXCoord = xCoord + j;
                     //wrap around if necessary
                     if (currYCoord < 0) {
-                        currYCoord = currYCoord + this.canvasWidth; //wraps to bottom
+                        currYCoord = currYCoord + this.canvasHeight; //wraps to bottom
                     }
                     else if (currYCoord > 63) {
-                        currYCoord = currYCoord - this.canvasWidth; //wraps to top
+                        currYCoord = currYCoord - this.canvasHeight; //wraps to top
                     }
                     if (currXCoord < 0) {
-                        currXCoord = currXCoord + this.canvasHeight; //wraps to the right
+                        currXCoord = currXCoord + this.canvasWidth; //wraps to the right
                     }
                     else if (currXCoord > 31) {
-                        currXCoord = currXCoord - this.canvasHeight; //wraps to the left
+                        currXCoord = currXCoord - this.canvasWidth; //wraps to the left
                     }
                     let currPixel = this.graphics[currXCoord  * currYCoord]; //index of graphics array
-                    this.graphics[currXCoord * currYCoord] ^= ((currByte >>> (7-j)) & 0x01); //should only keep 1 bit (from left to right)
+                    this.graphics[currXCoord + (currYCoord * this.canvasWidth)] ^= ((currByte >>> (7-j)) & 0x01); //should only keep 1 bit (from left to right)
                     if (currPixel === 1 && this.graphics[currXCoord * currYCoord] === 0) {
                         this.register[0xF] = 1; //if a pixel is flipped from 1 to 0, set VF to 1 (collision)
                     }
