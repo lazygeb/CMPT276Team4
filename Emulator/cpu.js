@@ -19,8 +19,13 @@ class Chip8{
 	this.ctx = document.getElementById("canvas").getContext("2d");
 	this.scale = Math.ceil(document.getElementById("canvas").width / 64);
     this.progLength = 0;
+    this.beep = new Audio('./Sound/button-10.wav'); //audio for buzz  
+    this.waitForKeyFlag = false;
+    this.waitKey = undefined;
 
   }
+
+ 
 
   /**
    * @method loadProgram
@@ -110,16 +115,92 @@ class Chip8{
     }
 
   }
-
+    //Maps keyboard input to chip8 hex keyboard
   //check for key presses, call this every cycle
+  //https://stackoverflow.com/questions/14810506/map-function-for-objects-instead-of-arrays
+
+    keydown(){
+        let keyMap = {
+            49: 1,
+            50: 2,
+            51: 3,
+            52: 12,
+            81: 4,
+            87: 5,
+            69: 6,
+            82: 13,
+            65: 7,
+            83: 8,
+            68: 9,
+            70: 14,
+            90: 10,
+            88: 0,
+            67: 11,
+            86: 15,
+        };
+        let handler = (e) => {
+            if (keyMap[e.keyCode] != undefined){
+                this.keyState[keyMap[e.keyCode]] = 1;
+                console.log(keyMap[e.keyCode]);
+                console.log(this.keyState[keyMap[e.keyCode]]);
+                this.waitKey =  keyMap[e.keyCode];
+            }
+        }
+        document.addEventListener('keydown', handler, false);
+    }
+
+    keyup(){
+        let keyMap = {
+            49: 1,
+            50: 2,
+            51: 3,
+            52: 12,
+            81: 4,
+            87: 5,
+            69: 6,
+            82: 13,
+            65: 7,
+            83: 8,
+            68: 9,
+            70: 14,
+            90: 10,
+            88: 0,
+            67: 11,
+            86: 15,
+        };
+        let handler = (e) =>{
+            if (keyMap[e.keyCode] != undefined){
+                setTimeout(()=>{
+                    this.keyState[keyMap[e.keyCode]] = 0; 
+                    console.log(keyMap[e.keyCode]);
+                    console.log(this.keyState[keyMap[e.keyCode]]);
+                },5);
+            }
+        }
+        document.addEventListener('keyup', handler, false);
+    }
   updateKeys() {
 
+    this.keydown();
+    this.keyup();
   }
 
   waitForKeyPressed() {
-      //Lina
+  //  let keyPressed;
+    this.keydown();
+    this.keyup();
+    if (this.waitKey != undefined) {
+        console.log("WE DONE BOISSSSSS");
+        let key = this.waitKey
+        this.waitKey = undefined;
+        this.waitForKeyFlag = false;
+        return key;
+    }
+    else{
+        this.waitForKeyFlag = true;
+    }
   }
-
+    
   //draws single pixel at point specified by scale of canvas element
   drawPixel(x, y) {
 	  this.ctx.fillStyle = "#fff";
@@ -156,13 +237,17 @@ class Chip8{
         //read in 2 bytes from the memory at PC and PC+1
        // console.log("curr OPcode: #" + i);
 
+       this.updateKeys();
+
       let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //combines PC and PC+1 into single opcode
       this.programCounter += 2;
       this.oneCycle(opcode);
-//	  console.log((opcode).toString(16)); //outputs opcode in hex (plz don't delete this)
- //       console.log("Reg 2:" + this.register[2]);
- //       console.log("index: " + this.indexRegister);
-
+	//  console.log((opcode).toString(16)); //outputs opcode in hex (plz don't delete this)
+    //    console.log("Reg 2:" + this.register[2]);
+    //    console.log("index: " + this.indexRegister);
+        if (this.waitForKeyFlag == false){
+            this.programCounter += 2;
+        }
 	  if (this.drawFlag) {
 	      this.updateDisplay(this.stack, this.register);
 	     // console.log("Display updated");
@@ -392,20 +477,27 @@ class Chip8{
             this.drawFlag = true;
             break;
         case 0xE:
+        console.log("we in boys");
             reg1 = opcode & 0x0F00;
             reg1 = reg1 >>> 8;
             tempVal = this.register[reg1];
             switch(opcode & 0x00FF) {
                 case 0x9E: // opcode Ex9E --> SKP Vx -- skip next instruction if key with value Vx is pressed
-                    if (tempVal >= 0 && tempVal <= 16) {
+                    console.log(this.programCounter);
+                if (tempVal >= 0 && tempVal <= 16) {
+                        console.log("tressu");
+                        console.log(tempVal);
                         if (this.keyState[tempVal] === 1) { //Vx IS pressed
+                            console.log("pressu");
                             this.programCounter += 2;
                         }
                     }
+                    console.log(this.programCounter);
                     break;
                 case 0xA1: // opcode ExA1 --> SKNP Vx -- skip next instruction if key with value Vx is NOT pressed
                     if (tempVal >= 0 && tempVal <= 16) {
                         if (this.keyState[tempVal] === 0) { //Vx NOT pressed
+                            console.log("not pressu");
                             this.programCounter += 2;
                         }
                     }
@@ -455,7 +547,15 @@ class Chip8{
             }
             break;
     }//increment programCounter by 2 after running oneCycle()
-
+    // update delay time
+    if (this.delayTimer > 0) {
+        this.delayTimer--;
+    }
+    // update sound timer
+    if (this.soundTimer > 0) { //sound will ring
+        this.soundTimer--;
+        beep.play();
+    }
   }
 }
 
