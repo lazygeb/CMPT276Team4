@@ -139,7 +139,6 @@ class Chip8{
 	  this.ctx.fillRect(0, 0, 64 * this.scale, 32 * this.scale);
 	  for (let i = 0; i < this.graphics.length; i++) {
 		  if (this.graphics[i] !== 0x0) {
-		  this.ctx.fillStyle = "#fff";
 			  y = Math.floor(i / 64);
 			  x = i % 64;
 			  this.drawPixel(x, y);
@@ -152,7 +151,7 @@ class Chip8{
    * Method for running emulator
    */
   runEmulator(){
-    for(let i = 0; i < 1000; i++){    //how long should it loop for? What ends it? help plz
+    //for(let i = 0; i < 1000; i++){    //how long should it loop for? What ends it? help plz
         //read in 2 bytes from the memory at PC and PC+1
        // console.log("curr OPcode: #" + i);
 
@@ -168,7 +167,7 @@ class Chip8{
 	      console.log("Display updated");
 	      this.drawFlag = false;
       }
-    }                                                                 //un-comment
+    //}                                                                 //un-comment //don't un-comment, loop is now in main.js'
   }
 
   test() {

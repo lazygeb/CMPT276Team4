@@ -53,9 +53,10 @@ function updateHTML() { //call this after every cycle
 function main() {
 
     //from here should be inside a loop
-    let chip = new Chip8();
-    chip.reset();
-    chip.runEmulator();
+    //let chip = new Chip8();
+    //chip.reset();
+    //chip.runEmulator();
+	document.getElementById("startEmulator").onclick = function() {startEmulator()};
     //chip.test()
     //chip.test();
 
@@ -75,6 +76,15 @@ function main() {
         chip.drawFlag = false;
     }
 */
+}
+
+function startEmulator() {
+	let chip = new Chip8();
+    chip.reset();
+	//chip.updateDisplay();
+	setInterval(function(){ chip.runEmulator(); }, 4);
+	//window.requestAnimationFrame(chip.runEmulator());
+	//chip.runEmulator();
 }
 
 main();
