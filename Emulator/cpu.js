@@ -152,13 +152,15 @@ class Chip8{
    * Method for running emulator
    */
   runEmulator(){
-    for(let i = 0; i < 400; i++){    //how long should it loop for? What ends it? help plz
+    for(let i = 0; i < 1000; i++){    //how long should it loop for? What ends it? help plz
         //read in 2 bytes from the memory at PC and PC+1
-        console.log("curr OPcode: #" + i);
+       // console.log("curr OPcode: #" + i);
 
       let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //combines PC and PC+1 into single opcode
       this.oneCycle(opcode);
 	  console.log((opcode).toString(16)); //outputs opcode in hex (plz don't delete this)
+        console.log("Reg 2:" + this.register[2]);
+        console.log("index: " + this.indexRegister);
 	  this.programCounter += 2;
 
 	  if (this.drawFlag) {
@@ -204,7 +206,7 @@ class Chip8{
         
         case 0x1: //opcode 0x1nnn --> JMP addr -- jump to location nnn
             tempVal = opcode & 0x0FFF;
-            this.programCounter = tempVal; //sets program counter to address nnn
+            this.programCounter = tempVal - 2; //sets program counter to address nnn
             break;
         
         case 0x2: //opcode 0x2nnn --> Call addr -- call subroutine at address nnn
@@ -340,7 +342,6 @@ class Chip8{
         case 0xC: //opcode Cxkk --> RND Vx, byte -- set Vx = random byte (0 to 255) AND kk
             tempVal = Math.random() * (255);
             tempVal = Math.floor(tempVal);
-            console.log("random Num: " + tempVal);
             reg1 = opcode & 0x0F00;
             reg1 = reg1 >> 8; //Vx
             tempVal = tempVal & (opcode & 0x00FF); //random & kk
@@ -355,7 +356,7 @@ class Chip8{
             let yCoord = this.register[reg2];
             tempVal = opcode & 0x000F; //n
             console.log("n: " + tempVal);
-            console.log("index:" + this.indexRegister);
+            //console.log("index:" + this.indexRegister);
             this.register[0xF] = 0; //set VF to 0 initially
 
             //read in 1 byte from memory at a time
