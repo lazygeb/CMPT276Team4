@@ -83,14 +83,15 @@ class Chip8{
     this.indexRegister = 0;
     this.keyState = new Uint8Array(16);
 	//the first two are the same test ones as before. get red of 0x0000, ad 0x00e0 for the full maze program
+      /*
     let program = [0xA2, 0x1E, 0xC2, 0x01, 0x32, 0x01, 0xA2, 0x1A,
                    0xD0, 0x14, 0x70, 0x04, 0x30, 0x40, 0x12, 0x00,
                    0x60, 0x00, 0x71, 0x04, 0x31, 0x20, 0x12, 0x00,
                     0x12, 0x18, 0x80, 0x40, 0x20, 0x10, 0x20, 0x40,
                     0x80, 0x10]; //simple maze program, something about my rng opcode is wrong causing it to
                                     //choose the same sprite every time (same diagonal)
-
-          //let program = [0x00, 0x0e, 0xF2, 0x29, 0xD1, 0x25];
+*/
+          let program = [0x00, 0x0e, 0xF2, 0x29, 0xD1, 0x25];
     this.loadProgram(program); //loads Array: program into memory
     this.progLength = program.length;
 
@@ -156,28 +157,31 @@ class Chip8{
        // console.log("curr OPcode: #" + i);
 
       let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //combines PC and PC+1 into single opcode
+      this.programCounter += 2;
       this.oneCycle(opcode);
-	  console.log((opcode).toString(16)); //outputs opcode in hex (plz don't delete this)
-        console.log("Reg 2:" + this.register[2]);
-        console.log("index: " + this.indexRegister);
-	  this.programCounter += 2;
+//	  console.log((opcode).toString(16)); //outputs opcode in hex (plz don't delete this)
+ //       console.log("Reg 2:" + this.register[2]);
+ //       console.log("index: " + this.indexRegister);
 
 	  if (this.drawFlag) {
-	      this.updateDisplay();
-	      console.log("Display updated");
+	      this.updateDisplay(this.stack, this.register);
+	     // console.log("Display updated");
 	      this.drawFlag = false;
       }
+	  this.updateHTML();
     //}                                                                 //un-comment //don't un-comment, loop is now in main.js'
   }
+  updateHTML() { //call this after every cycle
+        for (let i = 0; i < this.stack.length; i++) {
+            document.getElementById("V" + i + "-Stack").innerHTML = this.stack[i];
+        }
+        for (let i = 0; i < this.register.length; i++) {
+            document.getElementById("V" + i + "-Reg").innerHTML = this.register[i];
+        }
+        document.getElementById("PC").innerHTML = this.programCounter;
+        document.getElementById("I").innerHTML = this.indexRegister;
+    }
 
-  test() {
-      this.graphics[10] = 1;
-
-      this.graphics[0] = 1;
-      this.graphics[1] = 1;
-      this.graphics[2] = 1;
-      this.updateDisplay();
-  }
 
   /**
    * @method oneCycle
@@ -199,13 +203,13 @@ class Chip8{
             }
             else if ((opcode & 0x0FFF) === 0x00EE) { //opcode 0x00EE --> RET
                 this.programCounter = this.stack[this.stackPointer]; //sets the program counter to the address at the top of the stack
-                this.stackPointer--;//then substracts 1 from the stack pointer
+                this.stackPointer--;//then subtracts 1 from the stack pointer
             }
             break;
         
         case 0x1: //opcode 0x1nnn --> JMP addr -- jump to location nnn
             tempVal = opcode & 0x0FFF;
-            this.programCounter = tempVal - 2; //sets program counter to address nnn
+            this.programCounter = tempVal; //sets program counter to address nnn
             break;
         
         case 0x2: //opcode 0x2nnn --> Call addr -- call subroutine at address nnn
@@ -354,7 +358,7 @@ class Chip8{
             reg2 = reg2 >> 4; //y coordinate
             let yCoord = this.register[reg2];
             tempVal = opcode & 0x000F; //n
-            console.log("n: " + tempVal);
+           // console.log("n: " + tempVal);
             //console.log("index:" + this.indexRegister);
             this.register[0xF] = 0; //set VF to 0 initially
 
@@ -455,5 +459,5 @@ class Chip8{
   }
 }
 
-let ch = new Chip8();
-ch.reset();
+//let ch = new Chip8();
+//ch.reset();
