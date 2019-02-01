@@ -370,13 +370,13 @@ class Chip8{
                     if (currYCoord < 0) {
                         currYCoord = currYCoord + this.canvasHeight; //wraps to bottom
                     }
-                    else if (currYCoord > 63) {
+                    else if (currYCoord > 31) {
                         currYCoord = currYCoord - this.canvasHeight; //wraps to top
                     }
                     if (currXCoord < 0) {
                         currXCoord = currXCoord + this.canvasWidth; //wraps to the right
                     }
-                    else if (currXCoord > 31) {
+                    else if (currXCoord > 63) {
                         currXCoord = currXCoord - this.canvasWidth; //wraps to the left
                     }
                     let currPixel = this.graphics[currXCoord  * currYCoord]; //index of graphics array
