@@ -233,29 +233,22 @@ class Chip8{
    * Method for running emulator
    */
   runEmulator(){
-    //for(let i = 0; i < 1000; i++){    //how long should it loop for? What ends it? help plz
-        //read in 2 bytes from the memory at PC and PC+1
        // console.log("curr OPcode: #" + i);
-
-       //this.updateKeys();                     //might be breaking game
+      this.updateKeys();
 
       let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //combines PC and PC+1 into single opcode
-     //  this.programCounter += 2;
-     // if (this.waitForKeyFlag === false){
-          this.programCounter += 2;         //breaks game
-     // }
+      this.programCounter += 2;
       this.oneCycle(opcode);
       if (this.waitForKeyFlag === true) {
-          this.programCounter -= 2;
+          this.programCounter -= 2; //re-run same opcode if key is not pressed (& wait for key = true)
       }
 
 	  if (this.drawFlag) {
 	      this.updateDisplay(this.stack, this.register);
-	     // console.log("Display updated");
 	      this.drawFlag = false;
       }
 	  this.updateHTML();
-    //}                                                                 //un-comment //don't un-comment, loop is now in main.js'
+
   }
   updateHTML() { //call this after every cycle
         for (let i = 0; i < this.stack.length; i++) {
