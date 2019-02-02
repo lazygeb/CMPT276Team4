@@ -139,13 +139,13 @@ class Chip8{
             86: 15,
         };
         let handler = (e) => {
-            if (keyMap[e.keyCode] != undefined){
+            if (keyMap[e.keyCode] !== undefined){
                 this.keyState[keyMap[e.keyCode]] = 1;
                 console.log(keyMap[e.keyCode]);
                 console.log(this.keyState[keyMap[e.keyCode]]);
                 this.waitKey =  keyMap[e.keyCode];
             }
-        }
+        };
         document.addEventListener('keydown', handler, false);
     }
 
@@ -169,14 +169,14 @@ class Chip8{
             86: 15,
         };
         let handler = (e) =>{
-            if (keyMap[e.keyCode] != undefined){
+            if (keyMap[e.keyCode] !== undefined){
                 setTimeout(()=>{
                     this.keyState[keyMap[e.keyCode]] = 0; 
                     console.log(keyMap[e.keyCode]);
                     console.log(this.keyState[keyMap[e.keyCode]]);
                 },5);
             }
-        }
+        };
         document.addEventListener('keyup', handler, false);
     }
   updateKeys() {
@@ -189,7 +189,7 @@ class Chip8{
   //  let keyPressed;
     this.keydown();
     this.keyup();
-    if (this.waitKey != undefined) {
+    if (this.waitKey !== undefined) {
         console.log("WE DONE BOISSSSSS");
         let key = this.waitKey
         this.waitKey = undefined;
@@ -237,17 +237,18 @@ class Chip8{
         //read in 2 bytes from the memory at PC and PC+1
        // console.log("curr OPcode: #" + i);
 
-       this.updateKeys();
+       //this.updateKeys();                     //might be breaking game
 
       let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //combines PC and PC+1 into single opcode
-      this.programCounter += 2;
+     //  this.programCounter += 2;
+     // if (this.waitForKeyFlag === false){
+          this.programCounter += 2;         //breaks game
+     // }
       this.oneCycle(opcode);
-	//  console.log((opcode).toString(16)); //outputs opcode in hex (plz don't delete this)
-    //    console.log("Reg 2:" + this.register[2]);
-    //    console.log("index: " + this.indexRegister);
-        if (this.waitForKeyFlag == false){
-            this.programCounter += 2;
-        }
+      if (this.waitForKeyFlag === true) {
+          this.programCounter -= 2;
+      }
+
 	  if (this.drawFlag) {
 	      this.updateDisplay(this.stack, this.register);
 	     // console.log("Display updated");

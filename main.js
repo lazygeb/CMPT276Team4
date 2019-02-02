@@ -13,9 +13,8 @@ function startEmulator(usrFile) {
         chip.loadProgram(prog);
     }
 	//chip.updateDisplay();
-	setInterval(function(){ chip.runEmulator(); }, 4);
+	setInterval(function(){ chip.runEmulator(); }, 15);
 	//window.requestAnimationFrame(chip.runEmulator());
-	//chip.runEmulator();
 }
 
 let inputElement = document.getElementById("myFile");
@@ -45,6 +44,7 @@ function handleFiles() {
         for (let i = 0; i < prog.length; i++) {
             console.log((prog[i]).toString(16));
         }
+        alert("Your file has been loaded, please press \"Start Emulation\"");
     main(true); //call main, with true boolean to show it should load a file
     };
     reader.readAsBinaryString(file);
@@ -53,6 +53,6 @@ function handleFiles() {
 }
 
 
-main();
+main(false);
 
 
