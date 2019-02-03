@@ -1,7 +1,7 @@
 class Chip8{
   /**
    * @constructor
-   */
+   */ 
   constructor(){
     this.memory = new Uint8Array(4096);
     this.stack = new Array(16);

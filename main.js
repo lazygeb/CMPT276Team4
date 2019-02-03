@@ -4,7 +4,7 @@
 function main(usrFile) {
         document.getElementById("startEmulator").onclick = function () { startEmulator(usrFile)};
 
-}
+} 
 
 function startEmulator(usrFile) {
 	let chip = new Chip8();
