@@ -266,14 +266,14 @@ class Chip8{
 
   }
   updateHTML() { //call this after every cycle
-        for (let i = 0; i < this.stack.length; i++) {
-            document.getElementById("V" + i + "-Stack").innerHTML = this.stack[i];
-        }
-        for (let i = 0; i < this.register.length; i++) {
-            document.getElementById("V" + i + "-Reg").innerHTML = this.register[i];
-        }
-        document.getElementById("PC").innerHTML = this.programCounter;
-        document.getElementById("I").innerHTML = this.indexRegister;
+        //for (let i = 0; i < this.stack.length; i++) {                                 //not for this release yet
+        //    document.getElementById("V" + i + "-Stack").innerHTML = this.stack[i];
+        //}
+        //for (let i = 0; i < this.register.length; i++) {
+        //    document.getElementById("V" + i + "-Reg").innerHTML = this.register[i];
+        //}
+        //document.getElementById("PC").innerHTML = this.programCounter;
+        //document.getElementById("I").innerHTML = this.indexRegister;
     }
 
 
