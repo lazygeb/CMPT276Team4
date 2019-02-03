@@ -11,9 +11,9 @@ function opCoTest() { //call opcode tests in here
 
     //Test opcodes:
     clrDisp();
-    ret();
-    oneNNN();
-    twoNNN();
+    // ret();
+    // oneNNN();
+    // twoNNN();
     threeXKK();
     fourXKK();
     fiveXY0();
@@ -62,6 +62,74 @@ function threeXKK() { //opcode 0x3xkk, if register Vx == kk, skip to next instru
     }
     else {
         console.log("Opcode 3xkk: Pass");
+    }
+}
+
+function fourXKK() { //opcode 0x4xkk --> SNE Vx, byte -- if this.register Vx != kk, skip next instruction (PC + 2)
+    let works = true;
+    chip.register[5] = 0xA6; //case 1: Vx == kk
+    let pc = chip.programCounter;
+    chip.oneCycle(0x45A6); //here register[5] should be equal to A6 therefore PC should not increase
+    if (chip.programCounter !== pc) {
+        works = false;
+    }
+    pc = chip.programCounter;
+    chip.oneCycle(0x45A7); //here register[5] should not be equal to A7, therefore PC should increase by 2
+    if (chip.programCounter !== pc + 2) {
+        works = false;
+    }
+    if (!works) {
+        console.log("Opcode 4xkk: Failed");
+    }
+    else {
+        console.log("Opcode 4xkk: Pass");
+    }
+}
+
+function fiveXY0(){ //opcode 0x5xy0 --> SE Vx, Vy -- if this.register Vx & Vy are equal, skip next instruction
+	let works = true;
+    chip.register[5] = 0xA6; 
+    chip.register[6] = 0xA6;
+    let pc = chip.programCounter;
+    chip.oneCycle(0x5560); 
+    if (chip.programCounter !== pc + 2) {
+        works = false;
+    }
+    if (!works) {
+        console.log("Opcode 5xy0: Failed");
+    }
+    else {
+        console.log("Opcode 5xy0: Pass");
+    }
+}
+
+function sixXKK(){ //opcode 0x6xkk --> LD Vx, byte -- place value kk into this.register Vx
+	let works = true;
+    chip.register[5] = 0xA6; 
+    chip.oneCycle(0x65A6); 
+    if (chip.register[5] !== 0xA6) {
+        works = false;
+    }
+    if (!works) {
+        console.log("Opcode 6xkk: Failed");
+    }
+    else {
+        console.log("Opcode 6xkk: Pass");
+    }
+}
+
+function sevenXKK(){  //opcode 0x7xkk --> ADD Vx, byte -- add value kk to Vx and place in Vx
+	let works = true;
+	chip.register[5] = 0xA6;
+	chip.oneCycle(0x75A6);
+	if (chip.register[5] !== 0xA6+0xA6){
+		works = false;
+	}
+	if (!works) {
+        console.log("Opcode 7xkk: Failed");
+    }
+    else {
+        console.log("Opcode 7xkk: Pass");
     }
 }
 
