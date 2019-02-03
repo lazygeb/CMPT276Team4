@@ -96,7 +96,7 @@ class Chip8{
                     0x80, 0x10]; //simple maze program, something about my rng opcode is wrong causing it to
                                     //choose the same sprite every time (same diagonal)
 */
-          let program = [0x00, 0x0e, 0xF2, 0x29, 0xD1, 0x25];
+          let program = [0xE1, 0x9E, 0xE1, 0xA1, 0xE1, 0xA1];  
     this.loadProgram(program); //loads Array: program into memory
     this.progLength = program.length;
 
@@ -115,7 +115,28 @@ class Chip8{
     }
 
   }
-    //Maps keyboard input to chip8 hex keyboard
+
+
+  startDelayTimer(){
+    let ticker = 0;
+    while((this.delayTimer > 0) && (ticker <= 60)){
+        ticker++;
+        this.delayTimer--;
+    }
+  }
+
+  startSoundTimer(){
+    let ticker = 0;
+    while((this.soundTimer > 0) && (ticker <= 60)){
+        ticker++;
+        this.soundTimer--;
+    }
+    if (this.soundTimer != 0){
+        this.beep.play(); 
+    }
+  }
+
+  //Maps keyboard input to chip8 hex keyboard
   //check for key presses, call this every cycle
   //https://stackoverflow.com/questions/14810506/map-function-for-objects-instead-of-arrays
 
@@ -141,9 +162,7 @@ class Chip8{
         let handler = (e) => {
             if (keyMap[e.keyCode] !== undefined){
                 this.keyState[keyMap[e.keyCode]] = 1;
-                console.log(keyMap[e.keyCode]);
-                console.log(this.keyState[keyMap[e.keyCode]]);
-                this.waitKey =  keyMap[e.keyCode];
+                this.waitKey = keyMap[e.keyCode];
             }
         };
         document.addEventListener('keydown', handler, false);
@@ -172,8 +191,6 @@ class Chip8{
             if (keyMap[e.keyCode] !== undefined){
                 setTimeout(()=>{
                     this.keyState[keyMap[e.keyCode]] = 0; 
-                    console.log(keyMap[e.keyCode]);
-                    console.log(this.keyState[keyMap[e.keyCode]]);
                 },5);
             }
         };
@@ -190,7 +207,6 @@ class Chip8{
     this.keydown();
     this.keyup();
     if (this.waitKey !== undefined) {
-        console.log("WE DONE BOISSSSSS");
         let key = this.waitKey
         this.waitKey = undefined;
         this.waitForKeyFlag = false;
@@ -235,7 +251,6 @@ class Chip8{
   runEmulator(){
        // console.log("curr OPcode: #" + i);
       this.updateKeys();
-
       let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //combines PC and PC+1 into single opcode
       this.programCounter += 2;
       this.oneCycle(opcode);
@@ -471,27 +486,20 @@ class Chip8{
             this.drawFlag = true;
             break;
         case 0xE:
-        console.log("we in boys");
             reg1 = opcode & 0x0F00;
             reg1 = reg1 >>> 8;
             tempVal = this.register[reg1];
             switch(opcode & 0x00FF) {
                 case 0x9E: // opcode Ex9E --> SKP Vx -- skip next instruction if key with value Vx is pressed
-                    console.log(this.programCounter);
                 if (tempVal >= 0 && tempVal <= 16) {
-                        console.log("tressu");
-                        console.log(tempVal);
                         if (this.keyState[tempVal] === 1) { //Vx IS pressed
-                            console.log("pressu");
                             this.programCounter += 2;
                         }
                     }
-                    console.log(this.programCounter);
                     break;
                 case 0xA1: // opcode ExA1 --> SKNP Vx -- skip next instruction if key with value Vx is NOT pressed
                     if (tempVal >= 0 && tempVal <= 16) {
                         if (this.keyState[tempVal] === 0) { //Vx NOT pressed
-                            console.log("not pressu");
                             this.programCounter += 2;
                         }
                     }
@@ -541,15 +549,6 @@ class Chip8{
             }
             break;
     }//increment programCounter by 2 after running oneCycle()
-    // update delay time
-    if (this.delayTimer > 0) {
-        this.delayTimer--;
-    }
-    // update sound timer
-    if (this.soundTimer > 0) { //sound will ring
-        this.soundTimer--;
-        beep.play();
-    }
   }
 }
 

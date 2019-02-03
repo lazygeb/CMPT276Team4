@@ -13,8 +13,16 @@ function startEmulator(usrFile) {
         chip.loadProgram(prog);
     }
 	//chip.updateDisplay();
-	setInterval(function(){ chip.runEmulator(); }, 15);
-	//window.requestAnimationFrame(chip.runEmulator());
+	setInterval(function(){ chip.runEmulator(); }, 50);
+    //window.requestAnimationFrame(chip.runEmulator());
+
+    //if delaytimer or soundtimer nonzero, function will be added to queue at a rate of 1s 
+    if (chip.delayTimer != 0) {
+        setInterval(function(){ chip.startDelayTimer();}, 1000);
+    } 
+    if (chip.soundTimer != 0) {
+        setInterval(function(){ chip.startSoundTimer(); }, 1000);
+    } 
 }
 
 let inputElement = document.getElementById("myFile");
