@@ -13,7 +13,7 @@ function startEmulator(usrFile) {
         chip.loadProgram(prog);
     }
 	//chip.updateDisplay();
-	setInterval(function(){ chip.runEmulator(); }, 50);
+	setInterval(function(){ chip.runEmulator(); }, 6);
     //window.requestAnimationFrame(chip.runEmulator());
 
     //if delaytimer or soundtimer nonzero, function will be added to queue at a rate of 1s 

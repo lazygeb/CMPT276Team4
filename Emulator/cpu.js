@@ -17,7 +17,7 @@ class Chip8{
     this.indexRegister = 0;
     this.keyState = new Uint8Array(16);
 	this.ctx = document.getElementById("canvas").getContext("2d");
-	this.scale = Math.ceil(document.getElementById("canvas").width / 64);
+	this.scale = document.getElementById("canvas").width / 64;
     this.progLength = 0;
     this.beep = new Audio('./Sound/button-10.wav'); //audio for buzz  
     this.waitForKeyFlag = false;
