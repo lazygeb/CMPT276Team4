@@ -19,6 +19,10 @@ function opCoTest() { //call opcode tests in here
     fiveXY0();
     sixXKK();
     sevenXKK();
+    eightXY1();
+    eightXY7();
+    fX07();
+
 
 
 }
@@ -133,7 +137,55 @@ function sevenXKK(){  //opcode 0x7xkk --> ADD Vx, byte -- add value kk to Vx and
     }
 }
 
-//add opcode functions 4 through 7 here
+function eightXY1(){ //opcode 8xy1 --> OR Vx, Vy -- set Vx = Vx OR Vy (bitwise OR operation)
+	let works = true;
+	chip.register[5] = 0xA6;
+	chip.register[6] = 0xA6;
+	chip.oneCycle(0x8561);
+	if (chip.register[5] !== (0xA6|0xA6)){
+		works = false;
+	}
+	if (!works) {
+        console.log("Opcode 8xy1: Failed");
+    }
+    else {
+        console.log("Opcode 8xy1: Pass");
+    }
+}
+
+function eightXY7(){ //opcode 8xy7 --> SUBN Vx, Vy -- set Vx = Vy - Vx, set VF = Not borrow
+	let works = true;
+	chip.register[5] = 0xA6; //Vx
+	chip.register[6] = 0xA7; //Vy
+	chip.oneCycle(0x8567);
+	if (chip.register[0xF] !== 1){
+		works = false;
+	}
+	if (chip.register[5] !== 0xA7-0xA6){
+		works = false;
+	}
+	if (!works) {
+        console.log("Opcode 8xy7: Failed");
+    }
+    else {
+        console.log("Opcode 8xy7: Pass");
+    }
+}
+
+function fX07(){ //opcode 0xFx07 --> LD Vx, DT -- set Vx = delay timer value
+	let works = true;
+	chip.register[5] = 0xA6;
+	chip.oneCycle(0xF507);
+	if (chip.register[5] !== chip.delayTimer){
+		works = false;
+	}
+	if (!works) {
+        console.log("Opcode Fx07: Failed");
+    }
+    else {
+        console.log("Opcode Fx07: Pass");
+    }
+}
 
 opCoTest(); //calls the function in this file..
 
