@@ -19,7 +19,12 @@ function opCoTest() { //call opcode tests in here
     fiveXY0();
     sixXKK();
     sevenXKK();
-
+    EX9E();
+    EXA1();
+    FX07();
+    FX0A();
+    FX18();
+    FX15();
 
 }
 
@@ -135,7 +140,271 @@ function sevenXKK(){  //opcode 0x7xkk --> ADD Vx, byte -- add value kk to Vx and
 
 //add opcode functions 4 through 7 here
 
+function EX9E() {
+    //EX9E     Skip next instruction if key VX pressed 
+    let works = true;
+
+   // V[X] == key pressed for all keys
+   for (let i = 0x00; i <= 0x0F; i++){
+        let p1 = 0xE09E; 
+        let p2 = i;
+        let opcode = p1 | p2 << 8 ;
+
+        let pc = chip.programCounter;
+        chip.register[i] = i; //register 1 = key pressed
+        chip.keyState[i] = 1;
+
+        chip.oneCycle(opcode);
+        if (chip.programCounter !== pc + 2) {
+            works = false;
+        }
+
+        chip.reset();
+
+        //V[X] != key pressed for all keys 
+
+        pc = chip.programCounter;
+        chip.register[i] = i; //register 1 = key pressed
+        chip.keyState[i] = 0;
+
+        chip.oneCycle(opcode);
+
+        if (chip.programCounter !== pc) {
+            works = false;
+        }
+            
+    }
+
+    if (!works) {
+        console.log("Opcode EX9E: Failed");
+    }
+    else {
+        console.log("Opcode EX9E: Pass");
+    }
+}
+
+function EXA1(){
+    //EXA1     Skip next instruction if key VX not pressed 
+    let works = true;
+   // V[X] == key pressed for all keys
+   for (let i = 0x00; i <= 0x0F; i++){
+        let p1 = 0xE0A1; 
+        let p2 = i;
+        let opcode = p1 | p2 << 8 ;
+
+        let pc = chip.programCounter;
+        chip.register[i] = i; //register 1 = key pressed
+        chip.keyState[i] = 1;
+
+        chip.oneCycle(opcode);
+
+        if (chip.programCounter !== pc ) {
+            works = false;
+        }
+        
+        chip.reset();
+
+        //V[X] != key pressed for all keys 
+
+        pc = chip.programCounter;
+        chip.register[i] = i; //register 1 = key pressed
+        chip.keyState[i] = 0;
+
+        chip.oneCycle(opcode);
+
+        if (chip.programCounter !== pc + 2) {
+            works = false;
+        }       
+    }
+
+    if (!works) {
+        console.log("Opcode EXA1: Failed");
+    }
+    else {
+        console.log("Opcode EXA1: Pass");
+    }
+}
+
+function FX07() {
+    //VX := delay_timer 
+
+    //get a random register
+    //assign the register with a random number
+    //take that random number, put into delay timer
+    //check that it counted to zero 
+    // if it didn't go to zero then it is false
+
+
+    let works = true;
+    for (let i = 0x00; i <= 0x0F; i++){
+        let p1 = 0xF018; 
+        let p2 = i;
+        let opcode = p1 | p2 << 8 ;
+
+        var rand = Math.floor((Math.random() * 1000) + 1);
+        chip.delayTimer = rand;
+
+        chip.oneCycle(opcode);
+
+        if (chip.soundTimer !== chip.register[i]) {
+            works = false;
+        }
+
+        if (chip.delayTimer != 0) {
+            setInterval(function(){ chip.startDelayTimer();}, 1000);
+        } 
+    }
+    if (!works) {
+        console.log("Opcode FX07: Failed");
+    }
+    else {
+        console.log("Opcode FX07: Pass");
+    }
+
+}
+
+function FX0A() {
+    //FX0A  wait for keypress, store hex value of key in VX 
+    let works = true;
+    for (let i = 0x00; i <= 0x0F; i++){
+        let p1 = 0xF00A; 
+        let p2 = i;
+        let opcode = p1 | p2 << 8 ;
+    
+        //key pressed has been pressed
+        // given that a key is pressed so key != undefined 
+        // gets key, returns key so v[i] == keyPressed aka waitKey
+        chip.waitKey = i; 
+        //console.log("se   " +  chip.waitKey);
+
+        chip.oneCycle(opcode);
+        //console.log("te   " +  chip.register[i]);
+
+        if (chip.register[i] != i) {
+            works = false;
+        }
+
+    }
+        if (!works) {
+            console.log("Opcode FXOA: Failed");
+        }
+        else {
+            console.log("Opcode FX0A: Pass");
+        }
+
+    chip.reset();
+
+    //stored into vx
+    //key not pressed 
+    //keypressed runs again until rand says that key has been pressed
+    //check if key = vx
+
+    var rand = Math.floor((Math.random() * 10) + 1);
+    chip.waitForKeyFlag = false;
+    
+    if (chip.waitForKeyFlag == false ) {
+        //simulate repeating when no key is pressed
+        var rep = setInterval(function() {
+            chip.oneCycle(0xF10A);
+
+            if(rand == 0){ //pretend key has been pressed
+                clearInterval(rep);
+
+                chip.waitKey = Math.floor((Math.random() * 15) + 0);; 
+                var temp = chip.waitKey;
+                
+                chip.oneCycle(0xF10A);
+
+                if (chip.register[1] != temp) {
+                    works = false;
+                }
+                if (!works) {
+                    console.log("Opcode FX0A: Failed");
+                }
+                else {
+                    console.log("Opcode FX0A: Pass");
+                }
+            }
+
+            rand--; //keeps on going until rand == 0
+        },10);
+    }
+}
+
+function FX18() {
+    //FX18      sound_timer := VX 
+    //get a random register
+    //assign the register with a random number
+    //take that random number, put into delay timer
+    //check that it counted to zero 
+    // if it didn't go to zero then it is false
+
+    let works = true;
+    for (let i = 0x00; i <= 0x0F; i++){
+        let p1 = 0xF018; 
+        let p2 = i;
+        let opcode = p1 | p2 << 8 ;
+
+        var rand = Math.floor((Math.random() * 1000) + 1);
+        chip.register[i] = rand;
+        chip.soundTimer = chip.register[i];
+
+        chip.oneCycle(opcode);
+
+        if (chip.soundTimer !== chip.register[i]) {
+            works = false;
+        }
+
+        if (chip.soundTimer != 0) {
+            setInterval(function(){ chip.startSoundTimer();}, 1000);
+        } 
+    }
+
+    if (!works) {
+        console.log("Opcode FX18: Failed");
+    }
+    else {
+        console.log("Opcode FX18: Pass");
+    }
+}
+    
+function FX15(){
+    //FX15      delay_timer := VX
+    //assign delay timer a random value
+    // put the value into Vx
+    // check if value = delay timer
+        //VX := delay_timer 
+    let works = true;
+
+    for (let i = 0x00; i <= 0x0F; i++){
+        let p1 = 0xF015; 
+        let p2 = i;
+        let opcode = p1 | p2 << 8 ;
+
+        var rand = Math.floor((Math.random() * 1000) + 1);
+        chip.delayTimer = rand;
+        chip.register[i] = chip.delayTimer;
+
+        chip.oneCycle(opcode);
+
+        if(chip.register[i] !== chip.delayTimer){
+            works = false;
+        }   
+   }
+    if (!works) {
+        console.log("Opcode FX15: Failed");
+    }
+    else {
+        console.log("Opcode FX15: Pass");
+    }
+}
+
+
+
+
 opCoTest(); //calls the function in this file..
+
+
 
 
 
