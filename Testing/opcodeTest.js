@@ -312,21 +312,6 @@ function eightXYE() { //opcode 8xyE --> SHL Vx, {, Vy} -- set Vx = Vx SHL 1
     }
 }
 
-//function FX07(){ //opcode 0xFx07 --> LD Vx, DT -- set Vx = delay timer value
-//	let works = true;
-//	chip.register[5] = 0xA6;
-//	chip.oneCycle(0xF507);
-//	if (chip.register[5] !== chip.delayTimer){
-//		works = false;
-//	}
-//	if (!works) {
-//        console.log("Opcode Fx07: Failed");
-//    }
-//    else {
-//        console.log("Opcode Fx07: Pass");
-//    }
-//}
-
 function CXKK() {
     let works = false;
     chip.oneCycle(0xC1FF);
