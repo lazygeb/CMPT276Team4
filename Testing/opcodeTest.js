@@ -12,8 +12,8 @@ function opCoTest() { //call opcode tests in here
     //Test opcodes:
     clrDisp();
     // ret();
-    // oneNNN();
-    // twoNNN();
+     oneNNN();
+     twoNNN();
     threeXKK();
     fourXKK();
     fiveXY0();
@@ -49,43 +49,39 @@ function clrDisp() {
 }
 
 //add functions ret, one NNN and two NNN here
-function oneNNN {
-
-    chip.oneCycle(0x00E0);
-    if (chip.programCounter == 00E0) {
+function oneNNN() {
+    let works = false;
+    chip.oneCycle(0x1ABC);
+    if (chip.programCounter === 0xABC) {
         works = true;
     }
-
     if (!works) {
-
-        console.log(“Opcode 1 NNN: Failed”)
+        console.log("Opcode 1nnn: Failed");
     } else {
-        console.log(“Opcode 1 NNN: Pass”);
+        console.log("Opcode 1nnn: Pass");
     }
 }
 
-function twoNNN {
-    works = false
+function twoNNN() {
+    let works = true;
     let tempSp = chip.stackPointer;
     let tempPC = chip.programCounter;
     chip.oneCycle(0X2ABC);
-    if (tempSp !== chip.stackPointer) {
+    if (tempSp + 1 !== chip.stackPointer) {
         works = false;
     }
     if (chip.stack[chip.stackPointer] !== tempPC) {
         works = false;
     }
-
-    if (chip.programCounter !== 0xABC)[
-        works = true;
-}
-if (works === true) {
-
-    console.log(“Opcode 2 NNN: Failed”)
-} else {
-    console.log(“Opcode 2 NNN: Pass”);
-}
-}
+    if (chip.programCounter !== 0xABC){
+        works = false;
+    }
+    if (works === false) {
+        console.log("Opcode 2nnn: Failed");
+    }
+    else {
+        console.log("Opcode 2nnn: Pass");
+    }
 }
 
 function threeXKK() { //opcode 0x3xkk, if register Vx == kk, skip to next instruction (PC + 2)
