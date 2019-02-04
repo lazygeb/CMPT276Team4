@@ -476,9 +476,9 @@ class Chip8{
                     else if (currXCoord > 63) {
                         currXCoord = currXCoord - this.canvasWidth; //wraps to the left
                     }
-                    let currPixel = this.graphics[currXCoord  * currYCoord]; //index of graphics array
+                    let currPixel = this.graphics[currXCoord + (currYCoord * this.canvasWidth)]; //index of graphics array
                     this.graphics[currXCoord + (currYCoord * this.canvasWidth)] ^= ((currByte >>> (7-j)) & 0x01); //should only keep 1 bit (from left to right)
-                    if (currPixel === 1 && this.graphics[currXCoord * currYCoord] === 0) {
+                    if (currPixel === 1 && this.graphics[currXCoord + (currYCoord * this.canvasWidth)] === 0) {
                         this.register[0xF] = 1; //if a pixel is flipped from 1 to 0, set VF to 1 (collision)
                     }
                 }

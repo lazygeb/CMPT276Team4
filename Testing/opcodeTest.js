@@ -18,10 +18,10 @@ function opCoTest() { //call opcode tests in here
     fourXKK();
     fiveXY0();
     sixXKK();
-    sevenXKK()
+    sevenXKK();
     eightXY1();
     eightXY7();
-	DYXN();
+	DXYN();
     EX9E();
     EXA1();
     FX07();
@@ -204,7 +204,7 @@ function DXYN(){  //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite star
 		works = false;
 	}
 	if (!works) {
-        console.log("Opcode Dxkk: Collision Flag Failed");
+        console.log("Opcode Dxyn: Collision Flag Failed");
     }
     else {
         console.log("Opcode Dxyn: Pass");
