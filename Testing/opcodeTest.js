@@ -11,16 +11,21 @@ function opCoTest() { //call opcode tests in here
 
     //Test opcodes:
     clrDisp();
-    // ret();
-     oneNNN();
-     twoNNN();
+    ret();
+    oneNNN();
+    twoNNN();
     threeXKK();
     fourXKK();
     fiveXY0();
     sixXKK();
     sevenXKK();
     eightXY1();
+    eightXY4();
+    eightXY5();
+    eightXY6();
+    eightXYE();
     eightXY7();
+    CXKK();
 	DXYN();
     EX9E();
     EXA1();
@@ -28,6 +33,8 @@ function opCoTest() { //call opcode tests in here
     FX0A();
     FX18();
     FX15();
+    FX29();
+    FX33();
 
 }
 
@@ -48,7 +55,28 @@ function clrDisp() {
     }
 }
 
-//add functions ret, one NNN and two NNN here
+//add function ret here
+
+function ret() {
+    let works = true;
+    chip.stackPointer = 2;
+    chip.stack[chip.stackPointer] = 0x222;
+    chip.oneCycle(0x00EE);
+    if (chip.programCounter !== 0x222) {
+        works = false;
+    }
+    if (chip.stackPointer !== 1) {
+        works = false;
+    }
+    if (works) {
+        console.log("Opcode 00EE: Pass");
+    }
+    else {
+        console.log("Opcode 00EE: Failed");
+    }
+
+}
+
 function oneNNN() {
     let works = false;
     chip.oneCycle(0x1ABC);
@@ -190,6 +218,63 @@ function eightXY1(){ //opcode 8xy1 --> OR Vx, Vy -- set Vx = Vx OR Vy (bitwise O
     }
 }
 
+function eightXY4() { //opcode 8xy4 --> ADD Vx, Vy -- set Vx = Vx + Vy, set VF = carry
+    let works = true;
+    chip.register[0x9] = 0xBA;
+    chip.register[0xB] = 0xCF;
+    chip.oneCycle(0x89B4);
+    if (chip.register[0xF] !== 1) {
+        works = false;
+    }
+    if (chip.register[0x9] !== ((0xBA + 0xCF) & 0xFF)) { //only 8 least significant bits
+        works = false;
+    }
+
+    if (works) {
+        console.log("Opcode 8xy4: Pass");
+    }
+    else {
+        console.log("Opcode 8xy4: Failed")
+    }
+}
+
+function eightXY5() { //opcode 8xy5 --> SUB Vx, Vy -- set Vx = Vx - Vy, set VF = NOT borrow
+    let works = true;
+    chip.register[0] = 0xFF;
+    chip.register[0xE] = 0x5A;
+    chip.oneCycle(0x80E5);
+    if (chip.register[0xF] !== 0x1) {
+        works = false;
+    }
+    if (chip.register[0] !== 0xFF - 0x5A) {
+        works = false;
+    }
+    if (works) {
+        console.log("Opcode 8xy5: Pass");
+    }
+    else {
+        console.log("Opcode 8xy5: Failed");
+    }
+}
+
+function eightXY6() { //opcode 8xy6 --> SHR Vx {, Vy} -- set Vx = Vx SHR 1 => if the least-sig bit of Vx is 1,
+    let works = true;
+    chip.register[0x8] = 0x97; //in binary: 1001 0111
+    chip.oneCycle(0x8806);
+    if (chip.register[0xF] !== 1) {
+        works = false;
+    }
+    if (chip.register[0x8] !== 0x97/2) {
+        works = false;
+    }
+    if (works) {
+        console.log("Opcode 8xy6: Pass");
+    }
+    else {
+        console.log("Opcode 8xy6: Failed");
+    }
+}
+
 function eightXY7(){ //opcode 8xy7 --> SUBN Vx, Vy -- set Vx = Vy - Vx, set VF = Not borrow
 	let works = true;
 	chip.register[5] = 0xA6; //Vx
@@ -209,6 +294,24 @@ function eightXY7(){ //opcode 8xy7 --> SUBN Vx, Vy -- set Vx = Vy - Vx, set VF =
     }
 }
 
+function eightXYE() { //opcode 8xyE --> SHL Vx, {, Vy} -- set Vx = Vx SHL 1
+    let works = true;
+    chip.register[3] = 0x82; //in binary: 1000 0010
+    chip.oneCycle(0x830E);
+    if (chip.register[0xF] !== 0x1) {
+        works = false;
+    }
+    if (chip.register[0x3] !== 0x82 * 2) {
+        works = false;
+    }
+    if (works) {
+        console.log("Opcode 8xyE: Pass");
+    }
+    else {
+        console.log("Opcode 8xyE: Failed");
+    }
+}
+
 //function FX07(){ //opcode 0xFx07 --> LD Vx, DT -- set Vx = delay timer value
 //	let works = true;
 //	chip.register[5] = 0xA6;
@@ -223,6 +326,25 @@ function eightXY7(){ //opcode 8xy7 --> SUBN Vx, Vy -- set Vx = Vy - Vx, set VF =
 //        console.log("Opcode Fx07: Pass");
 //    }
 //}
+
+function CXKK() {
+    let works = false;
+    chip.oneCycle(0xC1FF);
+    chip.oneCycle(0xC2FF);
+    chip.oneCycle(0xC3FF);
+    chip.oneCycle(0xC4FF);
+    if (chip.register[1] !== chip.register[2] || chip.register[1] !== chip.register[3] ||
+        chip.register[1] !== chip.register[4] || chip.register[2] !== chip.register[3] ||
+        chip.register[2] !== chip.register[4] || chip.register[3] !== chip.register[4]) {
+        works = true; //at least one of these is different 1 in 256^4 chance they are all the same & opcode works
+    }
+    if (works) {
+        console.log("Opcode Cxkk: Pass");
+    }
+    else {
+        console.log("Opcode Cxkk: Failed");
+    }
+}
 
 function DXYN(){  //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision
 	let works = true;
@@ -280,10 +402,10 @@ function EX9E() {
     }
 
     if (!works) {
-        console.log("Opcode EX9E: Failed");
+        console.log("Opcode Ex9E: Failed");
     }
     else {
-        console.log("Opcode EX9E: Pass");
+        console.log("Opcode Ex9E: Pass");
     }
 }
 
@@ -322,10 +444,10 @@ function EXA1(){
     }
 
     if (!works) {
-        console.log("Opcode EXA1: Failed");
+        console.log("Opcode ExA1: Failed");
     }
     else {
-        console.log("Opcode EXA1: Pass");
+        console.log("Opcode ExA1: Pass");
     }
 }
 
@@ -337,34 +459,27 @@ function FX07() {
     //take that random number, put into delay timer
     //check that it counted to zero 
     // if it didn't go to zero then it is false
-
-
     let works = true;
     for (let i = 0x00; i <= 0x0F; i++){
         let p1 = 0xF018; 
         let p2 = i;
         let opcode = p1 | p2 << 8 ;
-
         var rand = Math.floor((Math.random() * 1000) + 1);
         chip.delayTimer = rand;
-
         chip.oneCycle(opcode);
-
         if (chip.soundTimer !== chip.register[i]) {
             works = false;
         }
-
         if (chip.delayTimer != 0) {
             setInterval(function(){ chip.startDelayTimer();}, 1000);
         } 
     }
     if (!works) {
-        console.log("Opcode FX07: Failed");
+        console.log("Opcode Fx07: Failed");
     }
     else {
-        console.log("Opcode FX07: Pass");
+        console.log("Opcode Fx07: Pass");
     }
-
 }
 
 function FX0A() {
@@ -380,20 +495,17 @@ function FX0A() {
         // gets key, returns key so v[i] == keyPressed aka waitKey
         chip.waitKey = i; 
         //console.log("se   " +  chip.waitKey);
-
         chip.oneCycle(opcode);
         //console.log("te   " +  chip.register[i]);
-
-        if (chip.register[i] != i) {
+        if (chip.register[i] !== i) {
             works = false;
         }
-
     }
         if (!works) {
-            console.log("Opcode FXOA: Failed");
+            console.log("Opcode FxOA: Failed");
         }
         else {
-            console.log("Opcode FX0A: Pass");
+            console.log("Opcode Fx0A: Pass");
         }
 
     chip.reset();
@@ -406,27 +518,27 @@ function FX0A() {
     var rand = Math.floor((Math.random() * 10) + 1);
     chip.waitForKeyFlag = false;
     
-    if (chip.waitForKeyFlag == false ) {
+    if (chip.waitForKeyFlag === false ) {
         //simulate repeating when no key is pressed
         var rep = setInterval(function() {
             chip.oneCycle(0xF10A);
 
-            if(rand == 0){ //pretend key has been pressed
+            if(rand === 0){ //pretend key has been pressed
                 clearInterval(rep);
 
-                chip.waitKey = Math.floor((Math.random() * 15) + 0);; 
+                chip.waitKey = Math.floor((Math.random() * 15) + 0);
                 var temp = chip.waitKey;
                 
                 chip.oneCycle(0xF10A);
 
-                if (chip.register[1] != temp) {
+                if (chip.register[1] !== temp) {
                     works = false;
                 }
                 if (!works) {
-                    console.log("Opcode FX0A: Failed");
+                    console.log("Opcode Fx0A: Failed");
                 }
                 else {
-                    console.log("Opcode FX0A: Pass");
+                    console.log("Opcode Fx0A: Pass");
                 }
             }
 
@@ -458,17 +570,15 @@ function FX18() {
         if (chip.soundTimer !== chip.register[i]) {
             works = false;
         }
-
-        if (chip.soundTimer != 0) {
+        if (chip.soundTimer !== 0) {
             setInterval(function(){ chip.startSoundTimer();}, 1000);
         } 
     }
-
     if (!works) {
-        console.log("Opcode FX18: Failed");
+        console.log("Opcode Fx18: Failed");
     }
     else {
-        console.log("Opcode FX18: Pass");
+        console.log("Opcode Fx18: Pass");
     }
 }
     
@@ -496,10 +606,48 @@ function FX15(){
         }   
    }
     if (!works) {
-        console.log("Opcode FX15: Failed");
+        console.log("Opcode Fx15: Failed");
     }
     else {
-        console.log("Opcode FX15: Pass");
+        console.log("Opcode Fx15: Pass");
+    }
+}
+
+function FX29 () { //opcode 0xFx29 --> LD F, Vx -- set I = location of sprite for digit Vx
+    let works = true;
+    for (let i = 0; i < 16; i++) {  //loop through each sprite
+        let opcode = 0xF029;
+        chip.register[0] = i;
+        chip.oneCycle(opcode);
+        if (chip.indexRegister !== (i * 5)) {
+            works = false;
+        }
+    }
+    if (works) {
+        console.log("Opcode Fx29: Pass");
+    }
+    else {
+        console.log("Opcode Fx29: Failed");
+    }
+}
+
+function FX33 () { //opcode 0xFx33 --> LD B, Vx -- store BCD representation of Vx in memory locations I, I+1 & I + 2
+    let works = true;
+    chip.indexRegister = 0x300;
+    chip.register[0xA] = 0xAF; //decimal: 175
+    chip.oneCycle(0xFA33);
+    let tempVar = chip.memory[0x300] * 100 + chip.memory[0x301] * 10 + chip.memory[0x302];
+    if (tempVar !== 0xAF) {
+        works = false;
+    }
+    if (chip.memory[0x300] * 100 !== 100 || chip.memory[0x301] * 10 !== 70 || chip.memory[0x302] !== 5) {
+        works = false;
+    }
+    if (works) {
+        console.log("Opcode Fx33: Pass");
+    }
+    else {
+        console.log("Opcode Fx33: Failed");
     }
 }
 

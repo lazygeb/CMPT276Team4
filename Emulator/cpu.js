@@ -131,7 +131,7 @@ class Chip8{
         ticker++;
         this.soundTimer--;
     }
-    if (this.soundTimer != 0){
+    if (this.soundTimer !== 0){
         this.beep.play(); 
     }
   }
@@ -207,7 +207,7 @@ class Chip8{
     this.keydown();
     this.keyup();
     if (this.waitKey !== undefined) {
-        let key = this.waitKey
+        let key = this.waitKey;
         this.waitKey = undefined;
         this.waitForKeyFlag = false;
         return key;
@@ -408,7 +408,7 @@ class Chip8{
                     break;
                 case 0xE: //opcode 8xyE --> SHL Vx, {, Vy} -- set Vx = Vx SHL 1
                     tempVal = this.register[reg1] & 0x80;
-                    tempVal = tempVal >> 15; //tempVal = most sig bit
+                    tempVal = tempVal >> 7; //tempVal = most sig bit
                     if (tempVal === 0x1) {
                         this.register[0xF] = 1;
                     } else {
