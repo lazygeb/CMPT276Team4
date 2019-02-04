@@ -25,6 +25,10 @@ function opCoTest() { //call opcode tests in here
     eightXY6();
     eightXYE();
     eightXY7();
+    eightXY0();
+    nineX0();
+    ANNN();
+    BNNN();
     CXKK();
 	DXYN();
     EX9E();
@@ -35,7 +39,9 @@ function opCoTest() { //call opcode tests in here
     FX15();
     FX29();
     FX33();
-
+    FX55();
+    FX65();
+    
 }
 
 function clrDisp() {
@@ -651,6 +657,112 @@ function FX33 () { //opcode 0xFx33 --> LD B, Vx -- store BCD representation of V
     }
 }
 
+function ANNN () { //opcode Annn --> LD I, addr -- set this.register I = nnn
+    let opcode = 0xA123; // 0xA123 >> 12 = 0xA
+    chip.oneCycle(opcode);
+    let tmp = chip.indexRegister;
+    if (tmp=== 0x0123) {
+        console.log("Opcode ANNN: Pass");
+    }
+    else {
+        console.log("Opcode ANNN: Failed");
+    }
+}
+
+function BNNN () { //opcode Bnnn --> JP V0, addr -- jump to location nnn + V0
+    chip.register[0] = 0x01;
+    let opcode = 0xB001;
+    chip.oneCycle(opcode);
+    if (chip.programCounter === 0x0002) { 
+        console.log("Opcode BNNN: Pass");
+    }
+    else {
+        console.log("Opcode BNNN: Failed");
+    }
+}
+
+function eightXY0(){ //opcode 8xy0 --> LD Vx, Vy -- set Vx = Vy
+    chip.register[1] = 1;
+    chip.register[2] = 2;
+    var vy = 2
+    let opcode = 0x8120;
+    chip.oneCycle(opcode)
+    if (chip.register[1] === vy) { 
+        console.log("Opcode eightXY0: Pass");
+    }
+    else {
+        console.log("Opcode eightXY0: Failed");
+    }
+}
+
+function  nineX0(){//opcode 9xy0 --> SNE Vx, Vy -- skip next instruction if Vx != Vy
+    let opcode = 0x9120;
+    chip.register[1] = 0;
+    chip.register[2] = 1;
+    chip.programCounter = 0
+    chip.oneCycle(opcode);
+    if (chip.programCounter === 2) {
+        console.log("Opcode nineX0: Pass");
+    }
+    else {
+        console.log("Opcode nineX0: Failed");
+    }
+
+    chip.register[1] = 1;
+    chip.register[2] = 1;
+    chip.programCounter = 0
+    chip.oneCycle(opcode);
+    if (chip.programCounter === 0) { 
+        console.log("Opcode nineX0: Pass");
+    }
+    else {
+        console.log("Opcode nineX0: Failed");
+    }
+
+}
+
+function FX55(){//opcode 0xFx55 --> LD [I], Vx -- Store registers V0 through Vx in memory starting at I
+    let opcode = 0xF355;
+    chip.indexRegister = 5;
+    chip.register[0x0] = 0x00;
+    chip.register[0x1] = 0x10;
+
+    chip.oneCycle(opcode);
+    if (chip.memory[0x0 + chip.indexRegister] === 0x00) { 
+        console.log("Opcode FX55: Pass");
+    }
+    else {
+        console.log("Opcode FX55 Failed");
+    }
+    if (chip.memory[0x1 + chip.indexRegister] === 0x10) { 
+        console.log("Opcode FX55: Pass");
+    }
+    else {
+        console.log("Opcode FX55 Failed");
+    }
+}
+
+function FX65(){ //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx from memory starting at I
+    let opcode = 0xF365;
+    chip.indexRegister = 5;
+    chip.memory[chip.indexRegister + 0x0] = 0x00;
+    chip.memory[chip.indexRegister + 0x1] = 0x10;
+
+    chip.oneCycle(opcode);
+    
+    if (chip.register[0x0] === 0x00) { 
+        console.log("Opcode FX65: Pass");
+    }
+    else {
+        console.log("Opcode FX65 Failed");
+    }
+    if (chip.register[0x1] === 0x10) { 
+        console.log("Opcode FX65: Pass");
+    }
+    else {
+        console.log("Opcode FX65 Failed");
+    }
+}
 
 
 
