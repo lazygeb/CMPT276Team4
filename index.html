@@ -10,7 +10,11 @@
   <title>CMPT276 Group 4</title>
   <link rel="stylesheet" href="normalize.css">
   <link rel="stylesheet" href="main.css">
-  <script src="main.js"></script>
+ <!-- <script src="main.js"></script>
+	<script src="cpu.js"></script>
+	<script> const demoClass = document.getElementsByClassName('mriWrapper');
+				console.log(demoClass);
+	</script> -->
 </head>
 
 
@@ -18,9 +22,12 @@
 
 	<div id="emuWrapper">
 		<h1> Group 4's Chip8 Interpreter </h1>
-		<canvas id="target"></canvas>
+		<canvas id="canvas"></canvas>
 
+		
 		<section id="controls">
+
+			<!--       //Not in use for this release
 			<form id="gameWrapper">
     			<h2 class ="identifier">Game: </h2>
       			<select name="games">
@@ -28,13 +35,26 @@
   					<option value="flappy_bird">FLAPPY BIRD</option>
 				</select>
 			</form>
+			-->
 
+			<section id="fileinput">
+			    <h2>File Input</h2>
+			    <input type="file" id="myFile"/>
+		    </section>
+
+			
 			<section id="stepControl">
+				<p id="startEmulator">Start Emulation</p>
+				<!--       //Not in use for this release
 				<h2>Step Controls: </h2>
 				<p>Step forward</p>
 				<p>Pause</p>
 				<p>Step backward</p>
+				-->
 			</section>
+			
+
+			
 
 			<section id="keyboardInput">
 				<ul>
@@ -67,6 +87,7 @@
 			</section>
 		</section>
 
+		<!--       //Not in use for this release
 		<section id="visualizerWrapper">
 			<div class="visualizer" id="instructions">
 				<h2 class="inline">Current Instruction: </h2>
@@ -75,60 +96,69 @@
 			<section class="visualizer" id="stack">
 				<h3>Stack:</h3>
 				<div class="mriWrapper">
-					<div><p>0: </p> <p id="V0">0x0</p></div>
-					<div><p>1: </p> <p id="V1">0x0</p></div>
-					<div><p>2: </p> <p id="V2">0x0</p></div>
-					<div><p>3: </p> <p id="V3">0x0</p></div>
-					<div><p>4: </p> <p id="V4">0x0</p></div>
-					<div><p>5: </p> <p id="V5">0x0</p></div>
-					<div><p>6: </p> <p id="V6">0x0</p></div>
-					<div><p>7: </p> <p id="V7">0x0</p></div>
+					<div><p>0: </p> <p id="V0-Stack">0x0</p></div>
+					<div><p>1: </p> <p id="V1-Stack">0x0</p></div>
+					<div><p>2: </p> <p id="V2-Stack">0x0</p></div>
+					<div><p>3: </p> <p id="V3-Stack">0x0</p></div>
+					<div><p>4: </p> <p id="V4-Stack">0x0</p></div>
+					<div><p>5: </p> <p id="V5-Stack">0x0</p></div>
+					<div><p>6: </p> <p id="V6-Stack">0x0</p></div>
+					<div><p>7: </p> <p id="V7-Stack">0x0</p></div>
 				</div>
 				<div class="mriWrapper">
-					<div><p>8: </p> <p id="V0">0x0</p></div>
-					<div><p>9: </p> <p id="V1">0x0</p></div>
-					<div><p>a: </p> <p id="V2">0x0</p></div>
-					<div><p>b: </p> <p id="V3">0x0</p></div>
-					<div><p>c: </p> <p id="V4">0x0</p></div>
-					<div><p>d: </p> <p id="V5">0x0</p></div>
-					<div><p>e: </p> <p id="V6">0x0</p></div>
-					<div><p>f: </p> <p id="V7">0x0</p></div>
+					<div><p>8: </p> <p id="V8-Stack">0x0</p></div>
+					<div><p>9: </p> <p id="V9-Stack">0x0</p></div>
+					<div><p>a: </p> <p id="V10-Stack">0x0</p></div>
+					<div><p>b: </p> <p id="V11-Stack">0x0</p></div>
+					<div><p>c: </p> <p id="V12-Stack">0x0</p></div>
+					<div><p>d: </p> <p id="V13-Stack">0x0</p></div>
+					<div><p>e: </p> <p id="V14-Stack">0x0</p></div>
+					<div><p>f: </p> <p id="V15-Stack">0x0</p></div>
 				</div>
 			</section>
 			<section class="visualizer" id="memory">
 				<h3>Registers:</h3>
 				<div class="mriWrapper">
-					<p id="PC">PC: </p>
-					<p id="I">I: </p>
+					<div><p>PC: </p><p id="PC">0x0 </p></div>
+					<div><p>I: </p><p id="I">0x0 </p></div>
 				</div>
 				<br>
 				<div class="mriWrapper">
-					<div><p>V0: </p> <p id="V0">0x0</p></div>
-					<div><p>V1: </p> <p id="V1">0x0</p></div>
-					<div><p>V2: </p> <p id="V2">0x0</p></div>
-					<div><p>V3: </p> <p id="V3">0x0</p></div>
-					<div><p>V4: </p> <p id="V4">0x0</p></div>
-					<div><p>V5: </p> <p id="V5">0x0</p></div>
-					<div><p>V6: </p> <p id="V6">0x0</p></div>
-					<div><p>V7: </p> <p id="V7">0x0</p></div>
+					<div><p>V0: </p> <p id="V0-Reg">0x0</p></div>
+					<div><p>V1: </p> <p id="V1-Reg">0x0</p></div>
+					<div><p>V2: </p> <p id="V2-Reg">0x0</p></div>
+					<div><p>V3: </p> <p id="V3-Reg">0x0</p></div>
+					<div><p>V4: </p> <p id="V4-Reg">0x0</p></div>
+					<div><p>V5: </p> <p id="V5-Reg">0x0</p></div>
+					<div><p>V6: </p> <p id="V6-Reg">0x0</p></div>
+					<div><p>V7: </p> <p id="V7-Reg">0x0</p></div>
 				</div>
 				<div class="mriWrapper">
-					<div><p>V8: </p> <p id="V8">0x0</p></div>
-					<div><p>V9: </p> <p id="V9">0x0</p></div>
-					<div><p>VA: </p> <p id="VA">0x0</p></div>
-					<div><p>VB: </p> <p id="VB">0x0</p></div>
-					<div><p>VC: </p> <p id="VC">0x0</p></div>
-					<div><p>VD: </p> <p id="VD">0x0</p></div>
-					<div><p>VE: </p> <p id="VE">0x0</p></div>
-					<div><p>VF: </p> <p id="VF">0x0</p></div>
+					<div><p>V8: </p> <p id="V8-Reg">0x0</p></div>
+					<div><p>V9: </p> <p id="V9-Reg">0x0</p></div>
+					<div><p>VA: </p> <p id="V10-Reg">0x0</p></div>
+					<div><p>VB: </p> <p id="V11-Reg">0x0</p></div>
+					<div><p>VC: </p> <p id="V12-Reg">0x0</p></div>
+					<div><p>VD: </p> <p id="V13-Reg">0x0</p></div>
+					<div><p>VE: </p> <p id="V14-Reg">0x0</p></div>
+					<div><p>VF: </p> <p id="V15-Reg">0x0</p></div>
 				</div>
 				
 			</section>
 		</section>
+		-->
 	</div>
 
 
 
+	<script src = "Emulator/cpu.js"></script>
+	
+	<script src = "Testing/opcodeTest.js"></script> 	<!-- uncomment this to add test file to html page
+	-->
+<script src = "main.js"></script>	<!-- comment this line out to run test -->
 
 </body>
+<footer>
+
+</footer>
 </html>
