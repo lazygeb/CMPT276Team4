@@ -21,6 +21,7 @@ function opCoTest() { //call opcode tests in here
     sevenXKK()
     eightXY1();
     eightXY7();
+	DYXN();
     EX9E();
     EXA1();
     FX07();
@@ -189,6 +190,26 @@ function eightXY7(){ //opcode 8xy7 --> SUBN Vx, Vy -- set Vx = Vy - Vx, set VF =
 //        console.log("Opcode Fx07: Pass");
 //    }
 //}
+
+function DXYN(){  //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision
+	let works = true;
+	chip.oneCycle(0x6201); //sets V2 to 1 (for the first x)
+	chip.oneCycle(0x6304); //sets V3 to 4 (for the first y)
+	chip.oneCycle(0x6404); //sets V4 to 4 (for second x)
+	chip.oneCycle(0x6508); //sets V5 to 8 (so the top left pixel will intercept on zeros)
+	chip.oneCycle(0xd235); //draws a 0 a little below top left corner
+	chip.oneCycle(0xd455); //draws a 0 below and to the right
+	chip.updateDisplay();
+	if (chip.register[0xF] === 0){
+		works = false;
+	}
+	if (!works) {
+        console.log("Opcode Dxkk: Collision Flag Failed");
+    }
+    else {
+        console.log("Opcode Dxyn: Pass");
+    }
+}
 
 function EX9E() {
     //EX9E     Skip next instruction if key VX pressed 
