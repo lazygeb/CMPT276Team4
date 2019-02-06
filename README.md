@@ -1,39 +1,104 @@
-# :boom: CMPT276-Chip8-Group4 :boom:
+# CMPT276-Chip8-Group4 
 Team 4 Members: Gabriele Dal Cengio, Lina Dang-Nguyen, Nishan Ghimire, Mathieu Laflamme, Harman Singh, Calvin So
 
-## Release 0
+## **Release 1**
 
+## **Summary of changes from previous release**
+
+All planned use cases from release 0 have been completed with some major bugs. These bugs are documented[<sup>1</sup>](#Emulator-bugs) and will be fixed by release 2. We have tested the following roms on our emulator: Maze, Connect4, Brix, Pong, and Guess. All these roms are functional and the games are able to be played with the keyboard input. 
+
+We have decided to not use node.js as we can just run our program through google chrome, which has a debugger as well[<sup>2</sup>](#Main-language-and-libraries-[UPDATED]) . For this release, we did not end up using jest[<sup>3</sup>](#Testing-Methods) because there was insufficient time to learn it. Instead, we wrote automatized test code for the opcode through javascript and printing if the the test had failed or not. We will dedicate a tester to learn jest to see if it is worth using and will improve our test outcomes for the next release.
+
+Due to the increase in team members, we have decided to push the completion of the assembler earlier[<sup>4</sup>](#Work-Breakdown). This decision was made in an effort to have all our tools built so that the production of the games will be easier. For the visualizer[<sup>5</sup>](#Work-Breakdown), the only difference from release 0 is that we are planning to show on the UI when a key is pressed. This is to improve visual feedback so users can see when they press a key. We have also directed our main focus to just having our program be compatible with google chrome. If time permits, we will expand to other browsers. 
+
+The roles have also been changed from release 0 to accommodate each others strengths[<sup>6</sup>](#Our-Roles-[UPDATED]). Multiple people will be working at the same time on different features as the features don't rely on each other. Therefore, all the tasks are started on the same day and do not require a more squential order. 
+
+## **README Emulator**
+
+We achieved what we wanted to achieve during the first release which was a working emulator connected to html elements. We wanted to display graphics to the canvas element as well as keyboard input, sound output and file input. Through testing we found we have quite a few bugs (outlined in this [document](#Emulator-bugs) and will be fixing them all within the next release. 
+
+To demonstrate what we have working thus far, follow these instructions:
+
+1) Open index.html in google chrome
+2) Click on “choose file” under file input
+3) Navigate to the rom folder and open the maze.txt example file
+4) Dismiss the alert and press the start emulation button
+
+When the bug fixes are done we will demonstrate more in greater detail in the next release
+   
+## **README Testing**
+
+The html page will have a button called "Run Opcode Tests", which will automatically test all the opcodes to see if it passed or failed.
+   
+## **Emulator Bugs**
+
+These bugs have been found through unit testing and integrated testing by using public domain roms provided through the following website: [https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html]
+
+### **General bugs consistent with all the games tested**
+
+1) Sound works with the automatized testing. However, it will not work in the games.
+2) Keyboard input seems to hold up the program and take too long to be registered. 
+3) Rom input currently does not work properly. The input has to be copy and pasted to text files in order to run.
+4) Loading a game after one has already been loaded will cause the graphics to merge. The previous game and newly imputed game will run at the same time.
+
+### **Bugs from specific games**
+
+**Pong**
+   
+Paddle graphics occasionally glitch when the ball hits the paddle. The ball often looks distorted when hitting the bottom of the screen
+Score is not updated. We are not sure if this is a sprite issue or a register issue and will have to look into it more. 
+
+**Brick Breaker**
+   
+Just like pong, the score does not update. It is also not possible to lose. Once all lives are lost, the ball will spawn out of the paddle infinitely. 
+
+We will be assigning people dedicated to tackle these bugs and have a fully functioning emulator by release 2. 
+
+
+--------------------------------------------------------------------
 ## **Introduction** 
 
 Chip-8 is an interpreter, which was developed in the 70s to run programs such as games like Pong, Tetris, and Pac-Man.
 
 The goal of this project is to develop an interpreter like the original Chip-8 and two games to play with it. Our first game will be snake, which is more of a classic game. Whereas, our second game will be more of a newer, contempory game with retro aspects. This game will be a recreation of the hit game Flappy Bird. In order to simplify the development of these games, we will create an assembler and visualizer to help create and debug the game.
 
-### **Planned Use Cases for Release 1**
-#### Runnable Emulator
 
-- [ ] Have memory, register and intial opcodes set up
-- [ ] Output graphics
-- [ ] Input keyboard commands
-- [ ] External Rom inputs
+### **Planned Use Cases**
+#### Release 0: Runnable Emulator [COMPLETED]
+
+- [x] Have memory, register and intial opcodes set up
+- [x] Output graphics
+- [x] Input keyboard commands
+- [x] External Rom inputs
+  
+
+#### Release 1: Runnable Visualizer & Assembler
+
+- [ ] Display log for registers, memory, pc, index, sound timer, delay timer, stack
+- [ ] Provide interface feedback for users by showing keyboard presses
+- [ ] Allow user control by creating buttons to step through, go back and pause the program
+ - [ ] Assembler can change mnemonics to opcodes, which can be ran in the emulator
+ - [ ] Emulator and Visualizer will be fully functional on Google Chrome
+
+
 
 ## **Table of Contents**
 
   - [Project Organization](#Project-Organization)
     - [Details of our software methodology](#Details-of-our-software-methodology)
-    - [Our Roles](#Our-Roles)
+    - [Our Roles [UPDATED]](#Our-Roles-[UPDATED])
 
   - [Monitoring and Reporting Mechanisms](#Monitoring-and-Reporting-Mechanisms)
     - [Meeting Schedule](#Meeting-Schedule)
     - [Communication and Software Repository](#Communication-and-Software-Repository)
   
   - [Hardware and Software Requirements](#Hardware-and-Software-Requirements)
-    - [Testing Methods](#Testing-Methods)
-    - [Main Language and Libraries](#Main-Language-and-Libraries)
+    - [Testing Methods [UPDATED]](#Testing-Methods)
+    - [Main Language and Libraries [UPDATED]](#Main-Language-and-Libraries-[UPDATED])
   
   - [Work Breakdown and Project Schedule](#Work-Breakdown-and-Project-Schedule)
-    - [Timeline](#Timeline)
-    - [Work breakdown](#Work-breakdown)
+    - [Timeline [UPDATED]](#Timeline)
+    - [Work breakdown [UPDATED]](#Work-breakdown)
 
   - [References](#References)
 
@@ -43,19 +108,19 @@ The goal of this project is to develop an interpreter like the original Chip-8 a
 
 For our use, *incremental development* is the most efficient and effective methodology as we will be testing for each release and making sure it is able to submit by each release. It also allows for improvements on the features, which means we can get feedback and make any necessary changes if time permits. 
 
-### Our Roles
+### Our Roles [UPDATED]
 
-Gabe: Project Manager
+Gabe: Project Manager/UI
 
-Calvin: Designer
+Calvin: Tester
 
 Mathieu: Developer
 
 Harman: Developer
 
-Nishan: Developer
+Nishan: Tester
 
-Lina: Tester
+Lina: Developer
 
 ## **Monitoring and Reporting Mechanisms**
 
@@ -72,7 +137,7 @@ We will be working in a *GitHub* repo.
 
 ### Testing Methods
 
-To automate and test our software, we'll be using the *Jest* javascript library 
+Automatized tests will be written in Javascript and ran on Chrome to see if there are any runtime errors.
 
 We will be engaging in three types of testing to ensure the validation of our program. These three types are: 
 
@@ -82,19 +147,19 @@ We will be engaging in three types of testing to ensure the validation of our pr
   
 - *System Testing* - where all the components of the program are combined into one program and tested. This will be done by the member who has been assigned the role of tester and will commence once the visualizer and emulator has been completed as these two parts go together.
 
-### Main language and libraries
+### Main language and libraries [UPDATED]
 
-We will be using *Javascript* and *Node.js* in order to render the virtual machine
+We will be using *Javascript* in order to render the virtual machine. To debug our code, we will be using the *Chrome Browser*. 
 
 ## **Work Breakdown and Project Schedule**
 
-### Timeline
+### Timeline [UPDATED]
 
-![Image of First Gantt Timeline](https://drive.google.com/uc?export=view&id=1HQbJUf6tgeNsAtPzt2ZwVwv1xCfX5Iw1)
+![Image of First Gantt Timeline](https://cdn.discordapp.com/attachments/513589409661059082/542596447262998538/Gaant.png)
 
 ### Work Breakdown
 
-### **Release 1: Feb 6 2019**
+### **Release 1: Feb 6 2019** [COMPLETED]
 Deliverables for Release 1:  
 - Emulator: Finish development and testing by Feb 3 
 
@@ -111,9 +176,10 @@ Work Breakdown: **Emulator**
 | External Rom Input      | 1 week                  | Jan 31      |
 | Integrated Testing      | 3 days                  | Feb 3       |
 
-### **Release 2: Feb 27 2019**
+### **Release 2: Feb 27 2019** [UPDATED]
 Deliverables for Release 2:  
 - Visualizer: Finish development and testing by Feb 20
+- Assembler (Chip 8 tool): Finish development and testing by Feb 20
 
 Work Breakdown: **Visualizer** 
 
@@ -122,24 +188,27 @@ Work Breakdown: **Visualizer**
 | Display memory during execution       | 2 days                  | Feb 9       |
 | Display registers during execution    | 2 days                  | Feb 9       |
 | Display instructions during execution | 2 days                  | Feb 9       |
+| Display key press during execution    | 1 day                   | Feb 10      |
 | Pause program                         | 1 day                   | Feb 10      |
 | Play program                          | 1 day                   | Feb 10      |
 | Step-forward one instruction          | 2 days                  | Feb 14      |
 | Step-backwards one instruction        | 3 days                  | Feb 20      |
+| Finish debugging the Emulator         | 2 weeks                 | Feb 20      |
 | Testing                               | 3 days                  | Feb 23      |
 
-### **Release 3: March 13 2019**
-Deliverables for Release 3:  
-- Assembler (Chip 8 tool): Finish development and testing by Mar 10
-- Snake (Game 1): Finish development and testing by Mar 9
-  
+
 Work Breakdown: **Assembler** 
 
 | Feature   | Estimated Time Required | Finish Date |
 | --------- | ----------------------- | ----------- |
-| Assembler | 2 weeks                 | Mar 1       |
-| Testing   | 4 days                  | Mar 10      |
+| Assembler | 2 weeks                 | Feb 20      |
+| Testing   | 4 days                  | Feb 23      |
 
+
+### **Release 3: March 13 2019** [UPDATED]
+Deliverables for Release 3:  
+- Snake (Game 1): Finish development and testing by Mar 9
+  
 Work Breakdown: **Snake** 
 
 | Feature | Estimated Time Required | Finish Date |
