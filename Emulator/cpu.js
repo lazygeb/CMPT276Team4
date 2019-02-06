@@ -5,139 +5,149 @@
  *        bytes from memory into one opcode.
  * 2. http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#memmap
  *      - Used to understand what each opcode should do, also how graphics are implemented.
+ * 
+ * 3. https://stackoverflow.com/questions/14810506/map-function-for-objects-instead-of-arrays
+ *      - Used to understand how to map key input into the original chip 8 keys
+ * 
+ * 4. https://www.soundjay.com/button-sounds-1.html
+ *      - Audio used for beep
+ * 
+ * 5. https://www.w3schools.com/graphics/game_sound.asp
+ *      - Used to understand how sound is implemented in javascript. 
  */
 
 class Chip8{
-  /**
-   * @constructor
-   */ 
-  constructor(){
-    this.memory = new Uint8Array(4096);
-    this.stack = new Array(16);
-    this.register = new Array(16);
-    this.delayTimer = 0;
-    this.soundTimer = 0;
-    this.programCounter = 0x200;
-    this.drawFlag = false;
-	this.canvasWidth = 64;
-	this.canvasHeight = 32;
-    this.graphics = new Array(this.canvasWidth * this.canvasHeight);
-    this.stackPointer = 0;
-    this.indexRegister = 0;
-    this.keyState = new Uint8Array(16);
-	this.ctx = document.getElementById("canvas").getContext("2d");
-	this.scale = document.getElementById("canvas").width / 64;
-    this.progLength = 0;
-    this.beep = new Audio('./Sound/button-10.wav'); //audio for buzz  
-    this.waitForKeyFlag = false;
-    this.waitKey = undefined;
-
-  }
+    /**
+     * @constructor
+     */ 
+    constructor(){
+        this.memory = new Uint8Array(4096);
+        this.stack = new Array(16);
+        this.register = new Array(16);
+        this.delayTimer = 0;
+        this.soundTimer = 0;
+        this.programCounter = 0x200;
+        this.drawFlag = false;
+        this.canvasWidth = 64;
+        this.canvasHeight = 32;
+        this.graphics = new Array(this.canvasWidth * this.canvasHeight);
+        this.stackPointer = 0;
+        this.indexRegister = 0;
+        this.keyState = new Uint8Array(16);
+        this.ctx = document.getElementById("canvas").getContext("2d");
+        this.scale = document.getElementById("canvas").width / 64;
+        this.progLength = 0;
+        this.beep = new Audio('./Sound/button-10.wav'); //audio for buzz  
+        this.waitForKeyFlag = false; //Flag to signify if program has to wait for keypressed. 
+        this.waitKey = undefined; //stores the key code for key pressed
+    }
 
  
 
-  /**
-   * @method loadProgram
-   * @param {Array} program 
-   * Responsible for loading program into the memory
-   */
-  loadProgram(program){
-    for(let i = 0; i < program.length; i++){
-      this.memory[i + 0x200] = program[i];
-    }
-  }
-
-  /**
-   * @method loadCharacters
-   * Loads all the required fonts into the memory
-   */
-  loadCharacters(){
-    let hexchars = [
-        0xF0, 0x90, 0x90, 0x90, 0xF0, // 0  index: 0
-        0x20, 0x60, 0x20, 0x20, 0x70, // 1  index: 5
-        0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2  index: 10
-        0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3  index: 15
-        0x90, 0x90, 0xF0, 0x10, 0x10, // 4  index: 20
-        0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5  index: 25
-        0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6  index: 30
-        0xF0, 0x10, 0x20, 0x40, 0x40, // 7  index: 35
-        0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8  index: 40
-        0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9  index: 45
-        0xF0, 0x90, 0xF0, 0x90, 0x90, // A  index: 50
-        0xE0, 0x90, 0xE0, 0x90, 0xE0, // B  index: 55
-        0xF0, 0x80, 0x80, 0x80, 0xF0, // C  index: 60
-        0xE0, 0x90, 0x90, 0x90, 0xE0, // D  index: 65
-        0xF0, 0x80, 0xF0, 0x80, 0xF0, // E  index: 70
-        0xF0, 0x80, 0xF0, 0x80, 0x80  // F  index: 75
-      ];
-
-    for(let i = 0; i < hexchars.length; i++){
-      this.memory[i] = hexchars[i];
-    }
-  }
-
-  /**
-   * @method reset
-   * Reset all the values to default
-   */
-  reset(){
-    this.register = new Array(16);
-    this.memory = new Uint8Array(4096);
-    this.loadCharacters();
-    this.stack = new Array(16);
-    this.delayTimer = 0;
-    this.soundTimer = 0;
-    this.programCounter = 0x200; //Chip 8 expects programs to be loaded at 0x200
-    this.drawFlag = false;
-	this.canvasWidth = 64;
-	this.canvasHeight = 32;
-    this.graphics = new Array(this.canvasWidth*this.canvasHeight);
-    this.stackPointer = 0;  //top of stack is 0
-    this.indexRegister = 0;
-    this.keyState = new Uint8Array(16);
-    let program = [0xE1, 0x9E, 0xE1, 0xA1, 0xE1, 0xA1];  //default program
-    this.loadProgram(program); //loads Array: program into memory
-    this.progLength = program.length;
-
-    //fill graphics array with 0's
-    for (let i = 0; i < this.graphics.length; i++) {
-        this.graphics[i] = 0x0;
-    }
-    for (let i = 0; i < this.keyState.length; i++) { //following 3 loops can be combined into 1 (they all go to 16)
-        this.keyState[i] = 0x0;
-    }
-    for (let i = 0; i < this.register.length; i++) {
-        this.register[i] = 0x0;
-    }
-    for (let i = 0; i < this.stack.length; i++) {
-        this.stack[i] = 0x0
+    /**
+     * @method loadProgram
+     * @param {Array} program 
+     * Responsible for loading program into the memory
+     */
+    loadProgram(program){
+        for(let i = 0; i < program.length; i++){
+        this.memory[i + 0x200] = program[i];
+        }
     }
 
-  }
+    /**
+     * @method loadCharacters
+     * Loads all the required fonts into the memory
+     */
+    loadCharacters(){
+        let hexchars = [
+            0xF0, 0x90, 0x90, 0x90, 0xF0, // 0  index: 0
+            0x20, 0x60, 0x20, 0x20, 0x70, // 1  index: 5
+            0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2  index: 10
+            0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3  index: 15
+            0x90, 0x90, 0xF0, 0x10, 0x10, // 4  index: 20
+            0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5  index: 25
+            0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6  index: 30
+            0xF0, 0x10, 0x20, 0x40, 0x40, // 7  index: 35
+            0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8  index: 40
+            0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9  index: 45
+            0xF0, 0x90, 0xF0, 0x90, 0x90, // A  index: 50
+            0xE0, 0x90, 0xE0, 0x90, 0xE0, // B  index: 55
+            0xF0, 0x80, 0x80, 0x80, 0xF0, // C  index: 60
+            0xE0, 0x90, 0x90, 0x90, 0xE0, // D  index: 65
+            0xF0, 0x80, 0xF0, 0x80, 0xF0, // E  index: 70
+            0xF0, 0x80, 0xF0, 0x80, 0x80  // F  index: 75
+        ];
 
-  startDelayTimer(){
-    let ticker = 0;
-    while((this.delayTimer > 0) && (ticker <= 60)){
-        ticker++;
-        this.delayTimer--;
+        for(let i = 0; i < hexchars.length; i++){
+        this.memory[i] = hexchars[i];
+        }
     }
-  }
 
-  startSoundTimer(){
-    let ticker = 0;
-    while((this.soundTimer > 0) && (ticker <= 60)){
-        ticker++;
-        this.soundTimer--;
+    /**
+     * @method reset
+     * Reset all the values to default
+    */
+    reset(){
+        this.register = new Array(16);
+        this.memory = new Uint8Array(4096);
+        this.loadCharacters();
+        this.stack = new Array(16);
+        this.delayTimer = 0;
+        this.soundTimer = 0;
+        this.programCounter = 0x200; //Chip 8 expects programs to be loaded at 0x200
+        this.drawFlag = false;
+        this.canvasWidth = 64;
+        this.canvasHeight = 32;
+        this.graphics = new Array(this.canvasWidth*this.canvasHeight);
+        this.stackPointer = 0;  //top of stack is 0
+        this.indexRegister = 0;
+        this.keyState = new Uint8Array(16);
+        let program = [0xE1, 0x9E, 0xE1, 0xA1, 0xE1, 0xA1];  //default program
+        this.loadProgram(program); //loads Array: program into memory
+        this.progLength = program.length;
+
+        //fill graphics array with 0's
+        for (let i = 0; i < this.graphics.length; i++) {
+            this.graphics[i] = 0x0;
+        }
+        for (let i = 0; i < this.keyState.length; i++) { //following 3 loops can be combined into 1 (they all go to 16)
+            this.keyState[i] = 0x0;
+        }
+        for (let i = 0; i < this.register.length; i++) {
+            this.register[i] = 0x0;
+        }
+        for (let i = 0; i < this.stack.length; i++) {
+            this.stack[i] = 0x0
+        }
+
     }
-    if (this.soundTimer !== 0){
-        this.beep.play(); 
+
+    //Called when DelayTimer is > 0 
+    //Decreases by 60 everytime it is called
+    startDelayTimer(){
+        let ticker = 0;
+        while((this.delayTimer > 0) && (ticker <= 60)){
+            ticker++;
+            this.delayTimer--;
+        }
     }
-  }
 
-  //Maps keyboard input to chip8 hex keyboard
-  //check for key presses, call this every cycle
-  //https://stackoverflow.com/questions/14810506/map-function-for-objects-instead-of-arrays
+    //Called when SoundTime is > 0
+    //Decreases by 60 everytime it is called 
+    startSoundTimer(){
+        let ticker = 0;
+        while((this.soundTimer > 0) && (ticker <= 60)){
+            ticker++;
+            this.soundTimer--;
+        }
+        if (this.soundTimer !== 0){
+            this.beep.play(); 
+        }
+    }
 
+    //Maps keyboard input to chip8 hex keyboard
+    //check for key presses, call this every cycle
     keydown(){
         let keyMap = {
             49: 1,
@@ -160,7 +170,7 @@ class Chip8{
         let handler = (e) => {
             if (keyMap[e.keyCode] !== undefined){
                 this.keyState[keyMap[e.keyCode]] = 1;
-                this.waitKey = keyMap[e.keyCode];
+                this.waitKey = keyMap[e.keyCode]; 
             }
         };
         document.addEventListener('keydown', handler, false);
@@ -187,30 +197,32 @@ class Chip8{
         };
         let handler = (e) =>{
             if (keyMap[e.keyCode] !== undefined){
-                setTimeout(()=>{
+                setTimeout(()=>{ //timeout added to ensure that there is time for keydown to be processed 
                     this.keyState[keyMap[e.keyCode]] = 0; 
                 },5);
             }
         };
         document.addEventListener('keyup', handler, false);
     }
+
   updateKeys() {
     this.keydown();
     this.keyup();
   }
 
+  //For opcode 0xFX0A. Signals to emulator if next opcode should 
+  //should be read depending if key was pressed or not
   waitForKeyPressed() {
-  //  let keyPressed;
     this.keydown();
     this.keyup();
-    if (this.waitKey !== undefined) {
-        let key = this.waitKey;
-        this.waitKey = undefined;
+    if (this.waitKey !== undefined) { //key has been pressed
+        let key = this.waitKey; //temp variable to store the key pressed 
+        this.waitKey = undefined; //reset variable and waitForKeyFlag
         this.waitForKeyFlag = false;
         return key;
     }
     else{
-        this.waitForKeyFlag = true;
+        this.waitForKeyFlag = true; //key has NOT been pressed
     }
   }
     

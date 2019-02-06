@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+        <title>CMPT276-Chip8-Group4</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+        <link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        
+        <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+    </head>
+    <body>
+        <h1 id="cmpt276-chip8-group4">CMPT276-Chip8-Group4</h1>
+<p>Team 4 Members: Gabriele Dal Cengio, Lina Dang-Nguyen, Nishan Ghimire, Mathieu Laflamme, Harman Singh, Calvin So</p>
+<h2 id="release-1"><strong>Release 1</strong></h2>
+<h2 id="summary-of-changes-from-previous-release"><strong>Summary of changes from previous release</strong></h2>
+<p>All planned use cases from release 0 have been completed with some major bugs. These bugs are documented<a href="#Emulator-bugs"><sup>1</sup></a> and will be fixed by release 2. We have tested the following roms on our emulator: Maze, Connect4, Brix, Pong, and Guess. All these roms are functional and the games are able to be played with the keyboard input.</p>
+<p>We have decided to not use node.js as we can just run our program through google chrome, which has a debugger as well<a href="#Main-language-and-libraries-%5BUPDATED%5D"><sup>2</sup></a> . For this release, we did not end up using jest<a href="#Testing-Methods"><sup>3</sup></a> because there was insufficient time to learn it. Instead, we wrote automatized test code for the opcode through javascript and printing if the the test had failed or not. We will dedicate a tester to learn jest to see if it is worth using and will improve our test outcomes for the next release.</p>
+<p>Due to the increase in team members, we have decided to push the completion of the assembler earlier<a href="#Work-Breakdown"><sup>4</sup></a>. This decision was made in an effort to have all our tools built so that the production of the games will be easier. For the visualizer<a href="#Work-Breakdown"><sup>5</sup></a>, the only difference from release 0 is that we are planning to show on the UI when a key is pressed. This is to improve visual feedback so users can see when they press a key. We have also directed our main focus to just having our program be compatible with google chrome. If time permits, we will expand to other browsers.</p>
+<p>The roles have also been changed from release 0 to accommodate each others strengths<a href="#Our-Roles-%5BUPDATED%5D"><sup>6</sup></a>. Multiple people will be working at the same time on different features as the features don't rely on each other. Therefore, all the tasks are started on the same day and do not require a more squential order.</p>
+<h2 id="readme-emulator"><strong>README Emulator</strong></h2>
+<p>We achieved what we wanted to achieve during the first release which was a working emulator connected to html elements. We wanted to display graphics to the canvas element as well as keyboard input, sound output and file input. Through testing we found we have quite a few bugs (outlined in this <a href="#Emulator-bugs">document</a> and will be fixing them all within the next release.</p>
+<p>To demonstrate what we have working thus far, follow these instructions:</p>
+<ol>
+<li>Open index.html in google chrome</li>
+<li>Click on “choose file” under file input</li>
+<li>Navigate to the rom folder and open the maze.txt example file</li>
+<li>Dismiss the alert and press the start emulation button</li>
+</ol>
+<p>When the bug fixes are done we will demonstrate more in greater detail in the next release</p>
+<h2 id="readme-testing"><strong>README Testing</strong></h2>
+<p>The html page will have a button called &quot;Run Opcode Tests&quot;, which will automatically test all the opcodes to see if it passed or failed.</p>
+<h2 id="emulator-bugs"><strong>Emulator Bugs</strong></h2>
+<p>These bugs have been found through unit testing and integrated testing by using public domain roms provided through the following website: [<a href="https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html">https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html</a>]</p>
+<h3 id="general-bugs-consistent-with-all-the-games-tested"><strong>General bugs consistent with all the games tested</strong></h3>
+<ol>
+<li>Sound works with the automatized testing. However, it will not work in the games.</li>
+<li>Keyboard input seems to hold up the program and take too long to be registered.</li>
+<li>Rom input currently does not work properly. The input has to be copy and pasted to text files in order to run.</li>
+<li>Loading a game after one has already been loaded will cause the graphics to merge. The previous game and newly imputed game will run at the same time.</li>
+</ol>
+<h3 id="bugs-from-specific-games"><strong>Bugs from specific games</strong></h3>
+<p><strong>Pong</strong></p>
+<p>Paddle graphics occasionally glitch when the ball hits the paddle. The ball often looks distorted when hitting the bottom of the screen
+Score is not updated. We are not sure if this is a sprite issue or a register issue and will have to look into it more.</p>
+<p><strong>Brick Breaker</strong></p>
+<p>Just like pong, the score does not update. It is also not possible to lose. Once all lives are lost, the ball will spawn out of the paddle infinitely.</p>
+<p>We will be assigning people dedicated to tackle these bugs and have a fully functioning emulator by release 2.</p>
+<hr>
+<h2 id="introduction"><strong>Introduction</strong></h2>
+<p>Chip-8 is an interpreter, which was developed in the 70s to run programs such as games like Pong, Tetris, and Pac-Man.</p>
+<p>The goal of this project is to develop an interpreter like the original Chip-8 and two games to play with it. Our first game will be snake, which is more of a classic game. Whereas, our second game will be more of a newer, contempory game with retro aspects. This game will be a recreation of the hit game Flappy Bird. In order to simplify the development of these games, we will create an assembler and visualizer to help create and debug the game.</p>
+<h3 id="planned-use-cases"><strong>Planned Use Cases</strong></h3>
+<h4 id="release-0-runnable-emulator-completed">Release 0: Runnable Emulator [COMPLETED]</h4>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Have memory, register and intial opcodes set up</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Output graphics</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Input keyboard commands</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> External Rom inputs</li>
+</ul>
+<h4 id="release-1-runnable-visualizer--assembler">Release 1: Runnable Visualizer &amp; Assembler</h4>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Display log for registers, memory, pc, index, sound timer, delay timer, stack</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Provide interface feedback for users by showing keyboard presses</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Allow user control by creating buttons to step through, go back and pause the program</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Assembler can change mnemonics to opcodes, which can be ran in the emulator</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Emulator and Visualizer will be fully functional on Google Chrome</li>
+</ul>
+<h2 id="table-of-contents"><strong>Table of Contents</strong></h2>
+<ul>
+<li>
+<p><a href="#Project-Organization">Project Organization</a></p>
+<ul>
+<li><a href="#Details-of-our-software-methodology">Details of our software methodology</a></li>
+<li><a href="#Our-Roles-%5BUPDATED%5D">Our Roles [UPDATED]</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#Monitoring-and-Reporting-Mechanisms">Monitoring and Reporting Mechanisms</a></p>
+<ul>
+<li><a href="#Meeting-Schedule">Meeting Schedule</a></li>
+<li><a href="#Communication-and-Software-Repository">Communication and Software Repository</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#Hardware-and-Software-Requirements">Hardware and Software Requirements</a></p>
+<ul>
+<li><a href="#Testing-Methods">Testing Methods [UPDATED]</a></li>
+<li><a href="#Main-Language-and-Libraries-%5BUPDATED%5D">Main Language and Libraries [UPDATED]</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#Work-Breakdown-and-Project-Schedule">Work Breakdown and Project Schedule</a></p>
+<ul>
+<li><a href="#Timeline">Timeline [UPDATED]</a></li>
+<li><a href="#Work-breakdown">Work breakdown [UPDATED]</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#References">References</a></p>
+</li>
+</ul>
+<h2 id="project-organization"><strong>Project Organization</strong></h2>
+<h3 id="details-of-our-software-methodology">Details of Our Software Methodology</h3>
+<p>For our use, <em>incremental development</em> is the most efficient and effective methodology as we will be testing for each release and making sure it is able to submit by each release. It also allows for improvements on the features, which means we can get feedback and make any necessary changes if time permits.</p>
+<h3 id="our-roles-updated">Our Roles [UPDATED]</h3>
+<p>Gabe: Project Manager/UI</p>
+<p>Calvin: Tester</p>
+<p>Mathieu: Developer</p>
+<p>Harman: Developer</p>
+<p>Nishan: Tester</p>
+<p>Lina: Developer</p>
+<h2 id="monitoring-and-reporting-mechanisms"><strong>Monitoring and Reporting Mechanisms</strong></h2>
+<h3 id="meeting-schedule">Meeting Schedule</h3>
+<p>We have decided to meet every week on <em>Monday</em> at <em>3:30</em> o'clock in a meeting room that we can find.</p>
+<h3 id="communication-and-software-repository">Communication and Software Repository</h3>
+<p>We will be communicating via <em>Slack</em> at least once a day and use <em>Trello</em> to track our development progress and status.</p>
+<p>We will be working in a <em>GitHub</em> repo.</p>
+<h2 id="hardware-and-software-requirements"><strong>Hardware and Software Requirements</strong></h2>
+<h3 id="testing-methods">Testing Methods</h3>
+<p>Automatized tests will be written in Javascript and ran on Chrome to see if there are any runtime errors.</p>
+<p>We will be engaging in three types of testing to ensure the validation of our program. These three types are:</p>
+<ul>
+<li>
+<p><em>Unit Testing</em> - each feature will be tested individually by the programmer in charge of the feature. This will be done while the programmer is developing the feature by writing automated tests using the Jest  framework</p>
+</li>
+<li>
+<p><em>Integration Testing</em> - where the features for one major component of the program are combined and automated tests are written for that component. This will be done by the member who has been assigned the role of tester and will commence when all the features for a component have been completed.</p>
+</li>
+<li>
+<p><em>System Testing</em> - where all the components of the program are combined into one program and tested. This will be done by the member who has been assigned the role of tester and will commence once the visualizer and emulator has been completed as these two parts go together.</p>
+</li>
+</ul>
+<h3 id="main-language-and-libraries-updated">Main language and libraries [UPDATED]</h3>
+<p>We will be using <em>Javascript</em> in order to render the virtual machine. To debug our code, we will be using the <em>Chrome Browser</em>.</p>
+<h2 id="work-breakdown-and-project-schedule"><strong>Work Breakdown and Project Schedule</strong></h2>
+<h3 id="timeline-updated">Timeline [UPDATED]</h3>
+<p><img src="https://cdn.discordapp.com/attachments/513589409661059082/542596447262998538/Gaant.png" alt="Image of First Gantt Timeline"></p>
+<h3 id="work-breakdown">Work Breakdown</h3>
+<h3 id="release-1-feb-6-2019-completed"><strong>Release 1: Feb 6 2019</strong> [COMPLETED]</h3>
+<p>Deliverables for Release 1:</p>
+<ul>
+<li>Emulator: Finish development and testing by Feb 3</li>
+</ul>
+<p>Work Breakdown: <strong>Emulator</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Estimated Time Required</th>
+<th>Finish Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Web Interface</td>
+<td>1 day</td>
+<td>Jan 20</td>
+</tr>
+<tr>
+<td>Memory, Registers</td>
+<td>1 week</td>
+<td>Jan 21</td>
+</tr>
+<tr>
+<td>Initialize Instructions</td>
+<td>1 week</td>
+<td>Jan 21</td>
+</tr>
+<tr>
+<td>Graphics Output</td>
+<td>3 days</td>
+<td>Jan 24</td>
+</tr>
+<tr>
+<td>Keyboard Input</td>
+<td>3 days</td>
+<td>Jan 24</td>
+</tr>
+<tr>
+<td>Sound Output</td>
+<td>2 days</td>
+<td>Jan 27</td>
+</tr>
+<tr>
+<td>External Rom Input</td>
+<td>1 week</td>
+<td>Jan 31</td>
+</tr>
+<tr>
+<td>Integrated Testing</td>
+<td>3 days</td>
+<td>Feb 3</td>
+</tr>
+</tbody>
+</table>
+<h3 id="release-2-feb-27-2019-updated"><strong>Release 2: Feb 27 2019</strong> [UPDATED]</h3>
+<p>Deliverables for Release 2:</p>
+<ul>
+<li>Visualizer: Finish development and testing by Feb 20</li>
+<li>Assembler (Chip 8 tool): Finish development and testing by Feb 20</li>
+</ul>
+<p>Work Breakdown: <strong>Visualizer</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Estimated Time Required</th>
+<th>Finish Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Display memory during execution</td>
+<td>2 days</td>
+<td>Feb 9</td>
+</tr>
+<tr>
+<td>Display registers during execution</td>
+<td>2 days</td>
+<td>Feb 9</td>
+</tr>
+<tr>
+<td>Display instructions during execution</td>
+<td>2 days</td>
+<td>Feb 9</td>
+</tr>
+<tr>
+<td>Display key press during execution</td>
+<td>1 day</td>
+<td>Feb 10</td>
+</tr>
+<tr>
+<td>Pause program</td>
+<td>1 day</td>
+<td>Feb 10</td>
+</tr>
+<tr>
+<td>Play program</td>
+<td>1 day</td>
+<td>Feb 10</td>
+</tr>
+<tr>
+<td>Step-forward one instruction</td>
+<td>2 days</td>
+<td>Feb 14</td>
+</tr>
+<tr>
+<td>Step-backwards one instruction</td>
+<td>3 days</td>
+<td>Feb 20</td>
+</tr>
+<tr>
+<td>Finish debugging the Emulator</td>
+<td>2 weeks</td>
+<td>Feb 20</td>
+</tr>
+<tr>
+<td>Testing</td>
+<td>3 days</td>
+<td>Feb 23</td>
+</tr>
+</tbody>
+</table>
+<p>Work Breakdown: <strong>Assembler</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Estimated Time Required</th>
+<th>Finish Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Assembler</td>
+<td>2 weeks</td>
+<td>Feb 20</td>
+</tr>
+<tr>
+<td>Testing</td>
+<td>4 days</td>
+<td>Feb 23</td>
+</tr>
+</tbody>
+</table>
+<h3 id="release-3-march-13-2019-updated"><strong>Release 3: March 13 2019</strong> [UPDATED]</h3>
+<p>Deliverables for Release 3:</p>
+<ul>
+<li>Snake (Game 1): Finish development and testing by Mar 9</li>
+</ul>
+<p>Work Breakdown: <strong>Snake</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Estimated Time Required</th>
+<th>Finish Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Snake</td>
+<td>2 weeks</td>
+<td>Mar 7</td>
+</tr>
+<tr>
+<td>Testing</td>
+<td>3 days</td>
+<td>Mar 9</td>
+</tr>
+</tbody>
+</table>
+<h3 id="release-4-april-8-2019"><strong>Release 4: April 8 2019</strong></h3>
+<p>Deliverables for Release 4:</p>
+<ul>
+<li>Flappy Bird: Finish development and testing by April 3</li>
+</ul>
+<p>Work Breakdown: <strong>Flappy Bird</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Estimated Time Required</th>
+<th>Finish Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flappy Bird</td>
+<td>2 weeks</td>
+<td>Mar 27</td>
+</tr>
+<tr>
+<td>System Testing</td>
+<td>1 weeks</td>
+<td>April 3</td>
+</tr>
+</tbody>
+</table>
+<h2 id="references"><strong>References</strong></h2>
+<p>Chip 8 information and history: <a href="https://en.wikipedia.org/wiki/CHIP-8">https://en.wikipedia.org/wiki/CHIP-8</a></p>
+<p>Cowgod's Chip 8 Technical Reference: <a href="http://devernay.free.fr/hacks/chip8/C8TECH10.HTM">http://devernay.free.fr/hacks/chip8/C8TECH10.HTM</a></p>
+
+    </body>
+    </html>
