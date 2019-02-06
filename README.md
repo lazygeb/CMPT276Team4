@@ -51,6 +51,7 @@ Paddle graphics occasionally glitch when the ball hits the paddle. The ball ofte
 Score is not updated. We are not sure if this is a sprite issue or a register issue and will have to look into it more. 
 
 **Brick Breaker**
+
 ![Image of Brix Gameplay](https://cdn.discordapp.com/attachments/513589409661059082/542782366201020427/brix.gif)
    
 Just like pong, the score does not update. It is also not possible to lose. Once all lives are lost, the ball will spawn out of the paddle infinitely. 
