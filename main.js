@@ -1,7 +1,14 @@
-
+/*
+ * References:
+ * 1. https://www.html5rocks.com/en/tutorials/file/dndfiles/
+ *      - Used for reading in files
+ * 2. https://blog.teamtreehouse.com/reading-files-using-the-html5-filereader-api
+ *      - Used for reading in files
+ */
 
 
 function main(usrFile) {
+        document.getElementById("runTest").onclick = function () { runTest()};
         document.getElementById("startEmulator").onclick = function () { startEmulator(usrFile)};
 
 } 
@@ -12,17 +19,20 @@ function startEmulator(usrFile) {
     if (usrFile) {
         chip.loadProgram(prog);
     }
-	//chip.updateDisplay();
 	setInterval(function(){ chip.runEmulator(); }, 6);
     //window.requestAnimationFrame(chip.runEmulator());
 
     //if delaytimer or soundtimer nonzero, function will be added to queue at a rate of 1s 
-    if (chip.delayTimer != 0) {
+    if (chip.delayTimer !== 0) {
         setInterval(function(){ chip.startDelayTimer();}, 1000);
     } 
-    if (chip.soundTimer != 0) {
+    if (chip.soundTimer !== 0) {
         setInterval(function(){ chip.startSoundTimer(); }, 1000);
     } 
+}
+
+function runTest() {
+    opCoTest();
 }
 
 let inputElement = document.getElementById("myFile");
@@ -56,8 +66,6 @@ function handleFiles() {
     main(true); //call main, with true boolean to show it should load a file
     };
     reader.readAsBinaryString(file);
-    //console.log(arrayBuffer);
-
 }
 
 

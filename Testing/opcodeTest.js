@@ -1,13 +1,11 @@
 //automated testing for opcodes
-//to use (for now): comment out line 137 from index.html (the one with src = main.js)
-//                  add this line to replace it: <script src = "Testing/opcodeTest.js"></script>
-//To comment in html, wrap the part you want to comment like this: <!-- this is commented out -->
-//I'll come up with a better way to test later on...
+//To run test, press the run opcode test button on the html page
 
-let chip = new Chip8(); //I know, it's global, I'll change it later
+let chip = new Chip8(); //Change to local variable
 
 function opCoTest() { //call opcode tests in here
-    chip.reset(); //instantiate chip8 VM
+  
+    chip.reset(); //instantiate fresh chip8
 
     //Test opcodes:
     clrDisp();
@@ -338,7 +336,8 @@ function CXKK() {
 }
 
 function DXYN(){  //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision
-	let works = true;
+	chip.reset();
+    let works = true;
 	chip.oneCycle(0x6201); //sets V2 to 1 (for the first x)
 	chip.oneCycle(0x6304); //sets V3 to 4 (for the first y)
 	chip.oneCycle(0x6404); //sets V4 to 4 (for second x)
@@ -751,7 +750,7 @@ function FX65(){ //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx 
 
 
 
-opCoTest(); //calls the function in this file..
+//opCoTest(); //calls the function in this file..
 
 
 

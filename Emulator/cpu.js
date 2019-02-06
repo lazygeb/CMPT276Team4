@@ -1,3 +1,12 @@
+/*
+ * References:
+ * 1. http://www.multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/
+ *      - Used to get a general idea of chip 8, how the main loop should work and how to combine two
+ *        bytes from memory into one opcode.
+ * 2. http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#memmap
+ *      - Used to understand what each opcode should do, also how graphics are implemented.
+ */
+
 class Chip8{
   /**
    * @constructor
@@ -8,7 +17,7 @@ class Chip8{
     this.register = new Array(16);
     this.delayTimer = 0;
     this.soundTimer = 0;
-    this.programCounter = 0x200; // Program Counter
+    this.programCounter = 0x200;
     this.drawFlag = false;
 	this.canvasWidth = 64;
 	this.canvasHeight = 32;
@@ -62,7 +71,7 @@ class Chip8{
         0xF0, 0x80, 0xF0, 0x80, 0x80  // F  index: 75
       ];
 
-    for(let i = 0; i<hexchars.length;i++){
+    for(let i = 0; i < hexchars.length; i++){
       this.memory[i] = hexchars[i];
     }
   }
@@ -73,7 +82,6 @@ class Chip8{
    */
   reset(){
     this.register = new Array(16);
-
     this.memory = new Uint8Array(4096);
     this.loadCharacters();
     this.stack = new Array(16);
@@ -87,16 +95,7 @@ class Chip8{
     this.stackPointer = 0;  //top of stack is 0
     this.indexRegister = 0;
     this.keyState = new Uint8Array(16);
-	//the first two are the same test ones as before. get red of 0x0000, ad 0x00e0 for the full maze program
-      /*
-    let program = [0xA2, 0x1E, 0xC2, 0x01, 0x32, 0x01, 0xA2, 0x1A,
-                   0xD0, 0x14, 0x70, 0x04, 0x30, 0x40, 0x12, 0x00,
-                   0x60, 0x00, 0x71, 0x04, 0x31, 0x20, 0x12, 0x00,
-                    0x12, 0x18, 0x80, 0x40, 0x20, 0x10, 0x20, 0x40,
-                    0x80, 0x10]; //simple maze program, something about my rng opcode is wrong causing it to
-                                    //choose the same sprite every time (same diagonal)
-*/
-          let program = [0xE1, 0x9E, 0xE1, 0xA1, 0xE1, 0xA1];  
+    let program = [0xE1, 0x9E, 0xE1, 0xA1, 0xE1, 0xA1];  //default program
     this.loadProgram(program); //loads Array: program into memory
     this.progLength = program.length;
 
@@ -115,7 +114,6 @@ class Chip8{
     }
 
   }
-
 
   startDelayTimer(){
     let ticker = 0;
@@ -197,7 +195,6 @@ class Chip8{
         document.addEventListener('keyup', handler, false);
     }
   updateKeys() {
-
     this.keydown();
     this.keyup();
   }
@@ -249,9 +246,8 @@ class Chip8{
    * Method for running emulator
    */
   runEmulator(){
-       // console.log("curr OPcode: #" + i);
       this.updateKeys();
-      let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //combines PC and PC+1 into single opcode
+      let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //From reference 1
       this.programCounter += 2;
       this.oneCycle(opcode);
       if (this.waitForKeyFlag === true) {
@@ -263,6 +259,7 @@ class Chip8{
 	      this.drawFlag = false;
       }
 	  this.updateHTML();
+	  this.startDelayTimer();
 
   }
   updateHTML() { //call this after every cycle
@@ -552,5 +549,3 @@ class Chip8{
   }
 }
 
-//let ch = new Chip8();
-//ch.reset();
