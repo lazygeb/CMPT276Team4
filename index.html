@@ -24,8 +24,10 @@
 		<h1> Group 4's Chip8 Interpreter </h1>
 		<canvas id="canvas"></canvas>
 
+		
 		<section id="controls">
 
+			<!--       //Not in use for this release
 			<form id="gameWrapper">
     			<h2 class ="identifier">Game: </h2>
       			<select name="games">
@@ -33,14 +35,28 @@
   					<option value="flappy_bird">FLAPPY BIRD</option>
 				</select>
 			</form>
+			-->
 
+			<section id="fileinput">
+			    <h2>File Input</h2>
+			    <input type="file" id="myFile"/>
+		    </section>
+
+			
 			<section id="stepControl">
 				<p id="startEmulator">Start Emulation</p>
+				<p id="runTest">Run Opcode test</p>
+				<!--       //Not in use for this release
 				<h2>Step Controls: </h2>
 				<p>Step forward</p>
 				<p>Pause</p>
 				<p>Step backward</p>
+				-->
 			</section>
+
+			
+
+			
 
 			<section id="keyboardInput">
 				<ul>
@@ -73,6 +89,7 @@
 			</section>
 		</section>
 
+		<!--       //Not in use for this release
 		<section id="visualizerWrapper">
 			<div class="visualizer" id="instructions">
 				<h2 class="inline">Current Instruction: </h2>
@@ -131,13 +148,14 @@
 				
 			</section>
 		</section>
+		-->
 	</div>
 
 
 
 	<script src = "Emulator/cpu.js"></script>
-	<!--
-	<script src = "Testing/opcodeTest.js"></script> 	 uncomment this to add test file to html page
+	
+	<script src = "Testing/opcodeTest.js"></script> 	<!-- uncomment this to add test file to html page
 	-->
 <script src = "main.js"></script>	<!-- comment this line out to run test -->
 

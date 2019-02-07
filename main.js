@@ -1,92 +1,66 @@
 /*
-#include
-#include //OpenGL graphics and input
-#include "chip8.h" // Your cpu core implementation
-
-chip8 myChip8;
-
-int main(int argc, char **argv)
-{
-    //set up render system and register input callbacks
-    setupGraphics();
-    setupInput();
-
-    //initialize the chip8 system and load the game into the memory
-    myChip.initialize();
-    myChip8.loadGame("pong");
-
-    //Emulation loop
-    for(;;) {
-        //emulate one cycle
-        myChip8.emulateCycle();
-
-        //If the draw flag is set, update the screen
-        if (myChip8.drawFlag) { //only opcodes 0x00E0 & 0xDXYN should set this flag
-            drawGraphics();
-        }
-
-        myChip9.setKeys();
-    }
-
-    return 0;
- }
+ * References:
+ * 1. https://www.html5rocks.com/en/tutorials/file/dndfiles/
+ *      - Used for reading in files
+ * 2. https://blog.teamtreehouse.com/reading-files-using-the-html5-filereader-api
+ *      - Used for reading in files
  */
 
-document.getElementById("V1-Stack").innerHTML = "0x12";
 
-function updateHTML() { //call this after every cycle
-    for (let i = 0; i < this.stack.length; i++) {
-        document.getElementById("V" + i + "-Stack").innerHTML = this.stack[i];
-    }
-    for (let i = 0; i < this.register.length; i++) {
-        document.getElementById("V" + i + "-Reg").innerHTML = this.register[i];
-    }
-    document.getElementById("PC").innerHTML = this.programCounter;
-    document.getElementById("I").innerHTML = this.indexRegister;
-}
+function main(usrFile) {
+        document.getElementById("runTest").onclick = function () { runTest()};
+        document.getElementById("startEmulator").onclick = function () { startEmulator(usrFile)};
 
+} 
 
-
-
-
-
-function main() {
-
-    //from here should be inside a loop
-    //let chip = new Chip8();
-    //chip.reset();
-    //chip.runEmulator();
-	document.getElementById("startEmulator").onclick = function() {startEmulator()};
-    //chip.test()
-    //chip.test();
-
-	//for (let i = 0; i < 64 * 32; i++) {
-	//console.log(chip.graphics[i]);
-	//}
-	
-      //  updateKeys();
-      //  updateHTML();
-	  //clearScreen();
-	  //console.log("test");
-/*
-    if (chip.drawFlag === true) {
-        chip.updateDisplay(); //draws display on HTML page
-		console.log("test");
-
-        chip.drawFlag = false;
-    }
-*/
-}
-
-function startEmulator() {
+function startEmulator(usrFile) {
 	let chip = new Chip8();
     chip.reset();
-	//chip.updateDisplay();
-	setInterval(function(){ chip.runEmulator(); }, 4);
-	//window.requestAnimationFrame(chip.runEmulator());
-	//chip.runEmulator();
+    if (usrFile) {
+        chip.loadProgram(prog);
+    }
+	setInterval(function(){ chip.runEmulator(); }, 6);
+    //window.requestAnimationFrame(chip.runEmulator());
+
+    //if delaytimer or soundtimer nonzero, function will be added to queue at a rate of 1s 
+    if (chip.delayTimer !== 0) {
+        setInterval(function(){ chip.startDelayTimer();}, 1000);
+    } 
+    if (chip.soundTimer !== 0) {
+        setInterval(function(){ chip.startSoundTimer(); }, 1000);
+    } 
 }
 
-main();
+function runTest() {
+    opCoTest();
+}
+
+let inputElement = document.getElementById("myFile");
+inputElement.addEventListener("change", handleFiles, false);
+let file;
+let prog;
+function handleFiles() {
+    file = this.files[0];
+    let reader = new FileReader();
+    let result;
+    reader.onload = function(event) {
+        result = event.target.result; //result = contents of file
+        result = result.replace(/\n/g, " "); //replace any newline characters with spaces
+        let arr = result.split(" "); //string to array, split by spaces
+        prog = new Uint8Array(arr.length*2); //Array to hold program
+        let j = 0;
+        for (let i = 0; j <= arr.length; i += 2) { //loop to split opcodes into 1 byte
+            prog[i] = (parseInt(arr[j], 16) & 0xFF00) >>> 8; //first byte (parse int --> convert string to int)
+            prog[i+1] = (parseInt(arr[j], 16) & 0x00FF);     //second byte
+            j++;
+        }
+        alert("Your file has been loaded, please press \"Start Emulation\"");
+    main(true); //call main, with true boolean to show it should load a file
+    };
+    reader.readAsBinaryString(file);
+}
+
+
+main(false);
 
 
