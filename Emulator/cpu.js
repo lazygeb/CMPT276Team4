@@ -466,8 +466,6 @@ class Chip8{
                 reg2 = reg2 >> 4; //y coordinate
                 let yCoord = this.register[reg2];
                 tempVal = opcode & 0x000F; //n
-            // console.log("n: " + tempVal);
-                //console.log("index:" + this.indexRegister);
                 this.register[0xF] = 0; //set VF to 0 initially
 
                 //read in 1 byte from memory at a time
