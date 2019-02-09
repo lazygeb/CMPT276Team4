@@ -41,26 +41,18 @@ let file;
 let prog;
 function handleFiles() {
     file = this.files[0];
-    console.log(file);
-    console.log(this.files[0]);
     let reader = new FileReader();
     let result;
     reader.onload = function(event) {
         result = event.target.result; //result = contents of file
-        console.log(result);
         result = result.replace(/\n/g, " "); //replace any newline characters with spaces
-        console.log(result);
         let arr = result.split(" "); //string to array, split by spaces
-        console.log(arr);
         prog = new Uint8Array(arr.length*2); //Array to hold program
         let j = 0;
         for (let i = 0; j <= arr.length; i += 2) { //loop to split opcodes into 1 byte
             prog[i] = (parseInt(arr[j], 16) & 0xFF00) >>> 8; //first byte (parse int --> convert string to int)
             prog[i+1] = (parseInt(arr[j], 16) & 0x00FF);     //second byte
             j++;
-        }
-        for (let i = 0; i < prog.length; i++) {
-            console.log((prog[i]).toString(16));
         }
         alert("Your file has been loaded, please press \"Start Emulation\"");
     main(true); //call main, with true boolean to show it should load a file

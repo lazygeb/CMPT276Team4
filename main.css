@@ -16,21 +16,35 @@ h3 {
 	margin-bottom: 0;
 }
 
-#emuWrapper {
+.wrapper {
 	margin: 0 auto;
-	width: 600px;
+	width: 60rem;
+	overflow: hidden;
+}
+
+.splitWrapper {
+	display: inline-block;
+	overflow: hidden;
+	vertical-align: top;
+	max-width: 60%;
 }
 
 canvas {
-	width: 640px;
-	height: 320px;
+    display: block;
+	float: left;
+	width: 99%;
+	height: auto;
 	border: 1px solid black;
 }
 
-section, #gameWrapper {
-	display: inline-block;
+section{
+	display: block;
 	vertical-align: top;
-	width: 49%;
+}
+
+#gameWrapper {
+	display: block;
+	vertical-align: top;
 }
 
 select {
@@ -65,14 +79,21 @@ li {
     border-radius: 3px;
 }
 
-#visualizerWrapper  {
+.visualizerWrapper  {
+    width: 15rem;
+	float: left;
+}
+
+#visLogWrapper {
 	float: right;
+	width: 20rem;
+	margin-right: .4rem;
 }
 
 .visualizer {
-	display: block;
 	width: 100%;
-	margin: 1rem 0;
+	margin: 0;
+	overflow: auto;
 }
 
 #instructions {
@@ -92,10 +113,27 @@ li {
 #stack, #memory {
 	display: inline-block;
 	border: 1px solid black;
-	width: 45%;
-	height: 240px;
-	margin: 1rem 0;
-	margin-top: 0;
+	width: 5.3rem;
+	height: 20rem;
+	margin: 0rem 0;
+	margin-top: 1rem;
+	margin-right: .5rem;
+}
+
+#memory {
+	width: 8.2rem;
+}
+
+#visLog {
+	display: inline-block;
+	border: 1px solid black;
+	width: 100%;
+	height: 20rem;
+	margin: 0rem 0;
+	margin-top: 1rem;
+}
+
+.log {
 }
 
 .mriWrapper {
@@ -109,4 +147,12 @@ li {
 
 .mriWrapper div > * {
 	display: inline;
+}
+
+#controls {
+	width: 49%;
+}
+
+#controls section > *{
+	display: block;
 }

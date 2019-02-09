@@ -4,7 +4,7 @@
 let chip = new Chip8(); //Change to local variable
 
 function opCoTest() { //call opcode tests in here
-  
+
     chip.reset(); //instantiate fresh chip8
 
     //Test opcodes:
@@ -17,14 +17,16 @@ function opCoTest() { //call opcode tests in here
     fiveXY0();
     sixXKK();
     sevenXKK();
+    eightXY0();
     eightXY1();
+    eightXY2();
+    eightXY3();
     eightXY4();
     eightXY5();
     eightXY6();
-    eightXYE();
     eightXY7();
-    eightXY0();
-    nineX0();
+    eightXYE();
+    nineXY0();
     ANNN();
     BNNN();
     CXKK();
@@ -33,13 +35,13 @@ function opCoTest() { //call opcode tests in here
     EXA1();
     FX07();
     FX0A();
-    FX18();
     FX15();
+    FX18();
+    FX1E();
     FX29();
     FX33();
     FX55();
     FX65();
-    
 }
 
 function clrDisp() {
@@ -219,6 +221,38 @@ function eightXY1(){ //opcode 8xy1 --> OR Vx, Vy -- set Vx = Vx OR Vy (bitwise O
     }
     else {
         console.log("Opcode 8xy1: Pass");
+    }
+}
+
+function eightXY2() { //opcode 8xy2 --> AND Vx, Vy -- set Vx = Vx and Vy
+    let works = true;
+    chip.register[0xA] = 0xA0;
+    chip.register[0xC] = 0xC0;
+    chip.oneCycle(0x8AC2);
+    if (chip.register[0xA] !== (0xA0 & 0xC0)) {
+        works = false;
+    }
+    if (works) {
+        console.log("Opcode 8xy2: Pass");
+    }
+    else {
+        console.log("Opcode 8xy2: Failed");
+    }
+}
+
+function eightXY3() { //opcode 8xy3 --> XOR Vx, Vy -- set Vx = Vx XOR Vy
+    let works = true;
+    chip.register[0xB] = 0x12;
+    chip.register[0xE] = 0x23;
+    chip.oneCycle(0x8BE3);
+    if (chip.register[0xB] !== (0x12 ^ 0x23)) {
+        works = false;
+    }
+    if (works) {
+        console.log("Opcode 8xy3: Pass");
+    }
+    else {
+        console.log("Opcode 8xy3: Failed");
     }
 }
 
@@ -460,7 +494,7 @@ function FX07() {
         if (chip.soundTimer !== chip.register[i]) {
             works = false;
         }
-        if (chip.delayTimer != 0) {
+        if (chip.delayTimer !== 0) {
             setInterval(function(){ chip.startDelayTimer();}, 1000);
         } 
     }
@@ -492,7 +526,7 @@ function FX0A() {
         }
     }
         if (!works) {
-            console.log("Opcode FxOA: Failed");
+            console.log("Opcode Fx0A: Failed");
         }
         else {
             console.log("Opcode Fx0A: Pass");
@@ -603,6 +637,22 @@ function FX15(){
     }
 }
 
+function FX1E () { //opcode 0xFx1E --> ADD I, Vx -- set I = I + Vx
+    let works = true;
+    chip.indexRegister = 0x15;
+    chip.register[0x8] = 0x05;
+    chip.oneCycle(0xF81E);
+    if (chip.indexRegister !== (0x15 + 0x05)) {
+        works = false;
+    }
+    if (works) {
+        console.log("Opcode Fx1E: Pass");
+    }
+    else {
+        console.log("Opcode Fx1E: Failed");
+    }
+}
+
 function FX29 () { //opcode 0xFx29 --> LD F, Vx -- set I = location of sprite for digit Vx
     let works = true;
     for (let i = 0; i < 16; i++) {  //loop through each sprite
@@ -668,65 +718,67 @@ function BNNN () { //opcode Bnnn --> JP V0, addr -- jump to location nnn + V0
 function eightXY0(){ //opcode 8xy0 --> LD Vx, Vy -- set Vx = Vy
     chip.register[1] = 1;
     chip.register[2] = 2;
-    var vy = 2
+    let vy = 2;
     let opcode = 0x8120;
-    chip.oneCycle(opcode)
+    chip.oneCycle(opcode);
     if (chip.register[1] === vy) { 
-        console.log("Opcode eightXY0: Pass");
+        console.log("Opcode 8XY0: Pass");
     }
     else {
-        console.log("Opcode eightXY0: Failed");
+        console.log("Opcode 8XY0: Failed");
     }
 }
 
-function  nineX0(){//opcode 9xy0 --> SNE Vx, Vy -- skip next instruction if Vx != Vy
+function  nineXY0(){//opcode 9xy0 --> SNE Vx, Vy -- skip next instruction if Vx != Vy
+    let works = true;
     let opcode = 0x9120;
     chip.register[1] = 0;
     chip.register[2] = 1;
-    chip.programCounter = 0
+    chip.programCounter = 0;
     chip.oneCycle(opcode);
-    if (chip.programCounter === 2) {
-        console.log("Opcode nineX0: Pass");
+    if (chip.programCounter !== 2) {
+        works = false;
     }
-    else {
-        console.log("Opcode nineX0: Failed");
-    }
-
     chip.register[1] = 1;
     chip.register[2] = 1;
-    chip.programCounter = 0
+    chip.programCounter = 0;
     chip.oneCycle(opcode);
-    if (chip.programCounter === 0) { 
-        console.log("Opcode nineX0: Pass");
+    if (chip.programCounter !== 0) {
+        console.log("Opcode 9xy0: Pass");
+        works = false;
+    }
+    if (works) {
+        console.log("Opcode 9xy0: Pass");
     }
     else {
-        console.log("Opcode nineX0: Failed");
+        console.log("Opcode 9xy0: Failed");
     }
-
 }
 
 function FX55(){//opcode 0xFx55 --> LD [I], Vx -- Store registers V0 through Vx in memory starting at I
+    let works = true;
     let opcode = 0xF355;
     chip.indexRegister = 5;
     chip.register[0x0] = 0x00;
     chip.register[0x1] = 0x10;
 
     chip.oneCycle(opcode);
-    if (chip.memory[0x0 + chip.indexRegister] === 0x00) { 
-        console.log("Opcode FX55: Pass");
+    if (chip.memory[0x0 + chip.indexRegister] !== 0x00) {
+        works = false;
+    }
+    if (chip.memory[0x1 + chip.indexRegister] !== 0x10) {
+        works = false;
+    }
+    if (works) {
+        console.log("Opcode Fx55: Pass");
     }
     else {
-        console.log("Opcode FX55 Failed");
-    }
-    if (chip.memory[0x1 + chip.indexRegister] === 0x10) { 
-        console.log("Opcode FX55: Pass");
-    }
-    else {
-        console.log("Opcode FX55 Failed");
+        console.log("Opcode Fx55: Failed");
     }
 }
 
 function FX65(){ //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx from memory starting at I
+    let works = true;
     let opcode = 0xF365;
     chip.indexRegister = 5;
     chip.memory[chip.indexRegister + 0x0] = 0x00;
@@ -734,23 +786,20 @@ function FX65(){ //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx 
 
     chip.oneCycle(opcode);
     
-    if (chip.register[0x0] === 0x00) { 
-        console.log("Opcode FX65: Pass");
+    if (chip.register[0x0] !== 0x00) {
+        works = false;
+    }
+    if (chip.register[0x1] !== 0x10) {
+        works = false;
+    }
+    if (works) {
+        console.log("Opcode Fx65: Pass");
     }
     else {
-        console.log("Opcode FX65 Failed");
-    }
-    if (chip.register[0x1] === 0x10) { 
-        console.log("Opcode FX65: Pass");
-    }
-    else {
-        console.log("Opcode FX65 Failed");
+        console.log("Opcode Fx65: Failed");
     }
 }
 
-
-
-//opCoTest(); //calls the function in this file..
 
 
 
