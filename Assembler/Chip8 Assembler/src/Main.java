@@ -34,6 +34,21 @@ public class Main {
                String line = scanner.nextLine();
                line = line.trim();
                String[] tokens = line.split("\\s+"); //split every space (ignores multiple spaces in a row)
+               //int opcode = getInstruction(tokens);
+               boolean hasComment = false;
+               //the following loop checks for comments, it ignores anything after the //
+               for (int i = 0; i < tokens.length && !hasComment; i++) {
+                   //hasComment = false;
+                   if (tokens[i].startsWith("//")) {
+                       hasComment = true;
+                       String[] tempTokens = new String[i];
+                       for (int j = 0; j < i; j++) {
+                           tempTokens[j] = tokens[j];
+                       }
+                       tokens = tempTokens;
+                       System.out.println(tokens.length);
+                   }
+               }
                int opcode = getInstruction(tokens);
                for (String s : tokens) {
                    System.out.println(s);
@@ -279,7 +294,7 @@ public class Main {
     static void writeOpcodes(ArrayList<Integer> opcodes) throws Exception {
         //write opcodes to file
         FileWriter fileWriter = new FileWriter("programFile.txt");
-        int iterator = 0;
+        int iterator = 1;
         for (Integer opcode: opcodes) {
             //intercept opcode if it needs zeros before any values
             if (opcode < 0x100) {
@@ -289,7 +304,7 @@ public class Main {
                 fileWriter.write("0");
             }
             fileWriter.write(Integer.toHexString(opcode));
-            if (iterator % 8 == 0 && iterator != 0) {
+            if (iterator % 8 == 0) {
                 fileWriter.write("\n");
             }
             else {
