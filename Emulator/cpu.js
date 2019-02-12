@@ -152,7 +152,8 @@ class Chip8{
 
     //Maps keyboard input to chip8 hex keyboard
     //check for key presses, call this every cycle
-    keydown(){
+    keydown(key){
+	/*
         let keyMap = {
             49: 1,
             50: 2,
@@ -178,9 +179,13 @@ class Chip8{
             }
         };
         document.addEventListener('keydown', handler, false);
+		*/
+		this.keyState[key] = 1;
+        this.waitKey = key; 
     }
 
-    keyup(){
+    keyup(key){
+	/*
         let keyMap = {
             49: 1,
             50: 2,
@@ -203,15 +208,18 @@ class Chip8{
             if (keyMap[e.keyCode] !== undefined){
                 setTimeout(()=>{ //timeout added to ensure that there is time for keydown to be processed 
                     this.keyState[keyMap[e.keyCode]] = 0; 
-                },5);
+                },10);
             }
         };
         document.addEventListener('keyup', handler, false);
+		*/
+		this.keyState[key] = 0; 
     }
 
     updateKeys() {
-        this.keydown();
-        this.keyup();
+        //this.keyup();
+		//this.keydown();
+        //this.keyup();
     }
 
     //For opcode 0xFX0A. Signals to emulator if next opcode should 

@@ -19,7 +19,7 @@ function startEmulator(usrFile) {
     if (usrFile) {
         chip.loadProgram(prog);
     }
-	setInterval(function(){ chip.runEmulator(); }, 6);
+	setInterval(function(){ chip.runEmulator(); }, 1);
     //window.requestAnimationFrame(chip.runEmulator());
 
     //if delaytimer or soundtimer nonzero, function will be added to queue at a rate of 1s 
@@ -29,6 +29,31 @@ function startEmulator(usrFile) {
     if (chip.soundTimer !== 0) {
         setInterval(function(){ chip.startSoundTimer(); }, 1000);
     } 
+
+	var translateKeys = {
+	        49: 1,
+            50: 2,
+            51: 3,
+            52: 12,
+            81: 4,
+            87: 5,
+            69: 6,
+            82: 13,
+            65: 7,
+            83: 8,
+            68: 9,
+            70: 14,
+            90: 10,
+            88: 0,
+            67: 11,
+            86: 15,
+					 };
+					 document.addEventListener("keydown", function(event) {
+						 chip.keydown(translateKeys[event.keyCode]);
+					 });
+					 document.addEventListener("keyup", function(event) {
+						 chip.keyup(translateKeys[event.keyCode]);
+					 });
 }
 
 function runTest() {
