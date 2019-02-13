@@ -6,7 +6,7 @@
  *      - Used for reading in files
  */
 
-
+var runEmulator = null;
 function main(usrFile) {
         document.getElementById("runTest").onclick = function () { runTest()};
         document.getElementById("startEmulator").onclick = function () { startEmulator(usrFile)};
@@ -19,9 +19,19 @@ function startEmulator(usrFile) {
     if (usrFile) {
         chip.loadProgram(prog);
     }
-	setInterval(function(){ chip.runEmulator(); }, 1);
+
+    //click  >> 
+    //click  <<
+    //run like norm
+	runEmulator = setInterval(function(){ chip.runEmulator(); }, 1);
     //window.requestAnimationFrame(chip.runEmulator());
 
+    //If click  pause -> clear setinterval
+    document.getElementById("pause").onclick = function() { window.clearInterval(runEmulator); };
+
+    //If click  pause -> clear setinterval
+    document.getElementById("resume").onclick = function() { runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); };
+    
     //if delaytimer or soundtimer nonzero, function will be added to queue at a rate of 1s 
     if (chip.delayTimer !== 0) {
         setInterval(function(){ chip.startDelayTimer();}, 1000);
@@ -65,6 +75,7 @@ inputElement.addEventListener("change", handleFiles, false);
 let file;
 let prog;
 function handleFiles() {
+    window.clearInterval(runEmulator);
     file = this.files[0];
     let reader = new FileReader();
     let result;
