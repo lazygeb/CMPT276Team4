@@ -51,7 +51,7 @@ select {
 	border-radius: 3px;
 }
 
-#stepControl p{
+#stepControl p, img{
 	background: lightgrey;
 	border-radius: 3px;
 	margin: .2rem 1rem;
@@ -59,9 +59,20 @@ select {
 	transition: .5s;
 }
 
-#stepControl p:hover{
+#stepControl p:hover, img:hover{
 	background: white;
 	cursor: pointer;
+}
+
+.icon_wrapper {
+	display: inline;
+}
+
+.icon {
+	width: 2rem;
+	height: auto;
+	padding: 0;
+	margin: 0;
 }
 
 ul {
