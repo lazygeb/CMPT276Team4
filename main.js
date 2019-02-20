@@ -27,10 +27,16 @@ function startEmulator(usrFile) {
     //window.requestAnimationFrame(chip.runEmulator());
 
     //If click  pause -> clear setinterval
-    document.getElementById("pause").onclick = function() { window.clearInterval(runEmulator); };
+    document.getElementById("pause").onclick = function() { 
+		window.clearInterval(runEmulator); 
+		chip.updateHTMLLogMessage("Emulator Paused");
+    };
 
     //If click  pause -> clear setinterval
-    document.getElementById("resume").onclick = function() { runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); };
+    document.getElementById("resume").onclick = function() { 
+	    runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); 
+		chip.updateHTMLLogMessage("Emulator Resumed");
+	};
     
     //if delaytimer or soundtimer nonzero, function will be added to queue at a rate of 1s 
     if (chip.delayTimer !== 0) {

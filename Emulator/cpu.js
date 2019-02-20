@@ -44,6 +44,7 @@ class Chip8{
         this.beep = new Audio('./Sound/button-10.wav'); //audio for buzz  
         this.waitForKeyFlag = false; //Flag to signify if program has to wait for keypressed. 
         this.waitKey = undefined; //stores the key code for key pressed
+		this.lastOpcode = 0;
     }
 
  
@@ -282,20 +283,52 @@ class Chip8{
             this.updateDisplay(this.stack, this.register);
             this.drawFlag = false;
         }
-        this.updateHTML();
+        this.updateHTML(opcode);
         this.startDelayTimer();
 
     }
 
-    updateHTML() { //call this after every cycle
-        //for (let i = 0; i < this.stack.length; i++) {                                 //not for this release yet
-        //    document.getElementById("V" + i + "-Stack").innerHTML = this.stack[i];
-        //}
-        //for (let i = 0; i < this.register.length; i++) {
-        //    document.getElementById("V" + i + "-Reg").innerHTML = this.register[i];
-        //}
-        //document.getElementById("PC").innerHTML = this.programCounter;
-        //document.getElementById("I").innerHTML = this.indexRegister;
+    updateHTML(opcode) { //call this after every cycle
+        for (let i = 0; i < this.stack.length; i++) {
+            document.getElementById("V" + i + "-Stack").innerHTML = this.stack[i];
+        }
+        for (let i = 0; i < this.register.length; i++) {
+            document.getElementById("V" + i + "-Reg").innerHTML = this.register[i];
+        }
+        document.getElementById("PC").innerHTML = this.programCounter;
+        document.getElementById("I").innerHTML = this.indexRegister;		
+
+		//if (this.lastOpcode !== opcode) {
+			//var currLog = "<p>" + opcode + "</p> <br>";
+			//document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
+		//}
+		
+		//this.lastOpcode = opcode;
+		//debug.log(this.lastOpcode + " " + opcode);
+    }
+
+	updateHTMLOpcodeLog(opcode) {	
+		if (this.lastOpcode !== opcode) {
+			var currentDate = new Date();
+
+			var time = currentDate.toLocaleTimeString('en-US');
+
+			var currLog =  "<p>" + time + ": " + "<strong>" + opcode + "</strong>" + "</p> <br>";
+			document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
+		}
+		
+		this.lastOpcode = opcode;
+		//debug.log(this.lastOpcode + " " + opcode);
+    }
+
+	updateHTMLLogMessage(message) {	
+		var currentDate = new Date();
+
+		var time = currentDate.toLocaleTimeString('en-US');
+
+		var currLog =  "<p>" + time + ": " + "<strong>" + message + "</strong>" + "</p> <br>";
+		document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
+		//debug.log(this.lastOpcode + " " + opcode);
     }
 
 
@@ -316,22 +349,26 @@ class Chip8{
                         this.graphics[i] = 0;
                     }
                     this.drawFlag = true;
+					this.updateHTMLOpcodeLog("0x00E0");
                 }
                 else if ((opcode & 0x0FFF) === 0x00EE) { //opcode 0x00EE --> RET
                     this.programCounter = this.stack[this.stackPointer]; //sets the program counter to the address at the top of the stack
                     this.stackPointer--;//then subtracts 1 from the stack pointer
+					this.updateHTMLOpcodeLog("0x00EE");
                 }
                 break;
             
             case 0x1: //opcode 0x1nnn --> JMP addr -- jump to location nnn
                 tempVal = opcode & 0x0FFF;
                 this.programCounter = tempVal; //sets program counter to address nnn
+				this.updateHTMLOpcodeLog("0x1" + tempVal);
                 break;
             
             case 0x2: //opcode 0x2nnn --> Call addr -- call subroutine at address nnn
                 this.stackPointer++; //increment stack pointer
                 this.stack[this.stackPointer] = this.programCounter;
                 this.programCounter = opcode & 0x0FFF;
+				this.updateHTMLOpcodeLog("0x2" + this.programCounter);
                 break;
             
             case 0x3: //opcode 0x3xkk --> SE Vx, byte -- if this.register Vx == kk, skip next instruction (PC + 2)
@@ -341,6 +378,7 @@ class Chip8{
                 if (this.register[reg1] === tempVal) { //skips next instruction if this.register Vx == kk
                 this.programCounter += 2;
                 }
+				this.updateHTMLOpcodeLog("0x3" + reg1 + tempVal);
                 break;
             case 0x4: //opcode 0x4xkk --> SNE Vx, byte -- if this.register Vx != kk, skip next instruction (PC + 2)
                 reg1 = opcode & 0x0F00;
@@ -349,6 +387,7 @@ class Chip8{
                 if (this.register[reg1] !== tempVal) { //skips next instruction if this.register Vx != kk
                     this.programCounter += 2;
                 }
+				this.updateHTMLOpcodeLog("0x4" + reg1 + tempVal);
                 break;
             
             case 0x5: //opcode 0x5xy0 --> SE Vx, Vy -- if this.register Vx & Vy are equal, skip next instruction
@@ -359,6 +398,7 @@ class Chip8{
                 if (this.register[reg1] === this.register[reg2]) {
                     this.programCounter += 2;
                 }
+				this.updateHTMLOpcodeLog("0x5" + reg1 + reg2 + 0);
                 break;
             
             case 0x6: //opcode 0x6xkk --> LD Vx, byte -- place value kk into this.register Vx
@@ -366,6 +406,7 @@ class Chip8{
                 reg1 = reg1 >> 8;
                 tempVal = opcode & 0x00FF;
                 this.register[reg1] = tempVal;
+				this.updateHTMLOpcodeLog("0x6" + reg1 + tempVal);
                 break;
             
             case 0x7: //opcode 0x7xkk --> ADD Vx, byte -- add value kk to Vx and place in Vx
@@ -374,6 +415,7 @@ class Chip8{
                 tempVal = opcode & 0x00FF;
                 tempVal = tempVal + this.register[reg1];
                 this.register[reg1] = tempVal;
+				this.updateHTMLOpcodeLog("0x7" + reg1 + tempVal);
                 break;
             
             case 0x8: //opcodes 8xy0 through 8xyE
@@ -384,15 +426,19 @@ class Chip8{
                 switch (opcode & 0x000F) {
                     case 0x0: //opcode 8xy0 --> LD Vx, Vy -- set Vx = Vy
                         this.register[reg1] = this.register[reg2];
+						this.updateHTMLOpcodeLog("0x8" + reg1 + reg2 + 0);
                         break;
                     case 0x1: //opcode 8xy1 --> OR Vx, Vy -- set Vx = Vx OR Vy (bitwise OR operation)
                         this.register[reg1] = this.register[reg1] | this.register[reg2];
+						this.updateHTMLOpcodeLog("0x8" + reg1 + reg2 + 1);
                         break;
                     case 0x2: //opcode 8xy2 --> AND Vx, Vy -- set Vx = Vx and Vy
                         this.register[reg1] = this.register[reg1] & this.register[reg2];
+						this.updateHTMLOpcodeLog("0x8" + reg1 + reg2 + 2);
                         break;
                     case 0x3: //opcode 8xy3 --> XOR Vx, Vy -- set Vx = Vx XOR Vy
                         this.register[reg1] = this.register[reg1] ^ this.register[reg2];
+						this.updateHTMLOpcodeLog("0x8" + reg1 + reg2 + 4);
                         break;
                     case 0x4: //opcode 8xy4 --> ADD Vx, Vy -- set Vx = Vx + Vy, set VF = carry
                         tempVal = this.register[reg1] + this.register[reg2];
@@ -401,6 +447,7 @@ class Chip8{
                             tempVal = tempVal & 0x0FF;
                         }
                         this.register[reg1] = tempVal;
+						this.updateHTMLOpcodeLog("0x8" + reg1 + reg2 + 4);
                         break;
                     case 0x5: //opcode 8xy5 --> SUB Vx, Vy -- set Vx = Vx - Vy, set VF = NOT borrow
                         if (this.register[reg1] > this.register[reg2]) {
@@ -409,6 +456,7 @@ class Chip8{
                             this.register[0xF] = 0;
                         }
                         this.register[reg1] = this.register[reg1] - this.register[reg2];
+						this.updateHTMLOpcodeLog("0x8" + reg1 + reg2 + 5);
                         break;
                     case 0x6: //opcode 8xy6 --> SHR Vx {, Vy} -- set Vx = Vx SHR 1 => if the least-sig bit of Vx is 1,
                         // set VF to 1, otherwise 0. the Vx is divided by 2
@@ -419,6 +467,7 @@ class Chip8{
                             this.register[0xF] = 0;
                         }
                         this.register[reg1] = this.register[reg1] / 2; //shift to the right by 1
+						this.updateHTMLOpcodeLog("0x8" + reg1 + reg2 + 6);
                         break;
                     case 0x7: //opcode 8xy7 --> SUBN Vx, Vy -- set Vx = Vy - Vx, set VF = Not borrow
                         if (this.register[reg2] > this.register[reg1]) {
@@ -427,6 +476,7 @@ class Chip8{
                             this.register[0xF] = 0;
                         }
                         this.register[reg1] = this.register[reg2] - this.register[reg1];
+						this.updateHTMLOpcodeLog("0x8" + reg1 + reg2 + 7);
                         break;
                     case 0xE: //opcode 8xyE --> SHL Vx, {, Vy} -- set Vx = Vx SHL 1
                         tempVal = this.register[reg1] & 0x80;
@@ -437,6 +487,7 @@ class Chip8{
                             this.register[0xF] = 0;
                         }
                         this.register[reg1] = this.register[reg1] * 2; //shift to the left by 1
+						this.updateHTMLOpcodeLog("0x8" + reg1 + reg2 + "E");
                         break;
                 }
                 break;
@@ -448,15 +499,18 @@ class Chip8{
                 if (this.register[reg1] !== this.register[reg2]) {
                     this.programCounter += 2;
                 }
+				this.updateHTMLOpcodeLog("0x9" + reg1 + reg2 + 0);
                 break;
             case 0xA: //opcode Annn --> LD I, addr -- set this.register I = nnn
                 tempVal = opcode & 0x0FFF;
                 this.indexRegister = tempVal;
+				this.updateHTMLOpcodeLog("0xA" + tempVal);
                 break;
             case 0xB: //opcode Bnnn --> JP V0, addr -- jump to location nnn + V0
                 tempVal = opcode & 0x0FFF;
                 tempVal += this.register[0x0];
                 this.programCounter = tempVal;
+				this.updateHTMLOpcodeLog("0xB" + tempVal);
                 break;
             case 0xC: //opcode Cxkk --> RND Vx, byte -- set Vx = random byte (0 to 255) AND kk
                 tempVal = Math.random() * (255);
@@ -465,6 +519,7 @@ class Chip8{
                 reg1 = reg1 >> 8; //Vx
                 tempVal = tempVal & (opcode & 0x00FF); //random & kk
                 this.register[reg1] = tempVal;
+				this.updateHTMLOpcodeLog("0xC" + reg1 + tempVal);
                 break;
             case 0xD: //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision
                 reg1 = opcode & 0x0F00;
@@ -504,6 +559,7 @@ class Chip8{
                     }
                 }
                 this.drawFlag = true;
+				this.updateHTMLOpcodeLog("0xD" + reg1 + reg2 + tempVal);
                 break;
             case 0xE:
                 reg1 = opcode & 0x0F00;
@@ -516,6 +572,7 @@ class Chip8{
                                 this.programCounter += 2;
                             }
                         }
+						this.updateHTMLOpcodeLog("0xE" + reg1 + "9E");
                         break;
                     case 0xA1: // opcode ExA1 --> SKNP Vx -- skip next instruction if key with value Vx is NOT pressed
                         if (tempVal >= 0 && tempVal <= 16) {
@@ -523,6 +580,7 @@ class Chip8{
                                 this.programCounter += 2;
                             }
                         }
+						this.updateHTMLOpcodeLog("0xE" + reg1 + "A1");
                         break;
                 }
                 break;
@@ -532,21 +590,27 @@ class Chip8{
                 switch(opcode & 0x00FF) {
                     case 0x07: //opcode 0xFx07 --> LD Vx, DT -- set Vx = delay timer value
                         this.register[reg1] = this.delayTimer;
+						this.updateHTMLOpcodeLog("0xF" + reg1 + "07");
                         break;
                     case 0x0A: //opcode 0xFx0A --> LD Vx, K -- wait for a key press, store the value of the key in Vx
                         this.register[reg1] = this.waitForKeyPressed();
+						this.updateHTMLOpcodeLog("0xF" + reg1 + "0A");
                         break;
                     case 0x15: //opcode 0xFx15 --> LD DT, Vx -- set delay timer = Vx
                         this.delayTimer = this.register[reg1];
+						this.updateHTMLOpcodeLog("0xF" + reg1 + "15");
                         break;
                     case 0x18: //opcode 0xFx18 --> LD ST, Vx -- set sound timer = Vx;
                         this.soundTimer = this.register[reg1];
+						this.updateHTMLOpcodeLog("0xF" + reg1 + "18");
                         break;
                     case 0x1E: //opcode 0xFx1E --> ADD I, Vx -- set I = I + Vx
                         this.indexRegister += this.register[reg1];
+						this.updateHTMLOpcodeLog("0xF" + reg1 + "1E");
                         break;
                     case 0x29: //opcode 0xFx29 --> LD F, Vx -- set I = location of sprite for digit Vx
                         this.indexRegister = this.register[reg1] * 5;
+						this.updateHTMLOpcodeLog("0xF" + reg1 + "29");
                         break;
                     case 0x33: //opcode 0xFx33 --> LD B, Vx -- store BCD representation of Vx in memory locations I, I+1 & I + 2
                         tempVal = this.register[reg1] / 100;
@@ -555,16 +619,19 @@ class Chip8{
                         this.memory[this.indexRegister + 1] = tempVal / 10; //tenth digit
                         tempVal = tempVal - (this.memory[this.indexRegister + 1] * 10);
                         this.memory[this.indexRegister + 2] = tempVal;
+						this.updateHTMLOpcodeLog("0xF" + reg1 + "33");
                         break;
                     case 0x55: //opcode 0xFx55 --> LD [I], Vx -- Store registers V0 through Vx in memory starting at I
                         for (let i = 0; i < this.register[reg1]; i++) {
                             this.memory[this.indexRegister + i] = this.register[i];
                         }
+						this.updateHTMLOpcodeLog("0xF" + reg1 + "55");
                         break;
                     case 0x65: //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx from memory starting at I
                         for (let i = 0; i < this.register[reg1]; i++) {
                             this.register[i] = this.memory[this.indexRegister + i];
                         }
+						this.updateHTMLOpcodeLog("0xF" + reg1 + "65");
                         break;
                 }
                 break;
