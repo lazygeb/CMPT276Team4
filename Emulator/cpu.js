@@ -616,9 +616,9 @@ class Chip8{
                         break;
                     case 0x33: //opcode 0xFx33 --> LD B, Vx -- store BCD representation of Vx in memory locations I, I+1 & I + 2
                         tempVal = this.register[reg1] / 100;
-                        this.memory[this.indexRegister] = tempVal; //hundredth digit of Vx
+                        this.memory[this.indexRegister] = Math.trunc(tempVal);
                         tempVal = this.register[reg1] - (this.memory[this.indexRegister] * 100);
-                        this.memory[this.indexRegister + 1] = tempVal / 10; //tenth digit
+                        this.memory[this.indexRegister + 1] = Math.trunc(tempVal / 10);
                         tempVal = tempVal - (this.memory[this.indexRegister + 1] * 10);
                         this.memory[this.indexRegister + 2] = tempVal;
 						this.instruction = "LD B V" + reg1.toString(16);
@@ -630,7 +630,7 @@ class Chip8{
 						this.instruction = "LD I V" + reg1.toString(16);
                         break;
                     case 0x65: //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx from memory starting at I
-                        for (let i = 0; i < this.register[reg1]; i++) {
+                        for (let i = 0; i <= reg1; i++) {
                             this.register[i] = this.memory[this.indexRegister + i];
                         }
 						this.instruction = "LD V" + reg1.toString(16) + " I";
