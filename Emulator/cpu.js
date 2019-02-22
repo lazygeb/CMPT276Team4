@@ -302,6 +302,7 @@ class Chip8{
         document.getElementById("I").innerHTML = this.indexRegister;
 		document.getElementById("ST").innerHTML = this.soundTimer;
 		document.getElementById("DT").innerHTML = this.delayTimer;
+		document.getElementById("SP").innerHTML = this.stackPointer.toString(16);
 
 		//if (this.lastOpcode !== opcode) {
 			//var currLog = "<p>" + opcode + "</p> <br>";
