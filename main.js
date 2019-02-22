@@ -10,7 +10,6 @@ var runEmulator = null;
 function main(usrFile) {
         document.getElementById("runTest").onclick = function () { runTest()};
         document.getElementById("startEmulator").onclick = function () { startEmulator(usrFile)};
-
 } 
 
 function startEmulator(usrFile) {
@@ -23,7 +22,7 @@ function startEmulator(usrFile) {
     //click  >> 
     //click  <<
     //run like norm
-	runEmulator = setInterval(function(){ chip.runEmulator(); }, 1);
+	runEmulator = setInterval(function() { chip.runEmulator(); }, 1);
     //window.requestAnimationFrame(chip.runEmulator());
 
     //If click  pause -> clear setinterval
@@ -38,13 +37,7 @@ function startEmulator(usrFile) {
 		chip.updateHTMLLogMessage("Emulator Resumed");
 	};
     
-    //if delaytimer or soundtimer nonzero, function will be added to queue at a rate of 1s 
-    if (chip.delayTimer !== 0) {
-        setInterval(function(){ chip.startDelayTimer();}, 1000);
-    } 
-    if (chip.soundTimer !== 0) {
-        setInterval(function(){ chip.startSoundTimer(); }, 1000);
-    } 
+ 
 
 	var translateKeys = {
 	        49: 1,
