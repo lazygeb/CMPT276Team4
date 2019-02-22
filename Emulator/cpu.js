@@ -297,7 +297,9 @@ class Chip8{
             document.getElementById("V" + i + "-Reg").innerHTML = this.register[i];
         }
         document.getElementById("PC").innerHTML = this.programCounter;
-        document.getElementById("I").innerHTML = this.indexRegister;		
+        document.getElementById("I").innerHTML = this.indexRegister;
+		document.getElementById("ST").innerHTML = this.soundTimer;
+		document.getElementById("DT").innerHTML = this.delayTimer;
 
 		//if (this.lastOpcode !== opcode) {
 			//var currLog = "<p>" + opcode + "</p> <br>";
