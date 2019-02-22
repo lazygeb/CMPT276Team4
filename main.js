@@ -27,9 +27,24 @@ function startEmulator(usrFile) {
     //window.requestAnimationFrame(chip.runEmulator());
 
     //If click  pause -> clear setinterval
+    var i = 1;
+    
     document.getElementById("pause").onclick = function() { 
+        var idx = chip.stepBackward.length;
+        console.log(chip.stepBackward);
 		window.clearInterval(runEmulator); 
-		chip.updateHTMLLogMessage("Emulator Paused");
+        chip.updateHTMLLogMessage("Emulator Paused");
+        console.log(idx-i);
+        
+        chip.memory = chip.stepBackward[idx-i].m;
+        chip.stack = chip.stepBackward[idx-i].s;
+        chip.stackPointer = chip.stepBackward[idx-i].sp;
+        chip.programCounter = chip.stepBackward[idx-i].pc; 
+        chip.register = chip.stepBackward[idx-i].reg;
+        chip.graphics = chip.stepBackward[idx-i].grap;
+        chip.drawFlag = chip.stepBackward[idx-1].draw;
+        chip.updateDisplay();
+        i+=1;
     };
 
     //If click  pause -> clear setinterval

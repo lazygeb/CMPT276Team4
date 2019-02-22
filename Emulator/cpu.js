@@ -45,7 +45,9 @@ class Chip8{
         this.waitForKeyFlag = false; //Flag to signify if program has to wait for keypressed. 
         this.waitKey = undefined; //stores the key code for key pressed
 		this.lastOpcode = 0;
-		this.instruction = "";
+        this.instruction = "";
+        this.stepBackward = new Array();
+        this.idx = 0;
     }
 
  
@@ -341,6 +343,31 @@ class Chip8{
      * and runs one cycle of Chip8 CPU
      */
     oneCycle(opcode) {
+        // if(this.instruction == "DRAW"){
+        //     this.stepBackward.push({
+        //         m:this.memory,
+        //         s:this.stack,
+        //         sp:this.stackPointer,
+        //         pc:this.programCounter,
+        //         reg: this.register,
+        //         inst: this.instruction,
+        //         idxreg:this.indexRegister,
+        //         grap: this.graphics
+
+        //     });
+        // }
+       
+        // if(this.idx == 99){
+        //     console.log("In")
+        //     this.memory = this.stepBackward[0].m;
+        //     this.stack = this.stepBackward[0].s;
+        //     this.stackPointer = this.stepBackward[0].sp;
+        //     this.programCounter = this.stepBackward[0].pc; 
+        //     this.register = this.stepBackward[0].reg;
+        //     this.graphics = this.stepBackward[0].grap;
+        // }
+
+
         let reg1 = 0x00;
         let reg2 = 0x00;
         let tempVal = 0x00;
@@ -524,6 +551,20 @@ class Chip8{
 				this.instruction = "RND V" + reg1.toString(16) + " " + tempVal.toString(16);
                 break;
             case 0xD: //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision
+                
+            this.stepBackward.push({
+                m:this.memory,
+                s:this.stack,
+                sp:this.stackPointer,
+                pc:this.programCounter,
+                reg: this.register,
+                inst: this.instruction,
+                idxreg:this.indexRegister,
+                grap: this.graphics,
+                draw: this.drawFlag
+
+            });
+                
                 reg1 = opcode & 0x0F00;
                 reg1 = reg1 >> 8; //x coordinate
                 let xCoord = this.register[reg1];
@@ -561,7 +602,9 @@ class Chip8{
                     }
                 }
                 this.drawFlag = true;
-				this.instruction = "DRAW";
+                this.instruction = "DRAW";
+                
+                
                 break;
             case 0xE:
                 reg1 = opcode & 0x0F00;
