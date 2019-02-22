@@ -46,6 +46,7 @@ class Chip8{
         this.waitKey = undefined; //stores the key code for key pressed
 		this.lastOpcode = 0;
 		this.instruction = "";
+		this.logCount = 0;
     }
 
  
@@ -112,6 +113,7 @@ class Chip8{
         let program = [0xE1, 0x9E, 0xE1, 0xA1, 0xE1, 0xA1];  //default program
         this.loadProgram(program); //loads Array: program into memory
         this.progLength = program.length;
+		this.logCount = 0;
 
         //fill graphics array with 0's
         for (let i = 0; i < this.graphics.length; i++) {
@@ -297,7 +299,10 @@ class Chip8{
             document.getElementById("V" + i + "-Reg").innerHTML = this.register[i];
         }
         document.getElementById("PC").innerHTML = this.programCounter;
-        document.getElementById("I").innerHTML = this.indexRegister;		
+        document.getElementById("I").innerHTML = this.indexRegister;
+		document.getElementById("ST").innerHTML = this.soundTimer;
+		document.getElementById("DT").innerHTML = this.delayTimer;
+		document.getElementById("SP").innerHTML = this.stackPointer.toString(16);
 
 		//if (this.lastOpcode !== opcode) {
 			//var currLog = "<p>" + opcode + "</p> <br>";
@@ -315,8 +320,17 @@ class Chip8{
 
 			let time = currentDate.toLocaleTimeString('en-US');
 
-			let currLog =  "<p>" + time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "</p> <br>";
-			document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
+			const paragraph = document.createElement('p');
+			paragraph.innerHTML = time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "<br>";
+			document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
+			if (this.logCount < 200) {
+				this.logCount++;
+			} else {
+				document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);
+			}
+
+			//let currLog =  "<p>" + time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "</p> <br>";
+			//document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
 		}
 
 		this.lastOpcode = parseInt(opcode, 16);
@@ -328,8 +342,11 @@ class Chip8{
 
 		let time = currentDate.toLocaleTimeString('en-US');
 
-		let currLog =  "<p>" + time + ": " + "<strong>" + message + "</strong>" + "</p> <br>";
-		document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
+		const paragraph = document.createElement('p');
+		paragraph.innerHTML = time + ": " + "<strong>" + message + "</strong>" + "<br>";
+		//let currLog =  <p> + time + ": " + "<strong>" + message + "</strong>" + "</p> <br>";
+		//document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
+		document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
 		//debug.log(this.lastOpcode + " " + opcode);
     }
 
