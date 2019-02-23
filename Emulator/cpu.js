@@ -229,12 +229,6 @@ class Chip8{
 		this.keyState[key] = 0; 
     }
 
-    updateKeys() {
-        //this.keyup();
-		//this.keydown();
-        //this.keyup();
-    }
-
     //For opcode 0xFX0A. Signals to emulator if next opcode should 
     //should be read depending if key was pressed or not
     waitForKeyPressed() {
@@ -283,7 +277,6 @@ class Chip8{
      * Method for running emulator
      */
     runEmulator(){
-        this.updateKeys();
         let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //From reference 1
         this.programCounter += 2;
         this.oneCycle(opcode);
