@@ -350,6 +350,9 @@ class Chip8{
 		//debug.log(this.lastOpcode + " " + opcode);
     }
 
+    step(){
+        //redoing
+    }
 
     /**
      * @method oneCycle

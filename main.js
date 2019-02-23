@@ -32,11 +32,17 @@ function startEmulator(usrFile) {
 		chip.updateHTMLLogMessage("Emulator Paused");
     };
 
-    //If click  pause -> clear setinterval
+    //If click  resume -> clear 
     document.getElementById("resume").onclick = function() { 
 	    runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); 
 		chip.updateHTMLLogMessage("Emulator Resumed");
 	};
+
+    //If click step forward -> move forward one opcode
+    document.getElementById("stepforward").onclick = function() { 
+        chip.step
+        chip.updateHTMLLogMessage("Stepped Forward");
+    };
     
     //if delaytimer or soundtimer nonzero, function will be added to queue at a rate of 1s 
     if (chip.delayTimer !== 0) {
