@@ -356,7 +356,20 @@ class Chip8{
 
         //     });
         // }
-       
+        this.stepBackward.push({
+            m:this.memory,
+            s:this.stack,
+            sp:this.stackPointer,
+            pc:this.programCounter,
+            reg: this.register,
+            inst: this.instruction,
+            idxreg:this.indexRegister,
+            grap: this.graphics,
+            delay:this.delayTimer,
+            draw: this.drawFlag,
+            keyst:this.keyState,
+
+        });
         // if(this.idx == 99){
         //     console.log("In")
         //     this.memory = this.stepBackward[0].m;
@@ -550,21 +563,7 @@ class Chip8{
                 this.register[reg1] = tempVal;
 				this.instruction = "RND V" + reg1.toString(16) + " " + tempVal.toString(16);
                 break;
-            case 0xD: //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision
-                
-            this.stepBackward.push({
-                m:this.memory,
-                s:this.stack,
-                sp:this.stackPointer,
-                pc:this.programCounter,
-                reg: this.register,
-                inst: this.instruction,
-                idxreg:this.indexRegister,
-                grap: this.graphics,
-                draw: this.drawFlag
-
-            });
-                
+            case 0xD: //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision            
                 reg1 = opcode & 0x0F00;
                 reg1 = reg1 >> 8; //x coordinate
                 let xCoord = this.register[reg1];
