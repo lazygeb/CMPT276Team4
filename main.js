@@ -32,7 +32,7 @@ function startEmulator(usrFile) {
 		chip.updateHTMLLogMessage("Emulator Paused");
     };
 
-    //If click  resume -> clear 
+    //If click  resume -> run emulator is true
     document.getElementById("resume").onclick = function() { 
 	    runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); 
 		chip.updateHTMLLogMessage("Emulator Resumed");
@@ -40,7 +40,8 @@ function startEmulator(usrFile) {
 
     //If click step forward -> move forward one opcode
     document.getElementById("stepforward").onclick = function() { 
-        chip.step
+        chip.oneCycle(Chip8.lastOpcode);
+        // chip.step(Chip8.lastOpcode);
         chip.updateHTMLLogMessage("Stepped Forward");
     };
     

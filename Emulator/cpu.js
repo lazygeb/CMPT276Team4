@@ -47,6 +47,9 @@ class Chip8{
 		this.lastOpcode = 0;
 		this.instruction = "";
 		this.logCount = 0;
+        this.chiptime = 0;
+        this.chiptime2 = 0;
+        this.millitime = 0;
     }
 
  
@@ -114,6 +117,8 @@ class Chip8{
         this.loadProgram(program); //loads Array: program into memory
         this.progLength = program.length;
 		this.logCount = 0;
+        this.chiptime = 0;
+        this.chiptime2 = 0;
 
         //fill graphics array with 0's
         for (let i = 0; i < this.graphics.length; i++) {
@@ -350,9 +355,24 @@ class Chip8{
 		//debug.log(this.lastOpcode + " " + opcode);
     }
 
-    step(){
-        //redoing
-    }
+    // millicount(){ // returns time used to count for step()
+    //     let d = new Date();
+    //     let seconds = d.getTime() / 1000; //number of seconds since epoch
+    //     let count = getTime() + (seconds & 0xfffff) * 1000; 
+    //     return count;
+    // }
+    // millispan(start){ // for step
+    //     let d = millicount() - start;
+    //     if (d<0){
+    //         d += 0x100000 * 1000;
+    //     }
+    //     return d;
+    // }
+
+    // step(opcode){
+    //     let opcode = this.memory[this.programCounter+1] << 8 | this.memory[this.programCounter + 1];
+    // }
+
 
     /**
      * @method oneCycle
