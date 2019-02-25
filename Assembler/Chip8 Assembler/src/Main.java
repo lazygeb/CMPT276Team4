@@ -26,6 +26,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        ArrayList<String> OP = new ArrayList<>();
        try {
            ArrayList<Integer> opcodes = new ArrayList<>();
            Path path = Paths.get(args[0]);
@@ -46,12 +47,12 @@ public class Main {
                            tempTokens[j] = tokens[j];
                        }
                        tokens = tempTokens;
-                       System.out.println(tokens.length);
+                       //System.out.println(tokens.length);
                    }
                }
                int opcode = getInstruction(tokens);
                for (String s : tokens) {
-                   System.out.println(s);
+                   //System.out.println(s);
                }
                if (opcode == 0) {
                    throw new InputMismatchException("Invalid instruction: " + line);
@@ -59,10 +60,11 @@ public class Main {
                opcodes.add(opcode);
            }
 
-           System.out.println("\n");
+           //System.out.println("\n");
            for (int i : opcodes) {
                String hex = Integer.toHexString(i);
                System.out.println(hex);
+               OP.add(hex);
            }
            writeOpcodes(opcodes);
        }
@@ -70,6 +72,7 @@ public class Main {
             System.out.println(e.getMessage());
             System.exit(-1);
         }
+       test(OP);
     }
 
     //call the right function
@@ -313,5 +316,25 @@ public class Main {
             iterator++;
         }
         fileWriter.close();
+    }
+
+    static void test(ArrayList <String> j){
+        ArrayList<String>  e = new ArrayList<>();
+        String [] q = {"123", "e0" , "ee", "1546" , "2443", "33ef", "49fc", "5170", "61ac", "7eab", "87a0","8091", "83e2" , "8733" ,"8cd4" ,"8385" ,"8506",
+                "8297", "870e","9560","a123", "b92b", "c733", "d3bf", "e29e", "e0a1" , "f207" ,"f30a" ,"f115" ,"f818", "f21e", "f329", "f233", "f355" ,"f465"};
+
+        for(int i =0; i<35;i++ ){
+            e.add(q[i]);
+
+        }
+        if(e.equals(j)){
+
+            System.out.println("Assembler working perfectly");
+        }else
+        {
+            System.out.println("Invalid file !!");
+        }
+
+
     }
 }
