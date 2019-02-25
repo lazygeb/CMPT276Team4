@@ -361,7 +361,7 @@ class Chip8{
     //     let count = getTime() + (seconds & 0xfffff) * 1000; 
     //     return count;
     // }
-    // millispan(start){ // for step
+    // millispan(start){ // for step()
     //     let d = millicount() - start;
     //     if (d<0){
     //         d += 0x100000 * 1000;
@@ -372,6 +372,17 @@ class Chip8{
     // step(opcode){
     //     let opcode = this.memory[this.programCounter+1] << 8 | this.memory[this.programCounter + 1];
     // }
+    fetch(){
+    	this.programCounter += 2;
+    	return this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1];
+    }
+    step(){
+    	if (this.waitForKeyFlag === true){
+    		return
+    	}
+    	let savedopcode = fetch();
+    	this.oneCycle(savedopcode);
+    }
 
 
     /**
