@@ -40,9 +40,7 @@ function startEmulator(usrFile) {
 
     //If click step forward -> move forward one opcode
     document.getElementById("stepforward").onclick = function() { 
-        // chip.oneCycle(Chip8.lastOpcode);
-        // chip.step(Chip8.lastOpcode);
-        chip.step();
+        chip.runEmulator();
         chip.updateHTMLLogMessage("Stepped Forward");
     };
     
