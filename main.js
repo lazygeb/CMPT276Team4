@@ -52,12 +52,12 @@ function startEmulator(usrFile) {
 
     //If click step forward -> move forward one opcode
     
-        document.getElementById("stepforward").onclick = function() { 
-			if (pauseflag == true){
-				chip.runEmulator();
-				chip.updateHTMLLogMessage("Stepped Forward");
-			}
-        };
+    document.getElementById("stepforward").onclick = function() { 
+		if (pauseflag == true){
+			chip.runEmulator();
+			chip.updateHTMLLogMessage("Stepped Forward");
+		}
+    };
     
 
     
