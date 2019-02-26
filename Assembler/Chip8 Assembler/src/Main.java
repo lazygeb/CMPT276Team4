@@ -32,7 +32,11 @@ public class Main {
         boolean test = false;
         Path path;
        try {
-           if (args.length > 1 && args[1].equalsIgnoreCase("--test")) {
+           if (args.length > 1) {
+               //System.out.println("Err: Too many arguments. Only use 1. Please see instructions document.");
+               throw new IllegalArgumentException("Err: Too many arguments. Only use 1. Please see instructions document.");
+           }
+           else if (args[0].equalsIgnoreCase("--test")) {
                test = true;
                path = Paths.get("src/testInstructions.txt");
            }
@@ -73,18 +77,18 @@ public class Main {
            //System.out.println("\n");
            for (int i : opcodes) {
                String hex = Integer.toHexString(i);
-               System.out.println(hex);
+               //System.out.println(hex);
                OP.add(hex);
            }
            writeOpcodes(opcodes);
+           if (test) {
+               test(OP);
+           }
        }
-       catch (InputMismatchException e){
+       catch (Exception e){
             System.out.println(e.getMessage());
             System.exit(-1);
         }
-       if (test) {
-           test(OP);
-       }
     }
 
     //call the right function
