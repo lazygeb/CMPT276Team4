@@ -29,30 +29,36 @@ function startEmulator(usrFile) {
     //window.requestAnimationFrame(chip.runEmulator());
 
     //If click  pause -> clear setinterval
-    if (pauseflag == false){
-        document.getElementById("pause").onclick = function() {
-            window.clearInterval(runEmulator);
-            chip.updateHTMLLogMessage("Emulator Paused");
-        };
-        pauseflag = true;
-    }
+   
+    document.getElementById("pause").onclick = function() {
+		if (pauseflag == false){
+			window.clearInterval(runEmulator);
+			chip.updateHTMLLogMessage("Emulator Paused");
+			pauseflag = true;
+		}
+    };
+    
 
     //If click  resume -> run emulator is true
-    if (pauseflag == true){
-        document.getElementById("resume").onclick = function() {
-    	    runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); 
+	document.getElementById("resume").onclick = function() {
+		if (pauseflag == true){
+			runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); 
     		chip.updateHTMLLogMessage("Emulator Resumed");
-    	};
-        pauseflag = false;
-    }
+			pauseflag = false;
+		}
+    };
+    
+    
 
     //If click step forward -> move forward one opcode
-    if (pauseflag == true){
+    
         document.getElementById("stepforward").onclick = function() { 
-            chip.runEmulator();
-            chip.updateHTMLLogMessage("Stepped Forward");
+			if (pauseflag == true){
+				chip.runEmulator();
+				chip.updateHTMLLogMessage("Stepped Forward");
+			}
         };
-    }
+    
 
     
     //if delaytimer or soundtimer nonzero, function will be added to queue at a rate of 1s 
