@@ -11,7 +11,7 @@ These delays do not affect our schedule much as we have completed the assembler 
 
 All major bugs from last release have been fixed. Specifically, sound now works with external roms and the speed of the keyboard has significantly improved. Refer to the [document](#Emulator-bugs) for a detailed list of the bugs fixed. Minor bugs like the the ball glitching when hitting the paddle will be added to the backlog and fixed for next release. The rom still has to be copy and pasted in to a text file to be run. 
 
-For testing, last release we decided to assign someone to research on jest and if it was worth using. The results from that was it was too time consuming to use jest and the google chrome debugger will do the job just fine. As a result, for the future releases, we will be using the google chrome debugger to test out or code. 
+For testing, last release we decided to assign someone to research on jest and if it was worth using. The results from that was it was too time consuming to use jest and the google chrome debugger will do the job just fine. As a result, for the future releases, we will be using the google chrome debugger to test out our code. 
 
 For our next release, it will be the same as we have planned. We will have the game snake done and polished with no bugs. Any bugs and features unfinished from this release will also be completed for next release.
 
@@ -32,6 +32,18 @@ To run the emulator, follow these instructions:
 2) Click on “choose file” under file input
 3) Navigate to the rom folder and open the maze.txt example file
 4) Dismiss the alert and press the start emulation button
+
+
+## **README Visualizer Step Controls**
+
+The visualizer has pause functionality, resume functionality and step forward functionality. All of this is indicated within the log as well. The step backwards functionality will be done for next release.
+
+To use the step controls, follow these instructions:
+
+1) While the emulator is running, click on the pause icon (two vertical bars)
+2) While the emulator is in the pause state, you may either press the resume icon (arrow to the right) or the step forward icon (the "+1" icon)
+
+The "-1" icon currently does nothing
 
 
 ## **README Assembler**
