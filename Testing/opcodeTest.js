@@ -485,13 +485,13 @@ function FX07() {
     // if it didn't go to zero then it is false
     let works = true;
     for (let i = 0x00; i <= 0x0F; i++){
-        let p1 = 0xF018; 
+        let p1 = 0xF007; 
         let p2 = i;
         let opcode = p1 | p2 << 8 ;
         var rand = Math.floor((Math.random() * 1000) + 1);
         chip.delayTimer = rand;
         chip.oneCycle(opcode);
-        if (chip.soundTimer !== chip.register[i]) {
+        if (chip.register[i] !== chip.delayTimer) {
             works = false;
         }
         if (chip.delayTimer !== 0) {
@@ -506,71 +506,6 @@ function FX07() {
     }
 }
 
-function FX0A() {
-    //FX0A  wait for keypress, store hex value of key in VX 
-    let works = true;
-    for (let i = 0x00; i <= 0x0F; i++){
-        let p1 = 0xF00A; 
-        let p2 = i;
-        let opcode = p1 | p2 << 8 ;
-    
-        //key pressed has been pressed
-        // given that a key is pressed so key != undefined 
-        // gets key, returns key so v[i] == keyPressed aka waitKey
-        chip.waitKey = i; 
-        //console.log("se   " +  chip.waitKey);
-        chip.oneCycle(opcode);
-        //console.log("te   " +  chip.register[i]);
-        if (chip.register[i] !== i) {
-            works = false;
-        }
-    }
-        if (!works) {
-            console.log("Opcode Fx0A: Failed");
-        }
-        else {
-            console.log("Opcode Fx0A: Pass");
-        }
-
-    chip.reset();
-
-    //stored into vx
-    //key not pressed 
-    //keypressed runs again until rand says that key has been pressed
-    //check if key = vx
-
-    var rand = Math.floor((Math.random() * 10) + 1);
-    chip.waitForKeyFlag = false;
-    
-    if (chip.waitForKeyFlag === false ) {
-        //simulate repeating when no key is pressed
-        var rep = setInterval(function() {
-            chip.oneCycle(0xF10A);
-
-            if(rand === 0){ //pretend key has been pressed
-                clearInterval(rep);
-
-                chip.waitKey = Math.floor((Math.random() * 15) + 0);
-                var temp = chip.waitKey;
-                
-                chip.oneCycle(0xF10A);
-
-                if (chip.register[1] !== temp) {
-                    works = false;
-                }
-                if (!works) {
-                    console.log("Opcode Fx0A: Failed");
-                }
-                else {
-                    console.log("Opcode Fx0A: Pass");
-                }
-            }
-
-            rand--; //keeps on going until rand == 0
-        },10);
-    }
-}
-
 function FX18() {
     //FX18      sound_timer := VX 
     //get a random register
@@ -580,7 +515,8 @@ function FX18() {
     // if it didn't go to zero then it is false
 
     let works = true;
-    for (let i = 0x00; i <= 0x0F; i++){
+   //for (let i = 0x00; i <= 0x03; i++){
+        let i = 0x00;
         let p1 = 0xF018; 
         let p2 = i;
         let opcode = p1 | p2 << 8 ;
@@ -595,9 +531,15 @@ function FX18() {
             works = false;
         }
         if (chip.soundTimer !== 0) {
-            setInterval(function(){ chip.startSoundTimer();}, 1000);
+            var run = setInterval(function(){ 
+                chip.startSoundTimer();
+                if (chip.soundTimer == 0) {
+                    clearInterval(run);
+                }
+            }, 1000);
+
         } 
-    }
+    //}
     if (!works) {
         console.log("Opcode Fx18: Failed");
     }
@@ -798,6 +740,70 @@ function FX65(){ //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx 
     else {
         console.log("Opcode Fx65: Failed");
     }
+}
+
+function FX0A() {
+    //FX0A  wait for keypress, store hex value of key in VX 
+    //Purpose: checks if onecycle will keep the same program counter if a key is not pressed.
+    //and if a key is pressed, the program counter will change. 
+    chip.reset();
+
+    var intervalCount = 0;
+    var tempPC = chip.programCounter + 2;
+
+    program = [0xF1, 0x0A, 0xF2, 0x07,];
+    chip.loadProgram(program); //loads Array: program into memory
+    chip.progLength = program.length;
+    chip.logCount = 0;
+
+
+    runEmulator = setInterval(function() {
+        
+        // simulate runEmulator
+        let opcode = chip.memory[chip.programCounter] << 8 | chip.memory[chip.programCounter + 1]; //From reference 1
+        chip.programCounter += 2;
+
+        //onecycle
+        chip.oneCycle(opcode);
+
+        //Simulate Keypress -> on the second interval, pc should increase.
+        if (intervalCount == 1) {
+            chip.keyState[1] = 1;
+            chip.waitKey = 1; 
+            chip.register[1] = 1;
+            chip.waitForKeyFlag = false;
+        }
+
+        //-2 if key == true
+        if (chip.waitForKeyFlag === true) {
+            chip.programCounter -= 2; //re-run same opcode if key is not pressed (& wait for key = true)
+        }
+
+        //if tpc -2 != pc -> problem, only for interval 0 
+        if (intervalCount == 0 && tempPC - 2 != chip.programCounter) {
+            console.log("Opcode Fx0A: Failed");
+            clearInterval(runEmulator);
+        }
+        //if tpc != pc -> problem, only for interval 1 since key has been pressed 
+        if (intervalCount == 1 && tempPC != chip.programCounter) {
+            console.log("Opcode Fx0A: Failed");
+            clearInterval(runEmulator);
+        }
+        
+        if (intervalCount == 1 && tempPC == chip.programCounter) {
+            console.log("Opcode Fx0A: Pass");
+
+            clearInterval(runEmulator);
+        }
+
+        if (intervalCount > 1) {
+            console.log("Opcode Fx0A: Failed");
+            clearInterval(runEmulator);
+        }
+
+        intervalCount++;
+    }, 1);
+
 }
 
 

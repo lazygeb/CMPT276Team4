@@ -44,6 +44,8 @@ class Chip8{
         this.beep = new Audio('./Sound/button-10.wav'); //audio for buzz  
         this.waitForKeyFlag = false; //Flag to signify if program has to wait for keypressed. 
         this.waitKey = undefined; //stores the key code for key pressed
+        this.soundFlag = true;
+        this.delayFlag = true;
 		this.lastOpcode = 0;
 		this.instruction = "";
 		this.logCount = 0;
@@ -102,6 +104,7 @@ class Chip8{
         this.stack = new Array(16);
         this.delayTimer = 0;
         this.soundTimer = 0;
+        this.soundFlag = true;
         this.programCounter = 0x200; //Chip 8 expects programs to be loaded at 0x200
         this.drawFlag = false;
         this.canvasWidth = 64;
@@ -133,25 +136,31 @@ class Chip8{
 
     //Called when DelayTimer is > 0 
     //Decreases by 60 everytime it is called
-    startDelayTimer(){
+    startDelayTimer(delayLoop){
         let ticker = 0;
+        this.delayFlag = true;
+
         while((this.delayTimer > 0) && (ticker <= 60)){
             ticker++;
             this.delayTimer--;
         }
+        
+        if (this.delayTimer == 0) { clearTimeout(delayLoop);}
     }
 
     //Called when SoundTime is > 0
     //Decreases by 60 everytime it is called 
-    startSoundTimer(){
+    startSoundTimer(soundLoop) {
+        this.soundFlag = true;
         let ticker = 0;
-        while((this.soundTimer > 0) && (ticker <= 60)){
+ 
+        this.beep.play(); 
+
+        while((this.soundTimer > 0) && ticker <= 60){
             ticker++;
-            this.soundTimer--;
+            this.soundTimer--;       
         }
-        if (this.soundTimer !== 0){
-            this.beep.play(); 
-        }
+        if (this.soundTimer == 0) { clearTimeout(soundLoop);}
     }
 
     //Maps keyboard input to chip8 hex keyboard
@@ -220,12 +229,6 @@ class Chip8{
 		this.keyState[key] = 0; 
     }
 
-    updateKeys() {
-        //this.keyup();
-		//this.keydown();
-        //this.keyup();
-    }
-
     //For opcode 0xFX0A. Signals to emulator if next opcode should 
     //should be read depending if key was pressed or not
     waitForKeyPressed() {
@@ -274,7 +277,6 @@ class Chip8{
      * Method for running emulator
      */
     runEmulator(){
-        this.updateKeys();
         let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //From reference 1
         this.programCounter += 2;
         this.oneCycle(opcode);
@@ -655,6 +657,14 @@ class Chip8{
                 }
                 break;
         }//increment programCounter by 2 after running oneCycle()
+        if (this.delayTimer !== 0 && this.delayFlag == true) {
+            var delayTimeout = setTimeout(() => { this.startDelayTimer(delayTimeout);}, 1000);
+            this.delayFlag = false;
+        } 
+        if (this.soundTimer !== 0 && this.soundFlag == true) {
+                var soundTimeout = setTimeout(() => {this.startSoundTimer(soundTimeout)}, 1000);
+                this.soundFlag = false; 
+        }
     }
 }
 
