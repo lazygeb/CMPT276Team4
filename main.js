@@ -5,12 +5,13 @@
  * 2. https://blog.teamtreehouse.com/reading-files-using-the-html5-filereader-api
  *      - Used for reading in files
  */
+ 
 
-
+var runEmulator = null;
+var pauseflag = false;
 function main(usrFile) {
         document.getElementById("runTest").onclick = function () { runTest()};
         document.getElementById("startEmulator").onclick = function () { startEmulator(usrFile)};
-
 } 
 
 function startEmulator(usrFile) {
@@ -19,16 +20,72 @@ function startEmulator(usrFile) {
     if (usrFile) {
         chip.loadProgram(prog);
     }
-	setInterval(function(){ chip.runEmulator(); }, 6);
+
+    //click  >> 
+    //click  <<
+    //run like norm
+	runEmulator = setInterval(function() { chip.runEmulator(); }, 1);
     //window.requestAnimationFrame(chip.runEmulator());
 
-    //if delaytimer or soundtimer nonzero, function will be added to queue at a rate of 1s 
-    if (chip.delayTimer !== 0) {
-        setInterval(function(){ chip.startDelayTimer();}, 1000);
-    } 
-    if (chip.soundTimer !== 0) {
-        setInterval(function(){ chip.startSoundTimer(); }, 1000);
-    } 
+    //If click  pause -> clear setinterval
+   
+    document.getElementById("pause").onclick = function() {
+		if (pauseflag == false){
+			window.clearInterval(runEmulator);
+			chip.updateHTMLLogMessage("Emulator Paused");
+			pauseflag = true;
+		}
+    };
+    
+
+    //If click  resume -> run emulator is true
+	document.getElementById("resume").onclick = function() {
+		if (pauseflag == true){
+			runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); 
+    		chip.updateHTMLLogMessage("Emulator Resumed");
+			pauseflag = false;
+		}
+    };
+    
+    
+
+    //If click step forward -> move forward one opcode
+    
+    document.getElementById("stepforward").onclick = function() { 
+		if (pauseflag == true){
+			chip.runEmulator();
+			chip.updateHTMLLogMessage("Stepped Forward");
+		}
+    };
+    
+
+    
+ 
+
+	var translateKeys = {
+	        49: 1,
+            50: 2,
+            51: 3,
+            52: 12,
+            81: 4,
+            87: 5,
+            69: 6,
+            82: 13,
+            65: 7,
+            83: 8,
+            68: 9,
+            70: 14,
+            90: 10,
+            88: 0,
+            67: 11,
+            86: 15,
+					 };
+					 document.addEventListener("keydown", function(event) {
+						 chip.keydown(translateKeys[event.keyCode]);
+					 });
+					 document.addEventListener("keyup", function(event) {
+						 chip.keyup(translateKeys[event.keyCode]);
+					 });
 }
 
 function runTest() {
@@ -40,6 +97,7 @@ inputElement.addEventListener("change", handleFiles, false);
 let file;
 let prog;
 function handleFiles() {
+    window.clearInterval(runEmulator);
     file = this.files[0];
     let reader = new FileReader();
     let result;

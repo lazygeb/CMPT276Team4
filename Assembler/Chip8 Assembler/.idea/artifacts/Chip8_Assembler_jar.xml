@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Chip8 Assembler:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Chip8_Assembler_jar</output-path>
+    <root id="archive" name="Chip8 Assembler.jar">
+      <element id="module-output" name="Chip8 Assembler" />
+    </root>
+  </artifact>
+</component>

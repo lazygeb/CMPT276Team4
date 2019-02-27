@@ -12,7 +12,7 @@
 </style>
         <style>
             body {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif;
                 font-size: 14px;
                 line-height: 1.6;
             }
@@ -23,40 +23,65 @@
     <body>
         <h1 id="cmpt276-chip8-group4">CMPT276-Chip8-Group4</h1>
 <p>Team 4 Members: Gabriele Dal Cengio, Lina Dang-Nguyen, Nishan Ghimire, Mathieu Laflamme, Harman Singh, Calvin So</p>
-<h2 id="release-1"><strong>Release 1</strong></h2>
+<h2 id="release-2"><strong>Release 2</strong></h2>
 <h2 id="summary-of-changes-from-previous-release"><strong>Summary of changes from previous release</strong></h2>
-<p>All planned use cases from release 0 have been completed with some major bugs. These bugs are documented<a href="#Emulator-bugs"><sup>1</sup></a> and will be fixed by release 2. We have tested the following roms on our emulator: Maze, Connect4, Brix, Pong, and Guess. All these roms are functional and the games are able to be played with the keyboard input.</p>
-<p>We have decided to not use node.js as we can just run our program through google chrome, which has a debugger as well<a href="#Main-language-and-libraries-%5BUPDATED%5D"><sup>2</sup></a> . For this release, we did not end up using jest<a href="#Testing-Methods"><sup>3</sup></a> because there was insufficient time to learn it. Instead, we wrote automatized test code for the opcode through javascript and printing if the the test had failed or not. We will dedicate a tester to learn jest to see if it is worth using and will improve our test outcomes for the next release.</p>
-<p>Due to the increase in team members, we have decided to push the completion of the assembler earlier<a href="#Work-Breakdown"><sup>4</sup></a>. This decision was made in an effort to have all our tools built so that the production of the games will be easier. For the visualizer<a href="#Work-Breakdown"><sup>5</sup></a>, the only difference from release 0 is that we are planning to show on the UI when a key is pressed. This is to improve visual feedback so users can see when they press a key. We have also directed our main focus to just having our program be compatible with google chrome. If time permits, we will expand to other browsers.</p>
-<p>The roles have also been changed from release 0 to accommodate each others strengths<a href="#Our-Roles-%5BUPDATED%5D"><sup>6</sup></a>. Multiple people will be working at the same time on different features as the features don't rely on each other. Therefore, all the tasks are started on the same day and do not require a more squential order.</p>
+<p>Almost all the planned use cases from release 1 have been completed. The first feature that has not been completed is the backwards function due to unexpected development issues. Our original design did not show the sprites correctly and had memory errors so we had to brainstorm new designs, which lead to development being delayed. We have started development again and will complete the feature by the next release. The last feature that has not been completed was the visualizer showing keyboard input as time did not permit for the development of this feature. It has been added to our backlog and will be completed for the next release.</p>
+<p>These delays do not affect our schedule much as we have completed the assembler ahead of schedule. The assembler is written in java and is fully functional and ready to be used for game development. For our visualizer, we have implemented a pause, play and step forward functionality. The display of the memory, stack and registers are also fully functioning.</p>
+<p>All major bugs from last release have been fixed. Specifically, sound now works with external roms and the speed of the keyboard has significantly improved. Refer to the <a href="#Emulator-bugs">document</a> for a detailed list of the bugs fixed. Minor bugs like the the ball glitching when hitting the paddle will be added to the backlog and fixed for next release. The rom still has to be copy and pasted in to a text file to be run.</p>
+<p>For testing, last release we decided to assign someone to research on jest and if it was worth using. The results from that was it was too time consuming to use jest and the google chrome debugger will do the job just fine. As a result, for the future releases, we will be using the google chrome debugger to test out or code.</p>
+<p>For our next release, it will be the same as we have planned. We will have the game snake done and polished with no bugs. Any bugs and features unfinished from this release will also be completed for next release.</p>
+<h3 id="list-of-all-system-changes">List of all system changes:</h3>
+<ul>
+<li>UI: New Icon buttons for the visualizer and improved keyboard input</li>
+<li>Emulator: Clearer graphics and sound works</li>
+<li>Visualizer: Added play, pause, step forward functionality and display of stack, register and memory.</li>
+</ul>
 <h2 id="readme-emulator"><strong>README Emulator</strong></h2>
-<p>We achieved what we wanted to achieve during the first release which was a working emulator connected to html elements. We wanted to display graphics to the canvas element as well as keyboard input, sound output and file input. Through testing we found we have quite a few bugs (outlined in this <a href="#Emulator-bugs">document</a> and will be fixing them all within the next release.</p>
-<p>To demonstrate what we have working thus far, follow these instructions:</p>
+<p>The development of the Emulator has been fully completed in terms on functionality. The bugs from release 2 have been completed except two minor bugs.</p>
+<p>To run the emulator, follow these instructions:</p>
 <ol>
 <li>Open index.html in google chrome</li>
 <li>Click on “choose file” under file input</li>
 <li>Navigate to the rom folder and open the maze.txt example file</li>
 <li>Dismiss the alert and press the start emulation button</li>
 </ol>
-<p>When the bug fixes are done we will demonstrate more in greater detail in the next release</p>
+<h2 id="readme-assembler"><strong>README Assembler</strong></h2>
+<p>The assembler follows instructions from the following reference: <a href="http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#memmap">http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#memmap</a>. The assembler transforms assembly language instructions into chip8 supported opcodes. For example it will take SE V3 VA and output 53A0. Because we have created our own assembler, the assembly language used has been slightly modified from the reference noted above.</p>
+<h3 id="how-to-run-it">How to run it:</h3>
+<ul>
+<li>In the same folder as this document, you’ll find a .jar file and an intellij project folder.</li>
+<li>To run assembler, navigate to your java environment and run something like the following command: java -jar Chip8 Assembler.jar “fileDirectoryForAssemblyLangFile.txt”</li>
+<li>The assembler will place your opcode file in the same folder as the .jar file. It will be named programFile.txt</li>
+</ul>
+<h3 id="how-it-works">How it works:</h3>
+<ul>
+<li>The assembler reads in 1 line at a time, so only place 1 instruction per line.</li>
+<li>It then splits the line into tokens, using the space “ “ as a separator.</li>
+<li>When writing instructions, only place 1 per line and separate each part of the instruction by a space, nothing else (no commas).</li>
+<li>Please see the exampleAssembly.txt file for an example of each instruction being used.</li>
+</ul>
 <h2 id="readme-testing"><strong>README Testing</strong></h2>
-<p>The html page will have a button called &quot;Run Opcode Tests&quot;, which will automatically test all the opcodes to see if it passed or failed.</p>
+<p>The html page will have a button called &quot;Run Opcode Tests&quot;, which will automatically test all the opcodes to see if it passed or failed. Please use the Google Chrome browser. To see wheter the opcodes have passed or not, right click and select inspect. Then go to the console tab in the inspector and this will display text as to if the tests have passed.</p>
 <h2 id="emulator-bugs"><strong>Emulator Bugs</strong></h2>
 <p>These bugs have been found through unit testing and integrated testing by using public domain roms provided through the following website: [<a href="https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html">https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html</a>]</p>
-<h3 id="general-bugs-consistent-with-all-the-games-tested"><strong>General bugs consistent with all the games tested</strong></h3>
+<h3 id="fixed-bugs-from-last-release"><strong>Fixed bugs from last release</strong></h3>
 <ol>
-<li>Sound works with the automatized testing. However, it will not work in the games.</li>
-<li>Keyboard input seems to hold up the program and take too long to be registered.</li>
-<li>Rom input currently does not work properly. The input has to be copy and pasted to text files in order to run.</li>
-<li>Loading a game after one has already been loaded will cause the graphics to merge. The previous game and newly imputed game will run at the same time.</li>
+<li>Sound works with the automatized testing and in external roms.</li>
+<li>Improved input keyboard delay from 70ms to 0.6ms on average</li>
+<li>Game can be loaded one after another without any glitches.</li>
+<li>Score updates in games (Pong, Brix)</li>
 </ol>
-<h3 id="bugs-from-specific-games"><strong>Bugs from specific games</strong></h3>
-<p><strong>Pong</strong></p>
-<p>Paddle graphics occasionally glitch when the ball hits the paddle. The ball often looks distorted when hitting the bottom of the screen
-Score is not updated. We are not sure if this is a sprite issue or a register issue and will have to look into it more.</p>
-<p><strong>Brick Breaker</strong></p>
-<p>Just like pong, the score does not update. It is also not possible to lose. Once all lives are lost, the ball will spawn out of the paddle infinitely.</p>
-<p>We will be assigning people dedicated to tackle these bugs and have a fully functioning emulator by release 2.</p>
+<h3 id="bugs-that-have-not-been-fixed"><strong>Bugs that have not been fixed</strong></h3>
+<ol>
+<li>Clicking the run emulator multiple times causes it to glitch</li>
+<li>Paddle graphics glitch when the ball hits it</li>
+<li>Rom input currently does not work properly. The input has to be copy and pasted to text files in order to run.</li>
+<li>Games don’t end after all lives have been used up.</li>
+</ol>
+<h3 id="new-bugs"><strong>New bugs</strong></h3>
+<ol>
+<li>Log delay in visualizer lags the entire program substantially</li>
+</ol>
 <hr>
 <h2 id="introduction"><strong>Introduction</strong></h2>
 <p>Chip-8 is an interpreter, which was developed in the 70s to run programs such as games like Pong, Tetris, and Pac-Man.</p>
@@ -69,13 +94,19 @@ Score is not updated. We are not sure if this is a sprite issue or a register is
 <li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Input keyboard commands</li>
 <li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> External Rom inputs</li>
 </ul>
-<h4 id="release-1-runnable-visualizer--assembler">Release 1: Runnable Visualizer &amp; Assembler</h4>
+<h4 id="release-1-runnable-visualizer--assembler-completed">Release 1: Runnable Visualizer &amp; Assembler [COMPLETED]</h4>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Display log for registers, memory, pc, index, sound timer, delay timer, stack</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Provide interface feedback for users by showing keyboard presses</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Allow user control by creating buttons to step through, go back and pause the program</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Assembler can change mnemonics to opcodes, which can be ran in the emulator</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Emulator and Visualizer will be fully functional on Google Chrome</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Display log for registers, memory, pc, index, sound timer, delay timer, stack</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Provide interface feedback for users by showing keyboard presses (UNFINISHED)</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Allow user control by creating buttons to step through, go back and pause the program (STEP BACK UNIFINISHED)</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Assembler can change mnemonics to opcodes, which can be ran in the emulator</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Emulator and Visualizer will be fully functional on Google Chrome</li>
+</ul>
+<h4 id="release-2-completed-snake-game--completed-visualizer">Release 2: Completed Snake Game &amp; Completed Visualizer</h4>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Provide interface feedback for users by showing keyboard presses (unfinished from release 1)</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Allow user to step back one step (unfinished from release 1)</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Have snake game polished and playable</li>
 </ul>
 <h2 id="table-of-contents"><strong>Table of Contents</strong></h2>
 <ul>
@@ -83,7 +114,7 @@ Score is not updated. We are not sure if this is a sprite issue or a register is
 <p><a href="#Project-Organization">Project Organization</a></p>
 <ul>
 <li><a href="#Details-of-our-software-methodology">Details of our software methodology</a></li>
-<li><a href="#Our-Roles-%5BUPDATED%5D">Our Roles [UPDATED]</a></li>
+<li><a href="#Our-Roles">Our Roles</a></li>
 </ul>
 </li>
 <li>
@@ -96,14 +127,14 @@ Score is not updated. We are not sure if this is a sprite issue or a register is
 <li>
 <p><a href="#Hardware-and-Software-Requirements">Hardware and Software Requirements</a></p>
 <ul>
-<li><a href="#Testing-Methods">Testing Methods [UPDATED]</a></li>
-<li><a href="#Main-Language-and-Libraries-%5BUPDATED%5D">Main Language and Libraries [UPDATED]</a></li>
+<li><a href="#Testing-Methods">Testing Methods</a></li>
+<li><a href="#Main-Language-and-Libraries">Main Language and Libraries </a></li>
 </ul>
 </li>
 <li>
 <p><a href="#Work-Breakdown-and-Project-Schedule">Work Breakdown and Project Schedule</a></p>
 <ul>
-<li><a href="#Timeline">Timeline [UPDATED]</a></li>
+<li><a href="#Timeline-%5BUPDATED%5D">Timeline [UPDATED]</a></li>
 <li><a href="#Work-breakdown">Work breakdown [UPDATED]</a></li>
 </ul>
 </li>
@@ -114,7 +145,7 @@ Score is not updated. We are not sure if this is a sprite issue or a register is
 <h2 id="project-organization"><strong>Project Organization</strong></h2>
 <h3 id="details-of-our-software-methodology">Details of Our Software Methodology</h3>
 <p>For our use, <em>incremental development</em> is the most efficient and effective methodology as we will be testing for each release and making sure it is able to submit by each release. It also allows for improvements on the features, which means we can get feedback and make any necessary changes if time permits.</p>
-<h3 id="our-roles-updated">Our Roles [UPDATED]</h3>
+<h3 id="our-roles">Our Roles</h3>
 <p>Gabe: Project Manager/UI</p>
 <p>Calvin: Tester</p>
 <p>Mathieu: Developer</p>
@@ -142,13 +173,13 @@ Score is not updated. We are not sure if this is a sprite issue or a register is
 <p><em>System Testing</em> - where all the components of the program are combined into one program and tested. This will be done by the member who has been assigned the role of tester and will commence once the visualizer and emulator has been completed as these two parts go together.</p>
 </li>
 </ul>
-<h3 id="main-language-and-libraries-updated">Main language and libraries [UPDATED]</h3>
+<h3 id="main-language-and-libraries">Main language and libraries</h3>
 <p>We will be using <em>Javascript</em> in order to render the virtual machine. To debug our code, we will be using the <em>Chrome Browser</em>.</p>
 <h2 id="work-breakdown-and-project-schedule"><strong>Work Breakdown and Project Schedule</strong></h2>
 <h3 id="timeline-updated">Timeline [UPDATED]</h3>
-<p><img src="https://cdn.discordapp.com/attachments/513589409661059082/542596447262998538/Gaant.png" alt="Image of First Gantt Timeline"></p>
+<p><img src="https://cdn.discordapp.com/attachments/513589409661059082/550127862578020362/Gaant.png" alt="Image of First Gantt Timeline"></p>
 <h3 id="work-breakdown">Work Breakdown</h3>
-<h3 id="release-1-feb-6-2019-completed"><strong>Release 1: Feb 6 2019</strong> [COMPLETED]</h3>
+<h3 id="release-1-feb-6-2019"><strong>Release 1: Feb 6 2019</strong></h3>
 <p>Deliverables for Release 1:</p>
 <ul>
 <li>Emulator: Finish development and testing by Feb 3</li>
@@ -205,7 +236,7 @@ Score is not updated. We are not sure if this is a sprite issue or a register is
 </tr>
 </tbody>
 </table>
-<h3 id="release-2-feb-27-2019-updated"><strong>Release 2: Feb 27 2019</strong> [UPDATED]</h3>
+<h3 id="release-2-feb-27-2019"><strong>Release 2: Feb 27 2019</strong></h3>
 <p>Deliverables for Release 2:</p>
 <ul>
 <li>Visualizer: Finish development and testing by Feb 20</li>
@@ -237,7 +268,7 @@ Score is not updated. We are not sure if this is a sprite issue or a register is
 <td>Feb 9</td>
 </tr>
 <tr>
-<td>Display key press during execution</td>
+<td>Display key press during execution    <strong>(DELAYED)</strong></td>
 <td>1 day</td>
 <td>Feb 10</td>
 </tr>
@@ -257,7 +288,7 @@ Score is not updated. We are not sure if this is a sprite issue or a register is
 <td>Feb 14</td>
 </tr>
 <tr>
-<td>Step-backwards one instruction</td>
+<td>Step-backwards one instruction  <strong>(DELAYED)</strong></td>
 <td>3 days</td>
 <td>Feb 20</td>
 </tr>
@@ -299,6 +330,7 @@ Score is not updated. We are not sure if this is a sprite issue or a register is
 <p>Deliverables for Release 3:</p>
 <ul>
 <li>Snake (Game 1): Finish development and testing by Mar 9</li>
+<li>Step backwards for Visualizer: Finish by Mar 4</li>
 </ul>
 <p>Work Breakdown: <strong>Snake</strong></p>
 <table>
@@ -310,6 +342,16 @@ Score is not updated. We are not sure if this is a sprite issue or a register is
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>Display key press during execution</td>
+<td>3 day</td>
+<td>Feb 10</td>
+</tr>
+<tr>
+<td>Step-backwards one instruction</td>
+<td>6 days</td>
+<td>Mar 4</td>
+</tr>
 <tr>
 <td>Snake</td>
 <td>2 weeks</td>
