@@ -5,8 +5,10 @@
  * 2. https://blog.teamtreehouse.com/reading-files-using-the-html5-filereader-api
  *      - Used for reading in files
  */
+ 
 
 var runEmulator = null;
+var pauseflag = false;
 function main(usrFile) {
         document.getElementById("runTest").onclick = function () { runTest()};
         document.getElementById("startEmulator").onclick = function () { startEmulator(usrFile)};
@@ -26,16 +28,37 @@ function startEmulator(usrFile) {
     //window.requestAnimationFrame(chip.runEmulator());
 
     //If click  pause -> clear setinterval
-    document.getElementById("pause").onclick = function() { 
-		window.clearInterval(runEmulator); 
-		chip.updateHTMLLogMessage("Emulator Paused");
+   
+    document.getElementById("pause").onclick = function() {
+		if (pauseflag == false){
+			window.clearInterval(runEmulator);
+			chip.updateHTMLLogMessage("Emulator Paused");
+			pauseflag = true;
+		}
     };
+    
 
-    //If click  pause -> clear setinterval
-    document.getElementById("resume").onclick = function() { 
-	    runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); 
-		chip.updateHTMLLogMessage("Emulator Resumed");
-	};
+    //If click  resume -> run emulator is true
+	document.getElementById("resume").onclick = function() {
+		if (pauseflag == true){
+			runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); 
+    		chip.updateHTMLLogMessage("Emulator Resumed");
+			pauseflag = false;
+		}
+    };
+    
+    
+
+    //If click step forward -> move forward one opcode
+    
+    document.getElementById("stepforward").onclick = function() { 
+		if (pauseflag == true){
+			chip.runEmulator();
+			chip.updateHTMLLogMessage("Stepped Forward");
+		}
+    };
+    
+
     
  
 

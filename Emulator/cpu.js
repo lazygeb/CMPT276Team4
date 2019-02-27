@@ -49,6 +49,9 @@ class Chip8{
 		this.lastOpcode = 0;
 		this.instruction = "";
 		this.logCount = 0;
+        this.chiptime = 0;
+        this.chiptime2 = 0;
+        this.millitime = 0;
     }
 
  
@@ -117,6 +120,8 @@ class Chip8{
         this.loadProgram(program); //loads Array: program into memory
         this.progLength = program.length;
 		this.logCount = 0;
+        this.chiptime = 0;
+        this.chiptime2 = 0;
 
         //fill graphics array with 0's
         for (let i = 0; i < this.graphics.length; i++) {
@@ -351,7 +356,6 @@ class Chip8{
 		document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
 		//debug.log(this.lastOpcode + " " + opcode);
     }
-
 
     /**
      * @method oneCycle
