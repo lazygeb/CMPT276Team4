@@ -5,9 +5,11 @@
  * 2. https://blog.teamtreehouse.com/reading-files-using-the-html5-filereader-api
  *      - Used for reading in files
  */
+ 
 
 let stepBackward = new Array();
 var runEmulator = null;
+var pauseflag = false;
 function main(usrFile) {
         document.getElementById("runTest").onclick = function () { runTest()};
         document.getElementById("startEmulator").onclick = function () { startEmulator(usrFile)};
@@ -31,12 +33,10 @@ function startEmulator(usrFile) {
     //click  >>
     //click  <<
     //run like norm
-	runEmulator = setInterval(function(){ chip.runEmulator(); }, 1);
+	runEmulator = setInterval(function() { chip.runEmulator(); }, 1);
     //window.requestAnimationFrame(chip.runEmulator());
 
     //If click  pause -> clear setinterval
-    var i = 1;
-
     document.getElementById("pause").onclick = function() {
 		window.clearInterval(runEmulator);
 		chip.updateHTMLLogMessage("Emulator Paused");
@@ -46,20 +46,31 @@ function startEmulator(usrFile) {
         console.log(otherChip.programCounter.toString(16));
         this.chip = otherChip.deepCopy(chip);
     };
-
-    //If click  pause -> clear setinterval
-    document.getElementById("resume").onclick = function() { 
-	    runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); 
-		chip.updateHTMLLogMessage("Emulator Resumed");
-	};
     
-    //if delaytimer or soundtimer nonzero, function will be added to queue at a rate of 1s 
-    if (chip.delayTimer !== 0) {
-        setInterval(function(){ chip.startDelayTimer();}, 1000);
-    } 
-    if (chip.soundTimer !== 0) {
-        setInterval(function(){ chip.startSoundTimer(); }, 1000);
-    } 
+
+    //If click  resume -> run emulator is true
+	document.getElementById("resume").onclick = function() {
+		if (pauseflag == true){
+			runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); 
+    		chip.updateHTMLLogMessage("Emulator Resumed");
+			pauseflag = false;
+		}
+    };
+    
+    
+
+    //If click step forward -> move forward one opcode
+    
+    document.getElementById("stepforward").onclick = function() { 
+		if (pauseflag == true){
+			chip.runEmulator();
+			chip.updateHTMLLogMessage("Stepped Forward");
+		}
+    };
+    
+
+    
+ 
 
 	var translateKeys = {
 	        49: 1,

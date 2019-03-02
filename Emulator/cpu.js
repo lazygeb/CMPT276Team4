@@ -44,8 +44,14 @@ class Chip8{
         this.beep = new Audio('./Sound/button-10.wav'); //audio for buzz  
         this.waitForKeyFlag = false; //Flag to signify if program has to wait for keypressed. 
         this.waitKey = undefined; //stores the key code for key pressed
+        this.soundFlag = true;
+        this.delayFlag = true;
 		this.lastOpcode = 0;
-        this.instruction = "";
+		this.instruction = "";
+		this.logCount = 0;
+        this.chiptime = 0;
+        this.chiptime2 = 0;
+        this.millitime = 0;
     }
 
 
@@ -101,6 +107,7 @@ class Chip8{
         this.stack = new Array(16);
         this.delayTimer = 0;
         this.soundTimer = 0;
+        this.soundFlag = true;
         this.programCounter = 0x200; //Chip 8 expects programs to be loaded at 0x200
         this.drawFlag = false;
         this.canvasWidth = 64;
@@ -112,6 +119,9 @@ class Chip8{
         let program = [0xE1, 0x9E, 0xE1, 0xA1, 0xE1, 0xA1];  //default program
         this.loadProgram(program); //loads Array: program into memory
         this.progLength = program.length;
+		this.logCount = 0;
+        this.chiptime = 0;
+        this.chiptime2 = 0;
 
         //fill graphics array with 0's
         for (let i = 0; i < this.graphics.length; i++) {
@@ -131,25 +141,31 @@ class Chip8{
 
     //Called when DelayTimer is > 0 
     //Decreases by 60 everytime it is called
-    startDelayTimer(){
+    startDelayTimer(delayLoop){
         let ticker = 0;
+        this.delayFlag = true;
+
         while((this.delayTimer > 0) && (ticker <= 60)){
             ticker++;
             this.delayTimer--;
         }
+        
+        if (this.delayTimer == 0) { clearTimeout(delayLoop);}
     }
 
     //Called when SoundTime is > 0
     //Decreases by 60 everytime it is called 
-    startSoundTimer(){
+    startSoundTimer(soundLoop) {
+        this.soundFlag = true;
         let ticker = 0;
-        while((this.soundTimer > 0) && (ticker <= 60)){
+ 
+        this.beep.play(); 
+
+        while((this.soundTimer > 0) && ticker <= 60){
             ticker++;
-            this.soundTimer--;
+            this.soundTimer--;       
         }
-        if (this.soundTimer !== 0){
-            this.beep.play(); 
-        }
+        if (this.soundTimer == 0) { clearTimeout(soundLoop);}
     }
 
     //Maps keyboard input to chip8 hex keyboard
@@ -218,12 +234,6 @@ class Chip8{
 		this.keyState[key] = 0; 
     }
 
-    updateKeys() {
-        //this.keyup();
-		//this.keydown();
-        //this.keyup();
-    }
-
     //For opcode 0xFX0A. Signals to emulator if next opcode should 
     //should be read depending if key was pressed or not
     waitForKeyPressed() {
@@ -273,7 +283,6 @@ class Chip8{
      */
     runEmulator(){
         pushThisChip();
-        this.updateKeys();
         let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //From reference 1
         this.programCounter += 2;
         this.oneCycle(opcode);
@@ -298,7 +307,10 @@ class Chip8{
             document.getElementById("V" + i + "-Reg").innerHTML = this.register[i];
         }
         document.getElementById("PC").innerHTML = this.programCounter;
-        document.getElementById("I").innerHTML = this.indexRegister;		
+        document.getElementById("I").innerHTML = this.indexRegister;
+		document.getElementById("ST").innerHTML = this.soundTimer;
+		document.getElementById("DT").innerHTML = this.delayTimer;
+		document.getElementById("SP").innerHTML = this.stackPointer.toString(16);
 
 		//if (this.lastOpcode !== opcode) {
 			//var currLog = "<p>" + opcode + "</p> <br>";
@@ -316,8 +328,17 @@ class Chip8{
 
 			let time = currentDate.toLocaleTimeString('en-US');
 
-			let currLog =  "<p>" + time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "</p> <br>";
-			document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
+			const paragraph = document.createElement('p');
+			paragraph.innerHTML = time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "<br>";
+			document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
+			if (this.logCount < 200) {
+				this.logCount++;
+			} else {
+				document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);
+			}
+
+			//let currLog =  "<p>" + time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "</p> <br>";
+			//document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
 		}
 
 		this.lastOpcode = parseInt(opcode, 16);
@@ -329,8 +350,11 @@ class Chip8{
 
 		let time = currentDate.toLocaleTimeString('en-US');
 
-		let currLog =  "<p>" + time + ": " + "<strong>" + message + "</strong>" + "</p> <br>";
-		document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
+		const paragraph = document.createElement('p');
+		paragraph.innerHTML = time + ": " + "<strong>" + message + "</strong>" + "<br>";
+		//let currLog =  <p> + time + ": " + "<strong>" + message + "</strong>" + "</p> <br>";
+		//document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
+		document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
 		//debug.log(this.lastOpcode + " " + opcode);
     }
 
@@ -641,9 +665,9 @@ class Chip8{
                         break;
                     case 0x33: //opcode 0xFx33 --> LD B, Vx -- store BCD representation of Vx in memory locations I, I+1 & I + 2
                         tempVal = this.register[reg1] / 100;
-                        this.memory[this.indexRegister] = tempVal; //hundredth digit of Vx
+                        this.memory[this.indexRegister] = Math.trunc(tempVal);
                         tempVal = this.register[reg1] - (this.memory[this.indexRegister] * 100);
-                        this.memory[this.indexRegister + 1] = tempVal / 10; //tenth digit
+                        this.memory[this.indexRegister + 1] = Math.trunc(tempVal / 10);
                         tempVal = tempVal - (this.memory[this.indexRegister + 1] * 10);
                         this.memory[this.indexRegister + 2] = tempVal;
 						this.instruction = "LD B V" + reg1.toString(16);
@@ -655,7 +679,7 @@ class Chip8{
 						this.instruction = "LD I V" + reg1.toString(16);
                         break;
                     case 0x65: //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx from memory starting at I
-                        for (let i = 0; i < this.register[reg1]; i++) {
+                        for (let i = 0; i <= reg1; i++) {
                             this.register[i] = this.memory[this.indexRegister + i];
                         }
 						this.instruction = "LD V" + reg1.toString(16) + " I";
@@ -663,6 +687,14 @@ class Chip8{
                 }
                 break;
         }//increment programCounter by 2 after running oneCycle()
+        if (this.delayTimer !== 0 && this.delayFlag == true) {
+            var delayTimeout = setTimeout(() => { this.startDelayTimer(delayTimeout);}, 1000);
+            this.delayFlag = false;
+        } 
+        if (this.soundTimer !== 0 && this.soundFlag == true) {
+                var soundTimeout = setTimeout(() => {this.startSoundTimer(soundTimeout)}, 1000);
+                this.soundFlag = false; 
+        }
     }
 }
 

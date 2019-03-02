@@ -87,7 +87,7 @@
 						 <h3>Log</h3>
 						 <div class="mriWrapper">
 							 <div id="log">
-								 <p> Welcome to group 4's chip8 emulator! <br> Pick a rom and click <b>Run Emulation</b> to start! <br> <p>
+								 <p id="welcome"> Welcome to group 4's chip8 emulator! <br> Pick a rom and click <b>Run Emulation</b> to start! <br> <p>
 						     </div>
 						 </div>
 					 </section>
@@ -96,14 +96,15 @@
 		
 		<div class="splitWrapper">
 			<section id="controls">
+			<!--
 				<form id="gameWrapper">
     				<h2 class ="identifier">Game: </h2>
       				<select name="games">
   						<option value="snake">SNAKE</option>
   						<option value="flappy_bird">FLAPPY BIRD</option>
 					</select>
-				</form>
-
+				</form>                       NEXT RELEASE
+				--> 
 				<section id="fileinput">
 					<h2>Rom Input</h2>
 					<input type="file" id="myFile"/>
@@ -117,7 +118,7 @@
 						<img src="Icons/-1.svg" class="icon" title="Step back one frame"></img>
 						<img src="Icons/pause.svg" class="icon" id="pause" title="Pause on current frame"></img>
 						<img src="Icons/play.svg" class="icon" id="resume" title="Resume from current frame"></img>
-						<img src="Icons/+1.svg" class="icon" title="Step forward one frame"></img>
+						<img src="Icons/+1.svg" class="icon" id="stepforward" title="Step forward one frame"></img>
 					</div>
 				</section>			
 
