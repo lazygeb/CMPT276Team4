@@ -272,6 +272,7 @@ class Chip8{
      * Method for running emulator
      */
     runEmulator(){
+        pushThisChip();
         this.updateKeys();
         let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //From reference 1
         this.programCounter += 2;
