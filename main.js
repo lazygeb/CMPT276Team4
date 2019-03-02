@@ -38,15 +38,11 @@ function startEmulator(usrFile) {
 
     //If click  pause -> clear setinterval
     document.getElementById("pause").onclick = function() {
-		window.clearInterval(runEmulator);
-		chip.updateHTMLLogMessage("Emulator Paused");
-        let otherChip = stepBackward.pop();
-        console.log(otherChip.register.toString());
-        console.log(otherChip.stack.toString());
-        console.log(otherChip.programCounter.toString(16));
-        this.chip = otherChip.deepCopy(chip);
-        chip.updateHTML(0x0000);
-        pauseflag = true;
+        if (pauseflag === false) {
+            window.clearInterval(runEmulator);
+            chip.updateHTMLLogMessage("Emulator Paused");
+            pauseflag = true;
+        }
     };
     
 
@@ -58,17 +54,34 @@ function startEmulator(usrFile) {
 			pauseflag = false;
 		}
     };
-    
-    
 
     //If click step forward -> move forward one opcode
-    
     document.getElementById("stepforward").onclick = function() { 
-		if (pauseflag == true){
-			chip.runEmulator();
-			chip.updateHTMLLogMessage("Stepped Forward");
-		}
+		if (pauseflag === false){
+		    window.clearInterval(runEmulator);
+		    chip.updateHTMLLogMessage("Emulator Paused");
+        }
+		chip.runEmulator();
+		chip.updateHTMLLogMessage("Stepped Forward");
+
     };
+
+    document.getElementById("stepBack").onclick = function() {
+        window.clearInterval(runEmulator);
+        if (pauseflag === false) {
+            chip.updateHTMLLogMessage("Emulator Paused");
+        }
+        chip.updateHTMLLogMessage("Stepped Backwards");
+        stepBackward.pop(); //get rid of one (cause we run through one at the end)
+        let otherChip = stepBackward.pop();
+        console.log(otherChip.register.toString());
+        console.log(otherChip.stack.toString());
+        console.log(otherChip.programCounter.toString(16));
+        this.chip = otherChip.deepCopy(chip);
+        pauseflag = true;
+        chip.runEmulator(); //run that once (updates emulator every time you step back)
+    };
+
     
 
     
