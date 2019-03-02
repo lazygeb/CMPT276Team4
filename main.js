@@ -45,6 +45,8 @@ function startEmulator(usrFile) {
         console.log(otherChip.stack.toString());
         console.log(otherChip.programCounter.toString(16));
         this.chip = otherChip.deepCopy(chip);
+        chip.updateHTML(0x0000);
+        pauseflag = true;
     };
     
 
