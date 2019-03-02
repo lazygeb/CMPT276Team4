@@ -46,15 +46,13 @@ class Chip8{
         this.waitKey = undefined; //stores the key code for key pressed
 		this.lastOpcode = 0;
         this.instruction = "";
-        this.stepBackward = new Array();
-        this.idx = 0;
     }
 
- 
+
 
     /**
      * @method loadProgram
-     * @param {Array} program 
+     * @param {Array} program
      * Responsible for loading program into the memory
      */
     loadProgram(program){
@@ -335,6 +333,27 @@ class Chip8{
 		//debug.log(this.lastOpcode + " " + opcode);
     }
 
+    deepCopy(newChip) { //copies all values into newChip object reference
+        newChip.memory = [...this.memory];
+        newChip.stack = [...this.stack];
+        newChip.register = [...this.register];
+        newChip.delayTimer = this.delayTimer;
+        newChip.sountTimer = this.soundTimer;
+        console.log("progCounter: " + this.programCounter);
+        newChip.programCounter = this.programCounter;
+        newChip.drawFlag = this.drawFlag;
+        newChip.graphics = [...this.graphics];
+        newChip.stackPointer = this.stackPointer;
+        newChip.indexRegister = this.indexRegister;
+        newChip.keyState = [...this.keyState];
+        newChip.progLength = this.progLength;
+        newChip.waitForKeyFlag = this.waitForKeyFlag;
+        newChip.waitKey = this.waitKey;
+        newChip.lastOpcode = this.lastOpcode;
+        newChip.instruction = this.instruction;
+        return newChip;
+    }
+
 
     /**
      * @method oneCycle
@@ -343,43 +362,6 @@ class Chip8{
      * and runs one cycle of Chip8 CPU
      */
     oneCycle(opcode) {
-        // if(this.instruction == "DRAW"){
-        //     this.stepBackward.push({
-        //         m:this.memory,
-        //         s:this.stack,
-        //         sp:this.stackPointer,
-        //         pc:this.programCounter,
-        //         reg: this.register,
-        //         inst: this.instruction,
-        //         idxreg:this.indexRegister,
-        //         grap: this.graphics
-
-        //     });
-        // }
-        this.stepBackward.push({
-            m:this.memory,
-            s:this.stack,
-            sp:this.stackPointer,
-            pc:this.programCounter,
-            reg: this.register,
-            inst: this.instruction,
-            idxreg:this.indexRegister,
-            grap: this.graphics,
-            delay:this.delayTimer,
-            draw: this.drawFlag,
-            keyst:this.keyState,
-
-        });
-        // if(this.idx == 99){
-        //     console.log("In")
-        //     this.memory = this.stepBackward[0].m;
-        //     this.stack = this.stepBackward[0].s;
-        //     this.stackPointer = this.stepBackward[0].sp;
-        //     this.programCounter = this.stepBackward[0].pc; 
-        //     this.register = this.stepBackward[0].reg;
-        //     this.graphics = this.stepBackward[0].grap;
-        // }
-
 
         let reg1 = 0x00;
         let reg2 = 0x00;

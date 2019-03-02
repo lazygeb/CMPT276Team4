@@ -6,21 +6,29 @@
  *      - Used for reading in files
  */
 
+let stepBackward = new Array();
 var runEmulator = null;
 function main(usrFile) {
         document.getElementById("runTest").onclick = function () { runTest()};
         document.getElementById("startEmulator").onclick = function () { startEmulator(usrFile)};
 
-} 
+}
+
+function pushThisChip() {
+    let newChip = new Chip8();
+    newChip = chip.deepCopy(newChip);
+    stepBackward.push(newChip);
+}
+
 
 function startEmulator(usrFile) {
-	let chip = new Chip8();
+    chip = new Chip8();
     chip.reset();
     if (usrFile) {
         chip.loadProgram(prog);
     }
 
-    //click  >> 
+    //click  >>
     //click  <<
     //run like norm
 	runEmulator = setInterval(function(){ chip.runEmulator(); }, 1);
@@ -28,25 +36,15 @@ function startEmulator(usrFile) {
 
     //If click  pause -> clear setinterval
     var i = 1;
-    
-    document.getElementById("pause").onclick = function() { 
-        var idx = chip.stepBackward.length;
-        chip.reset();
-        console.log(chip.stepBackward);
-		window.clearInterval(runEmulator); 
-        chip.updateHTMLLogMessage("Emulator Paused");
-        console.log(idx-i);
-        chip.memory = chip.stepBackward[idx-i].m;
-        chip.stack = chip.stepBackward[idx-i].s;
-        chip.stackPointer = chip.stepBackward[idx-i].sp;
-        chip.programCounter = chip.stepBackward[idx-i].pc; 
-        chip.register = chip.stepBackward[idx-i].reg;
-        chip.graphics = chip.stepBackward[idx-i].grap;
-        chip.drawFlag = chip.stepBackward[idx-i].draw;
-        chip.delay = chip.stepBackward[idx-i].delayTimer;
-        chip.indexRegister = chip.stepBackward[idx-i].indexRegister;
-        chip.keyState = chip.stepBackward[idx-1].keyst;
-        i+=1;
+
+    document.getElementById("pause").onclick = function() {
+		window.clearInterval(runEmulator);
+		chip.updateHTMLLogMessage("Emulator Paused");
+        let otherChip = stepBackward.pop();
+        console.log(otherChip.register.toString());
+        console.log(otherChip.stack.toString());
+        console.log(otherChip.programCounter.toString(16));
+        this.chip = otherChip.deepCopy(chip);
     };
 
     //If click  pause -> clear setinterval
