@@ -9,9 +9,15 @@
 
 var runEmulator = null;
 var pauseflag = false;
+var loadFlag = null;
 function main(usrFile) {
-        document.getElementById("runTest").onclick = function () { runTest()};
-        document.getElementById("startEmulator").onclick = function () { startEmulator(usrFile)};
+    document.getElementById("runTest").onclick = function () { runTest()};
+    document.getElementById("startEmulator").onclick = function () { 
+        if (loadFlag != false) {
+            startEmulator(usrFile);
+            loadFlag = false;
+        }
+    };
 } 
 
 function startEmulator(usrFile) {
@@ -113,6 +119,7 @@ function handleFiles() {
             j++;
         }
         alert("Your file has been loaded, please press \"Start Emulation\"");
+        loadFlag = true; //makes sure runEmulator only runs once
     main(true); //call main, with true boolean to show it should load a file
     };
     reader.readAsBinaryString(file);
