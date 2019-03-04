@@ -54,11 +54,11 @@ class Chip8{
         this.millitime = 0;
     }
 
- 
+
 
     /**
      * @method loadProgram
-     * @param {Array} program 
+     * @param {Array} program
      * Responsible for loading program into the memory
      */
     loadProgram(program){
@@ -282,6 +282,7 @@ class Chip8{
      * Method for running emulator
      */
     runEmulator(){
+        pushThisChip();
         let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //From reference 1
         this.programCounter += 2;
         this.oneCycle(opcode);
@@ -357,6 +358,28 @@ class Chip8{
 		//debug.log(this.lastOpcode + " " + opcode);
     }
 
+    deepCopy(newChip) { //copies all values into newChip object reference
+        newChip.memory = [...this.memory];
+        newChip.stack = [...this.stack];
+        newChip.register = [...this.register];
+        newChip.delayTimer = this.delayTimer;
+        newChip.sountTimer = this.soundTimer;
+        console.log("progCounter: " + this.programCounter);
+        newChip.programCounter = this.programCounter;
+        newChip.drawFlag = this.drawFlag;
+        newChip.graphics = [...this.graphics];
+        newChip.stackPointer = this.stackPointer;
+        newChip.indexRegister = this.indexRegister;
+        newChip.keyState = [...this.keyState];
+        newChip.progLength = this.progLength;
+        newChip.waitForKeyFlag = this.waitForKeyFlag;
+        newChip.waitKey = this.waitKey;
+        newChip.lastOpcode = this.lastOpcode;
+        newChip.instruction = this.instruction;
+        return newChip;
+    }
+
+
     /**
      * @method oneCycle
      * @param {Integer} opcode
@@ -364,6 +387,7 @@ class Chip8{
      * and runs one cycle of Chip8 CPU
      */
     oneCycle(opcode) {
+
         let reg1 = 0x00;
         let reg2 = 0x00;
         let tempVal = 0x00;
@@ -546,7 +570,7 @@ class Chip8{
                 this.register[reg1] = tempVal;
 				this.instruction = "RND V" + reg1.toString(16) + " " + tempVal.toString(16);
                 break;
-            case 0xD: //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision
+            case 0xD: //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision            
                 reg1 = opcode & 0x0F00;
                 reg1 = reg1 >> 8; //x coordinate
                 let xCoord = this.register[reg1];
@@ -584,7 +608,9 @@ class Chip8{
                     }
                 }
                 this.drawFlag = true;
-				this.instruction = "DRAW";
+                this.instruction = "DRAW";
+                
+                
                 break;
             case 0xE:
                 reg1 = opcode & 0x0F00;

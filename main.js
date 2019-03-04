@@ -7,6 +7,7 @@
  */
  
 
+let stepBackward = new Array();
 var runEmulator = null;
 var pauseflag = false;
 var loadFlag = null;
@@ -20,27 +21,32 @@ function main(usrFile) {
     };
 } 
 
+function pushThisChip() {
+    let newChip = new Chip8();
+    newChip = chip.deepCopy(newChip);
+    stepBackward.push(newChip);
+}
+
 function startEmulator(usrFile) {
-	let chip = new Chip8();
+    chip = new Chip8();
     chip.reset();
     if (usrFile) {
         chip.loadProgram(prog);
     }
 
-    //click  >> 
+    //click  >>
     //click  <<
     //run like norm
 	runEmulator = setInterval(function() { chip.runEmulator(); }, 1);
     //window.requestAnimationFrame(chip.runEmulator());
 
     //If click  pause -> clear setinterval
-   
     document.getElementById("pause").onclick = function() {
-		if (pauseflag == false){
-			window.clearInterval(runEmulator);
-			chip.updateHTMLLogMessage("Emulator Paused");
-			pauseflag = true;
-		}
+        if (pauseflag === false) {
+            window.clearInterval(runEmulator);
+            chip.updateHTMLLogMessage("Emulator Paused");
+            pauseflag = true;
+        }
     };
     
 
@@ -52,17 +58,34 @@ function startEmulator(usrFile) {
 			pauseflag = false;
 		}
     };
-    
-    
 
     //If click step forward -> move forward one opcode
-    
     document.getElementById("stepforward").onclick = function() { 
-		if (pauseflag == true){
-			chip.runEmulator();
-			chip.updateHTMLLogMessage("Stepped Forward");
-		}
+		if (pauseflag === false){
+		    window.clearInterval(runEmulator);
+		    chip.updateHTMLLogMessage("Emulator Paused");
+        }
+		chip.runEmulator();
+		chip.updateHTMLLogMessage("Stepped Forward");
+
     };
+
+    document.getElementById("stepBack").onclick = function() {
+        window.clearInterval(runEmulator);
+        if (pauseflag === false) {
+            chip.updateHTMLLogMessage("Emulator Paused");
+        }
+        chip.updateHTMLLogMessage("Stepped Backwards");
+        stepBackward.pop(); //get rid of one (cause we run through one at the end)
+        let otherChip = stepBackward.pop();
+        console.log(otherChip.register.toString());
+        console.log(otherChip.stack.toString());
+        console.log(otherChip.programCounter.toString(16));
+        this.chip = otherChip.deepCopy(chip);
+        pauseflag = true;
+        chip.runEmulator(); //run that once (updates emulator every time you step back)
+    };
+
     
 
     
