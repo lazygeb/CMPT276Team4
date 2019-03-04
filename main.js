@@ -45,8 +45,18 @@ function startEmulator(usrFile) {
         if (pauseflag === false) {
             window.clearInterval(runEmulator);
             chip.updateHTMLLogMessage("Emulator Paused");
+
+			//for the UI 
+			document.getElementById("resume").classList.add("stepControlActive");
+			document.getElementById("stepForward").classList.add("stepControlActive");
+			document.getElementById("stepBack").classList.add("stepControlActive");
+			document.getElementById("resume").classList.remove("stepControlInactive");
+			document.getElementById("stepBack").classList.remove("stepControlInactive");
+			document.getElementById("stepForward").classList.remove("stepControlInactive");
+
+
             pauseflag = true;
-        }
+		}
     };
     
 
@@ -55,12 +65,21 @@ function startEmulator(usrFile) {
 		if (pauseflag == true){
 			runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); 
     		chip.updateHTMLLogMessage("Emulator Resumed");
+
+			//for the UI
+			document.getElementById("resume").classList.remove("stepControlActive");
+			document.getElementById("stepForward").classList.remove("stepControlActive");
+			document.getElementById("stepBack").classList.remove("stepControlActive");
+			document.getElementById("resume").classList.add("stepControlInactive");
+			document.getElementById("stepBack").classList.add("stepControlInactive");
+			document.getElementById("stepForward").classList.add("stepControlInactive");
+
 			pauseflag = false;
 		}
     };
 
     //If click step forward -> move forward one opcode
-    document.getElementById("stepforward").onclick = function() { 
+    document.getElementById("stepForward").onclick = function() { 
 		if (pauseflag === false){
 		    window.clearInterval(runEmulator);
 		    chip.updateHTMLLogMessage("Emulator Paused");
