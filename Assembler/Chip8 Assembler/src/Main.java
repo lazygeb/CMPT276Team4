@@ -21,9 +21,7 @@
 import java.io.FileWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -65,9 +63,6 @@ public class Main {
                    }
                }
                int opcode = getInstruction(tokens);
-               for (String s : tokens) {
-                   //System.out.println(s);
-               }
                if (opcode == 0) {
                    throw new InputMismatchException("Invalid instruction: " + line);
                }
@@ -92,7 +87,7 @@ public class Main {
     }
 
     //call the right function
-    static int getInstruction(String[] tokens) {
+    private static int getInstruction(String[] tokens) {
         if (tokens.length < 2) {
             return oneArgOpcode(tokens[0]);
         }
@@ -108,7 +103,7 @@ public class Main {
         return 0;
     }
 
-    static int oneArgOpcode(String instruction) {
+    private static int oneArgOpcode(String instruction) {
         if (instruction.equalsIgnoreCase("CLS")) {
             return 0x00E0;
         }
@@ -118,7 +113,7 @@ public class Main {
         return 0;
     }
 
-    static int twoArgOpcode(String instruction, String arg1) {
+    private static int twoArgOpcode(String instruction, String arg1) {
         if (instruction.equalsIgnoreCase("SYS")) {
             return Integer.parseInt(arg1, 16); //should convert a hex string into an int number
         }
@@ -167,10 +162,23 @@ public class Main {
             reg1 *= 0x100;
             return 0xF000 + reg1 + 0x65;
         }
+        else if (instruction.equalsIgnoreCase("SPRITE")) {
+            try {
+                int sprite = Integer.parseInt(arg1, 16);
+                if (arg1.length() < 4) {
+                    throw new IllegalArgumentException("Sprite is not length 4");
+                }
+                return sprite;
+            }
+            catch (IllegalArgumentException e){
+                System.out.println(e.getMessage());
+                System.exit(-1);
+            }
+        }
         return 0;
     }
 
-    static int threeArgOpcode(String instruction, String arg1, String arg2) {
+    private static int threeArgOpcode(String instruction, String arg1, String arg2) {
         //get values
         int reg1 = 0;
         int reg2 = 0;
@@ -296,7 +304,7 @@ public class Main {
         return 0;
     }
 
-    static int fourArgOpcode(String instruction, String arg1, String arg2, String arg3) {
+    private static int fourArgOpcode(String instruction, String arg1, String arg2, String arg3) {
         //Dxyn
         if (instruction.equalsIgnoreCase("DRAW")) {
             int reg1 = Integer.parseInt(arg1.substring(1), 16);
@@ -310,7 +318,7 @@ public class Main {
         return 0;
     }
 
-    static void writeOpcodes(ArrayList<Integer> opcodes) throws Exception {
+    private static void writeOpcodes(ArrayList<Integer> opcodes) throws Exception {
         //write opcodes to file
         FileWriter fileWriter = new FileWriter("programFile.txt");
         int iterator = 1;
@@ -334,17 +342,16 @@ public class Main {
         fileWriter.close();
     }
 
-    static void test(ArrayList <String> j){
+    private static void test(ArrayList <String> j){
         ArrayList<String>  e = new ArrayList<>();
         String [] q = {"123", "e0" , "ee", "1546" , "2443", "33ef", "49fc",
                 "5170", "61ac", "7eab", "87a0","8091", "83e2" , "8733" ,
                 "8cd4" ,"8385" ,"8506", "8297", "870e","9560","a123",
                 "b92b", "c733", "d3bf", "e29e", "e0a1" , "f207" ,"f30a" ,
-                "f115" ,"f818", "f21e", "f329", "f233", "f355" ,"f465"};
+                "f115" ,"f818", "f21e", "f329", "f233", "f355" ,"f465", "ed62"};
 
-        for(int i =0; i<35;i++ ){
-            e.add(q[i]);
-        }
+        Collections.addAll(e, q);
+
         if(e.equals(j)){
             System.out.println("Assembler output file matched the corresponding input file.");
         }else
