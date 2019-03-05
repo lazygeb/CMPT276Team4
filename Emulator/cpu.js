@@ -331,7 +331,7 @@ class Chip8{
 			const paragraph = document.createElement('p');
 			paragraph.innerHTML = time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "<br>";
 			document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
-			if (this.logCount < 30) {
+			if (this.logCount < 14) {
 				this.logCount++;
 			} else {
 				document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);
@@ -355,7 +355,7 @@ class Chip8{
 		//let currLog =  <p> + time + ": " + "<strong>" + message + "</strong>" + "</p> <br>";
 		//document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
 		document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
-		if (this.logCount < 30) {
+		if (this.logCount < 14) {
 			this.logCount++;
 		} else {
 			document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);
