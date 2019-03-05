@@ -80,20 +80,16 @@ function startEmulator(usrFile) {
 
     //If click step forward -> move forward one opcode
     document.getElementById("stepForward").onclick = function() { 
-		if (pauseflag === false){
-		    window.clearInterval(runEmulator);
-		    chip.updateHTMLLogMessage("Emulator Paused");
-        }
+		if (pauseflag === false) return;
 		chip.runEmulator();
 		chip.updateHTMLLogMessage("Stepped Forward");
 
     };
 
     document.getElementById("stepBack").onclick = function() {
+		if (pauseflag === false) return;
         window.clearInterval(runEmulator);
-        if (pauseflag === false) {
-            chip.updateHTMLLogMessage("Emulator Paused");
-        }
+        
         chip.updateHTMLLogMessage("Stepped Backwards");
         stepBackward.pop(); //get rid of one (cause we run through one at the end)
         let otherChip = stepBackward.pop();
