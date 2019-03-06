@@ -231,14 +231,15 @@ class Chip8{
         };
         document.addEventListener('keyup', handler, false);
 		*/
-		this.keyState[key] = 0; 
+        this.keyState[key] = 0;
     }
 
     //For opcode 0xFX0A. Signals to emulator if next opcode should 
     //should be read depending if key was pressed or not
     waitForKeyPressed() {
-        this.keydown();
-        this.keyup();
+        // this.keydown();
+        // this.keyup();
+
         if (this.waitKey !== undefined) { //key has been pressed
             let key = this.waitKey; //temp variable to store the key pressed 
             this.waitKey = undefined; //reset variable and waitForKeyFlag
@@ -296,7 +297,6 @@ class Chip8{
         }
         this.updateHTML(opcode.toString(16));
         this.startDelayTimer();
-
     }
 
     updateHTML(opcode) { //call this after every cycle
@@ -370,7 +370,7 @@ class Chip8{
         newChip.register = [...this.register];
         newChip.delayTimer = this.delayTimer;
         newChip.sountTimer = this.soundTimer;
-        console.log("progCounter: " + this.programCounter);
+        //console.log("progCounter: " + this.programCounter);
         newChip.programCounter = this.programCounter;
         newChip.drawFlag = this.drawFlag;
         newChip.graphics = [...this.graphics];
@@ -651,6 +651,7 @@ class Chip8{
                         break;
                     case 0x0A: //opcode 0xFx0A --> LD Vx, K -- wait for a key press, store the value of the key in Vx
                         this.register[reg1] = this.waitForKeyPressed();
+                        //console.log(this.register[reg1]);
 						this.instruction = "LD V" + reg1.toString(16) + " K";
                         break;
                     case 0x15: //opcode 0xFx15 --> LD DT, Vx -- set delay timer = Vx
