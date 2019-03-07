@@ -297,6 +297,11 @@ class Chip8{
         }
         this.updateHTML(opcode.toString(16));
         this.startDelayTimer();
+        if (!this.waitForKeyFlag) {
+            console.log("Instruction: " + this.instruction + "  see below");
+            console.log("V0: " + this.register[0] + "  VA: " + this.register[0xA]);
+            console.log("index: " + this.indexRegister);
+        }
     }
 
     updateHTML(opcode) { //call this after every cycle
@@ -681,14 +686,18 @@ class Chip8{
 						this.instruction = "LD B V" + reg1.toString(16);
                         break;
                     case 0x55: //opcode 0xFx55 --> LD [I], Vx -- Store registers V0 through Vx in memory starting at I
-                        for (let i = 0; i < this.register[reg1]; i++) {
+                        for (let i = 0; i <= reg1; i++) {
                             this.memory[this.indexRegister + i] = this.register[i];
+                            console.log("Val:" + this.register[i] + " pushed from reg" + i +
+                                " at mem loc " + this.indexRegister);
                         }
 						this.instruction = "LD I V" + reg1.toString(16);
                         break;
                     case 0x65: //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx from memory starting at I
                         for (let i = 0; i <= reg1; i++) {
                             this.register[i] = this.memory[this.indexRegister + i];
+                            console.log("Val:" + this.register[i] + " popped to reg" + i +
+                                " at mem loc " + this.indexRegister);
                         }
 						this.instruction = "LD V" + reg1.toString(16) + " I";
                         break;
