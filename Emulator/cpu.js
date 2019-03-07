@@ -297,11 +297,6 @@ class Chip8{
         }
         this.updateHTML(opcode.toString(16));
         this.startDelayTimer();
-        if (!this.waitForKeyFlag) {
-            console.log("Instruction: " + this.instruction + "  see below");
-            console.log("V0: " + this.register[0] + "  VA: " + this.register[0xA]);
-            console.log("index: " + this.indexRegister);
-        }
     }
 
     updateHTML(opcode) { //call this after every cycle
@@ -375,7 +370,6 @@ class Chip8{
         newChip.register = [...this.register];
         newChip.delayTimer = this.delayTimer;
         newChip.sountTimer = this.soundTimer;
-        //console.log("progCounter: " + this.programCounter);
         newChip.programCounter = this.programCounter;
         newChip.drawFlag = this.drawFlag;
         newChip.graphics = [...this.graphics];
@@ -621,8 +615,6 @@ class Chip8{
                 }
                 this.drawFlag = true;
                 this.instruction = "DRAW";
-                
-                
                 break;
             case 0xE:
                 reg1 = opcode & 0x0F00;
@@ -688,27 +680,23 @@ class Chip8{
                     case 0x55: //opcode 0xFx55 --> LD [I], Vx -- Store registers V0 through Vx in memory starting at I
                         for (let i = 0; i <= reg1; i++) {
                             this.memory[this.indexRegister + i] = this.register[i];
-                            console.log("Val:" + this.register[i] + " pushed from reg" + i +
-                                " at mem loc " + this.indexRegister);
                         }
 						this.instruction = "LD I V" + reg1.toString(16);
                         break;
                     case 0x65: //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx from memory starting at I
                         for (let i = 0; i <= reg1; i++) {
                             this.register[i] = this.memory[this.indexRegister + i];
-                            console.log("Val:" + this.register[i] + " popped to reg" + i +
-                                " at mem loc " + this.indexRegister);
                         }
 						this.instruction = "LD V" + reg1.toString(16) + " I";
                         break;
                 }
                 break;
         }//increment programCounter by 2 after running oneCycle()
-        if (this.delayTimer !== 0 && this.delayFlag == true) {
+        if (this.delayTimer !== 0 && this.delayFlag === true) {
             var delayTimeout = setTimeout(() => { this.startDelayTimer(delayTimeout);}, 1000);
             this.delayFlag = false;
         } 
-        if (this.soundTimer !== 0 && this.soundFlag == true) {
+        if (this.soundTimer !== 0 && this.soundFlag === true) {
                 var soundTimeout = setTimeout(() => {this.startSoundTimer(soundTimeout)}, 1000);
                 this.soundFlag = false; 
         }
