@@ -469,8 +469,9 @@ class Chip8{
                 reg1 = reg1 >> 8;
                 tempVal = opcode & 0x00FF;
                 tempVal = tempVal + this.register[reg1];
+                tempVal = tempVal & 0xFF; //truncate if larger than 2 bytes
                 this.register[reg1] = tempVal;
-				this.instruction = "ADD V" + reg1.toString(16) + " " + tempVal.toString(16);
+				this.instruction = "ADD V" + reg1.toString(16) + " " + (opcode & 0x00FF).toString(16);
                 break;
             
             case 0x8: //opcodes 8xy0 through 8xyE
@@ -499,7 +500,7 @@ class Chip8{
                         tempVal = this.register[reg1] + this.register[reg2];
                         if (tempVal > 255) {
                             this.register[0xF] = 1;
-                            tempVal = tempVal & 0x0FF;
+                            tempVal = tempVal & 0x0FF; //truncate sum
                         }
                         this.register[reg1] = tempVal;
 						this.instruction = "ADD V" + reg1.toString(16) + " V" + reg2.toString(16);
