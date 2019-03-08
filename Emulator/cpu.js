@@ -139,6 +139,10 @@ class Chip8{
 
     }
 
+    getWaitKeyFlag(){
+        return this.waitForKeyFlag;
+    }
+
     //Called when DelayTimer is > 0 
     //Decreases by 60 everytime it is called
     startDelayTimer(delayLoop){

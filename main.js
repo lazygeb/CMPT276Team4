@@ -27,23 +27,32 @@ function pushThisChip() {
     stepBackward.push(newChip);
 }
 
+function callSetInt(){
+	runEmulator = 
+        setInterval(function() {
+            if (chip.getWaitKeyFlag() == true || pauseflag == true) {
+                window.clearInterval(runEmulator);
+            }
+            else {
+                chip.runEmulator(); 
+            }
+        }, 1);
+}
+
 function startEmulator(usrFile) {
     chip = new Chip8();
     chip.reset();
     if (usrFile) {
         chip.loadProgram(prog);
     }
+    callSetInt();
 
-    //click  >>
-    //click  <<
-    //run like norm
-	runEmulator = setInterval(function() { chip.runEmulator(); }, 1);
+}
     //window.requestAnimationFrame(chip.runEmulator());
 
     //If click  pause -> clear setinterval
     document.getElementById("pause").onclick = function() {
         if (pauseflag === false) {
-            window.clearInterval(runEmulator);
             chip.updateHTMLLogMessage("Emulator Paused");
 
 			//for the UI 
@@ -54,7 +63,6 @@ function startEmulator(usrFile) {
 			document.getElementById("stepBack").classList.remove("stepControlInactive");
 			document.getElementById("stepForward").classList.remove("stepControlInactive");
 
-
             pauseflag = true;
 		}
     };
@@ -63,7 +71,7 @@ function startEmulator(usrFile) {
     //If click  resume -> run emulator is true
 	document.getElementById("resume").onclick = function() {
 		if (pauseflag == true){
-			runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); 
+			callSetInt();
     		chip.updateHTMLLogMessage("Emulator Resumed");
 
 			//for the UI
@@ -101,36 +109,38 @@ function startEmulator(usrFile) {
         chip.runEmulator(); //run that once (updates emulator every time you step back)
     };
 
-    
+    var translateKeys = {
+        49: 1,
+        50: 2,
+        51: 3,
+        52: 12,
+        81: 4,
+        87: 5,
+        69: 6,
+        82: 13,
+        65: 7,
+        83: 8,
+        68: 9,
+        70: 14,
+        90: 10,
+        88: 0,
+        67: 11,
+        86: 15,
+    };
 
-    
- 
+    document.addEventListener("keydown", function(event) {
+        chip.keydown(translateKeys[event.keyCode]);
+        if (chip.getWaitKeyFlag() == true && pauseflag == false) {
+            chip.runEmulator();
+            callSetInt();
+        }
+    });
 
-	var translateKeys = {
-	        49: 1,
-            50: 2,
-            51: 3,
-            52: 12,
-            81: 4,
-            87: 5,
-            69: 6,
-            82: 13,
-            65: 7,
-            83: 8,
-            68: 9,
-            70: 14,
-            90: 10,
-            88: 0,
-            67: 11,
-            86: 15,
-					 };
-					 document.addEventListener("keydown", function(event) {
-						 chip.keydown(translateKeys[event.keyCode]);
-					 });
-					 document.addEventListener("keyup", function(event) {
-						 chip.keyup(translateKeys[event.keyCode]);
-					 });
-}
+    document.addEventListener("keyup", function(event) {
+        chip.keyup(translateKeys[event.keyCode]);
+    });
+
+
 
 function runTest() {
     opCoTest();
@@ -166,5 +176,4 @@ function handleFiles() {
 
 
 main(false);
-
 
