@@ -22,6 +22,9 @@ function main(usrFile) {
 } 
 
 function pushThisChip() {
+    if (stepBackward.length > 200) {
+        stepBackward.shift();
+    }
     let newChip = new Chip8();
     newChip = chip.deepCopy(newChip);
     stepBackward.push(newChip);
