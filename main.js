@@ -14,12 +14,25 @@ var loadFlag = null;
 function main(usrFile) {
     document.getElementById("runTest").onclick = function () { runTest()};
     document.getElementById("startEmulator").onclick = function () { 
-        if (loadFlag != false) {
+        if (loadFlag !== false) {
             startEmulator(usrFile);
             loadFlag = false;
         }
     };
-} 
+}
+
+/*
+window.requestAnimationFrame( function() {
+    return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function (callback) {
+        window.setTimeout(callback, 0);
+        };
+})();
+*/
 
 function pushThisChip() {
     if (stepBackward.length > 200) {
@@ -41,6 +54,13 @@ function callSetInt(){
             }
         }, 1);
 }
+function callRunEm() {
+    let opPerTick = 5;
+    for (let i = 0; i < opPerTick; i++) {
+        chip.runEmulator();
+    }
+    window.requestAnimationFrame(callRunEm);
+}
 
 function startEmulator(usrFile) {
     chip = new Chip8();
@@ -48,7 +68,8 @@ function startEmulator(usrFile) {
     if (usrFile) {
         chip.loadProgram(prog);
     }
-    callSetInt();
+    //callSetInt();
+    window.requestAnimationFrame(callRunEm);
 
 }
     //window.requestAnimationFrame(chip.runEmulator());

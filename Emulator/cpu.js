@@ -301,6 +301,7 @@ class Chip8{
         }
         this.updateHTML(opcode.toString(16));
         this.startDelayTimer();
+        //window.requestAnimationFrame(runEmulator);
     }
 
     updateHTML(opcode) { //call this after every cycle
@@ -324,6 +325,7 @@ class Chip8{
 		//this.lastOpcode = opcode;
 		//debug.log(this.lastOpcode + " " + opcode);
         this.updateHTMLOpcodeLog(opcode)
+
     }
 
 	updateHTMLOpcodeLog(opcode) {
