@@ -11,9 +11,11 @@ let stepBackward = new Array();
 var runEmulator = null;
 var pauseflag = false;
 var loadFlag = null;
+let running = false;
 function main(usrFile) {
     document.getElementById("runTest").onclick = function () { runTest()};
-    document.getElementById("startEmulator").onclick = function () { 
+    document.getElementById("startEmulator").onclick = function () {
+        running = true;
         if (loadFlag !== false) {
             startEmulator(usrFile);
             loadFlag = false;
@@ -55,9 +57,11 @@ function callSetInt(){
         }, 1);
 }
 function callRunEm() {
-    let opPerTick = 5;
-    for (let i = 0; i < opPerTick; i++) {
-        chip.runEmulator();
+    if (running === true) {
+        let opPerTick = 3;
+        for (let i = 0; i < opPerTick; i++) {
+            chip.runEmulator();
+        }
     }
     window.requestAnimationFrame(callRunEm);
 }
@@ -69,6 +73,7 @@ function startEmulator(usrFile) {
         chip.loadProgram(prog);
     }
     //callSetInt();
+
     window.requestAnimationFrame(callRunEm);
 
 }
@@ -89,13 +94,14 @@ function startEmulator(usrFile) {
 
             pauseflag = true;
 		}
+        running = false;
     };
     
 
     //If click  resume -> run emulator is true
 	document.getElementById("resume").onclick = function() {
-		if (pauseflag == true){
-			callSetInt();
+		if (pauseflag === true){
+			//callSetInt();
     		chip.updateHTMLLogMessage("Emulator Resumed");
 
 			//for the UI
@@ -106,6 +112,7 @@ function startEmulator(usrFile) {
 			document.getElementById("stepBack").classList.add("stepControlInactive");
 			document.getElementById("stepForward").classList.add("stepControlInactive");
 
+			running = true;
 			pauseflag = false;
 		}
     };

@@ -316,16 +316,7 @@ class Chip8{
 		document.getElementById("ST").innerHTML = this.soundTimer;
 		document.getElementById("DT").innerHTML = this.delayTimer;
 		document.getElementById("SP").innerHTML = this.stackPointer.toString(16);
-
-		//if (this.lastOpcode !== opcode) {
-			//var currLog = "<p>" + opcode + "</p> <br>";
-			//document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
-		//}
-
-		//this.lastOpcode = opcode;
-		//debug.log(this.lastOpcode + " " + opcode);
         this.updateHTMLOpcodeLog(opcode)
-
     }
 
 	updateHTMLOpcodeLog(opcode) {
