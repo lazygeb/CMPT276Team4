@@ -23,18 +23,6 @@ function main(usrFile) {
     };
 }
 
-/*
-window.requestAnimationFrame( function() {
-    return window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame ||
-        function (callback) {
-        window.setTimeout(callback, 0);
-        };
-})();
-*/
 
 function pushThisChip() {
     if (stepBackward.length > 200) {
@@ -63,7 +51,8 @@ function callRunEm() {
             chip.runEmulator();
         }
     }
-    window.requestAnimationFrame(callRunEm);
+    //window.requestAnimationFrame(callRunEm);
+    window.setTimeout(callRunEm, 5);
 }
 
 function startEmulator(usrFile) {
@@ -74,8 +63,9 @@ function startEmulator(usrFile) {
     }
     //callSetInt();
 
-    window.requestAnimationFrame(callRunEm);
-
+    //window.requestAnimationFrame(callRunEm);
+    //window.setTimeout(callRunEm, 10);
+    callRunEm();
 }
     //window.requestAnimationFrame(chip.runEmulator());
 
@@ -132,9 +122,9 @@ function startEmulator(usrFile) {
         chip.updateHTMLLogMessage("Stepped Backwards");
         stepBackward.pop(); //get rid of one (cause we run through one at the end)
         let otherChip = stepBackward.pop();
-        console.log(otherChip.register.toString());
-        console.log(otherChip.stack.toString());
-        console.log(otherChip.programCounter.toString(16));
+        //console.log(otherChip.register.toString());
+        //console.log(otherChip.stack.toString());
+        //console.log(otherChip.programCounter.toString(16));
         this.chip = otherChip.deepCopy(chip);
         pauseflag = true;
         chip.runEmulator(); //run that once (updates emulator every time you step back)

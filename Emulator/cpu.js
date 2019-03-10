@@ -299,9 +299,8 @@ class Chip8{
             this.updateDisplay(this.stack, this.register);
             this.drawFlag = false;
         }
-        this.updateHTML(opcode.toString(16));
+        //this.updateHTML(opcode.toString(16));
         this.startDelayTimer();
-        //window.requestAnimationFrame(runEmulator);
     }
 
     updateHTML(opcode) { //call this after every cycle
@@ -362,17 +361,17 @@ class Chip8{
     }
 
     deepCopy(newChip) { //copies all values into newChip object reference
-        newChip.memory = [...this.memory];
-        newChip.stack = [...this.stack];
-        newChip.register = [...this.register];
+        newChip.memory = this.memory.slice(0); // = [...this.memory];
+        newChip.stack = this.stack.slice(0);// [...this.stack];
+        newChip.register = this.register.slice(0); //[...this.register];
         newChip.delayTimer = this.delayTimer;
         newChip.sountTimer = this.soundTimer;
         newChip.programCounter = this.programCounter;
         newChip.drawFlag = this.drawFlag;
-        newChip.graphics = [...this.graphics];
+        newChip.graphics = this.graphics.slice(0);// [...this.graphics];
         newChip.stackPointer = this.stackPointer;
         newChip.indexRegister = this.indexRegister;
-        newChip.keyState = [...this.keyState];
+        newChip.keyState = this.keyState.slice(0); // = [...this.keyState];
         newChip.progLength = this.progLength;
         newChip.waitForKeyFlag = this.waitForKeyFlag;
         newChip.waitKey = this.waitKey;
