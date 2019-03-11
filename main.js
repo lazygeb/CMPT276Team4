@@ -29,7 +29,8 @@ function pushThisChip() {
         stepBackward.shift();
     }
     let newChip = new Chip8();
-    newChip = chip.deepCopy(newChip);
+    //newChip = chip.deepCopy(newChip);
+    newChip = jQuery.extend(true, newChip, chip);
     stepBackward.push(newChip);
 }
 
@@ -46,13 +47,14 @@ function callSetInt(){
 }
 function callRunEm() {
     if (running === true) {
-        let opPerTick = 3;
-        for (let i = 0; i < opPerTick; i++) {
+        //let opPerTick = 3;
+        //for (let i = 0; i < opPerTick; i++) {
             chip.runEmulator();
-        }
+            console.log(stepBackward.toString());
+        //}
     }
     //window.requestAnimationFrame(callRunEm);
-    window.setTimeout(callRunEm, 5);
+    window.setTimeout(callRunEm, 10);
 }
 
 function startEmulator(usrFile) {
@@ -125,7 +127,7 @@ function startEmulator(usrFile) {
         //console.log(otherChip.register.toString());
         //console.log(otherChip.stack.toString());
         //console.log(otherChip.programCounter.toString(16));
-        this.chip = otherChip.deepCopy(chip);
+        this.chip = jQuery.extend(true, {}, otherChip); //otherChip.deepCopy(chip);
         pauseflag = true;
         chip.runEmulator(); //run that once (updates emulator every time you step back)
     };
