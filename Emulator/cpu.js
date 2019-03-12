@@ -49,6 +49,8 @@ class Chip8{
 		this.lastOpcode = 0;
 		this.instruction = "";
 		this.logCount = 0;
+		this.logArray = new Array();
+		this.log = "";
         this.chiptime = 0;
         this.chiptime2 = 0;
         this.millitime = 0;
@@ -120,6 +122,8 @@ class Chip8{
         this.loadProgram(program); //loads Array: program into memory
         this.progLength = program.length;
 		this.logCount = 0;
+		this.logArray = new Array();
+		this.log = "";
         this.chiptime = 0;
         this.chiptime2 = 0;
 
@@ -332,13 +336,25 @@ class Chip8{
 
 			let time = currentDate.toLocaleTimeString('en-US');
 
-			const paragraph = document.createElement('p');
-			paragraph.innerHTML = time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "<br>";
-			document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
+			//const paragraph = document.createElement('p');
+			//paragraph.innerHTML = time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "<br>";
+			//document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
+			var line = "<p>" + time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "<br>" + "</p>";
+			this.logArray.push(line.toString());
+			console.log(this.logArray[0]);
+
+			this.log = "";
+			for (var i = 0; i < this.logCount; i++) {
+				this.log += this.logArray[i];
+			}
+
+			document.getElementById("log").innerHTML = this.log;
+
 			if (this.logCount < 14) {
 				this.logCount++;
 			} else {
-				document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);
+				//document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);
+				this.logArray.shift();
 			}
 
 			//let currLog =  "<p>" + time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "</p> <br>";
