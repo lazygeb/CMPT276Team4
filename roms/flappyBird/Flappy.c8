@@ -1,0 +1,111 @@
+: bar
+	0xC0 0xC0 0xC0 0xC0 0xC0 0xC0 0xC0 0xC0 0xC0 0xC0 0xC0 0xC0 0xC0 0xC0 0xC0
+  
+: generateObstacle
+	v6 := 62	# x position of obstacle
+	v7 := random 3 # Types of obstacles. Hole size: 4
+	return
+
+: obstacle
+	if v7 == 0 then obstacle0
+	if v7 == 1 then obstacle1
+	if v7 == 2 then obstacle2
+	if v7 == 3 then obstacle3
+	return
+
+: obstacle0
+	v0 := 4
+	sprite v6 v0 15
+	v0 += 15
+	sprite v6 v0 13
+	return
+
+: obstacle1
+	v0 := 0
+	sprite v6 v0 14
+	v0 += 18
+	sprite v6 v0 14
+	return
+
+: obstacle2
+	v0 := 0
+	sprite v6 v0 10
+	v0 += 14
+	sprite v6 v0 15
+	v0 += 15
+	sprite v6 v0 3
+	return
+
+: obstacle3
+	v0 := 0
+	sprite v6 v0 6
+	v0 += 10
+	sprite v6 v0 15
+	v0 += 15
+	sprite v6 v0 7
+	return
+
+: setUp
+	ve := 6		# X Ball position
+	vd := 15	# Y Ball position
+
+	i := bar	# I is pointed to the bar for the ball and the bar
+
+	generateObstacle 	# Bar represented in v6, v7 
+	obstacle
+
+	sprite ve vd 2 	# Create Ball
+	
+	return
+
+
+: stop
+	clear
+	v0 := 30 # Finish Sprite x
+	v1 := 13 # Finish Sprite y
+	sprite v0 v1 5 # Finish Sprite
+
+	ve := 0		# ---
+	vf := 0		# Reset Everything
+	vd := 0		#	---
+	v0 := key	# Wait for Key press for restarting game
+	clear		# clear screen
+	return	
+
+
+: update
+	# We have to know that i points to the bar/ball (the counter keep it right)
+	obstacle
+	v1 := 2
+	v6 -= v1
+	obstacle
+	
+	if v6 == 0 then obstacle	# Clean the old
+	if v6 == 0 then generateObstacle # Create the new
+	if v6 == 62 then obstacle # Plot the new
+
+	sprite ve vd 2 	# Paint the current ball
+	v1 := 5		# Press 5 to play
+	v2 := 1
+	if v1 -key then vd += v2
+	if v1 key then vd -= v2
+	sprite ve vd 2 	# Paint the new ball
+
+	if vf == 1 then stop 	# Collision
+	if vd == 31 then stop	# End of zone (down)
+	if vd == 255 then stop	# End of zone (up)
+	return
+
+: runGame
+	setUp
+	loop
+  	if ve == 0 then return
+		update
+	again
+	return
+
+: main
+	loop
+		v3 := 5
+		if v3 key then runGame
+	again
