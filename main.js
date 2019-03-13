@@ -157,24 +157,14 @@ function handleFiles() {
     window.clearInterval(runEmulator);
     file = this.files[0];
     let reader = new FileReader();
-    let result;
     reader.onload = function(event) {
-        result = event.target.result; //result = contents of file
-        result = result.replace(/\n/g, " "); //replace any newline characters with spaces
-        let arr = result.split(" "); //string to array, split by spaces
-        prog = new Uint8Array(arr.length*2); //Array to hold program
-        let j = 0;
-        for (let i = 0; j <= arr.length; i += 2) { //loop to split opcodes into 1 byte
-            prog[i] = (parseInt(arr[j], 16) & 0xFF00) >>> 8; //first byte (parse int --> convert string to int)
-            prog[i+1] = (parseInt(arr[j], 16) & 0x00FF);     //second byte
-            j++;
-        }
+        prog = new Uint8Array(reader.result)
         alert("Your file has been loaded, please press \"Start Emulation\"");
         loadFlag = true; //makes sure runEmulator only runs once
         pauseflag = false; //resets the pause flag when new game is put in
     main(true); //call main, with true boolean to show it should load a file
     };
-    reader.readAsBinaryString(file);
+    reader.readAsArrayBuffer(file);
 }
 
 
