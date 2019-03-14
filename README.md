@@ -1,28 +1,28 @@
 # CMPT276-Chip8-Group4 
 Team 4 Members: Gabriele Dal Cengio, Lina Dang-Nguyen, Nishan Ghimire, Mathieu Laflamme, Harman Singh, Calvin So
 
-## **Release 2**
+## **Release 3**
 
 ## **Summary of changes from previous release**
+### **What was implemented**
+The backwards step has been completed and fully tested. It works with all the games. We were able to optimize it to make it more efficient so that it does not use as much memory. Previously, it would go up to 3-4gb of memory.
 
-Almost all the planned use cases from release 1 have been completed. The first feature that has not been completed is the backwards function due to unexpected development issues. Our original design did not show the sprites correctly and had memory errors so we had to brainstorm new designs, which lead to development being delayed. We have started development again and will complete the feature by the next release. The last feature that has not been completed was the visualizer showing keyboard input as time did not permit for the development of this feature. It has been added to our backlog and will be completed for the next release.
+We also optimized keyboard input and UI. For the keyboard input, the changes were specific to the wait key. Previously, it would keep on running the same opcode until the key was hit but now the system actually pauses until a keyboard is hit. This prevents the emulator from making redundant calls. The buttons for the visualizer controls have also been improved. You cannot click the play and forward buttons without pausing first. The buttons will be greyed out if the user is not allowed to click it. This improves the user experience so they will not try to click buttons that they aren’t allowed to. Another improvement to the visualizer is when users click the start emulation without any ROMs running, the screen will prompt them to load a ROM.  There were also many bugs fixed and this will be outlined in the [bugs section](#Emulator-bugs). 
 
-These delays do not affect our schedule much as we have completed the assembler ahead of schedule. The assembler is written in java and is fully functional and ready to be used for game development. For our visualizer, we have implemented a pause, play and step forward functionality. The display of the memory, stack and registers are also fully functioning. 
+### **What was not implemented**
+The completion of Snake has not been completed.  We have begun development of it but due to the overwhelming number of bugs and optimizations, we are behind schedule. Planning and designing for snake required some time as well. Since the bugs have been fixed, we will have two people developing Flappy Bird and another two working on Snake. The remaining two will work on perfecting the program for the final release.
 
-All major bugs from last release have been fixed. Specifically, sound now works with external roms and the speed of the keyboard has significantly improved. Refer to the [document](#Emulator-bugs) for a detailed list of the bugs fixed. Minor bugs like the the ball glitching when hitting the paddle will be added to the backlog and fixed for next release. The rom still has to be copy and pasted in to a text file to be run. 
+Showing the keyboard input will not be implemented in the system, unfortunately. We have tried it out on the visualizer but it causes the website to lag. As a result, we decided to no longer include it in the use cases. 
 
-For testing, last release we decided to assign someone to research on jest and if it was worth using. The results from that was it was too time consuming to use jest and the google chrome debugger will do the job just fine. As a result, for the future releases, we will be using the google chrome debugger to test out our code. 
+### **List of all system changes:**
+- UI: Buttons will be grayed out if user is not allowed to click button. Number of opcodes that show in the log has been decreased.
+- Emulator: WaitKey pauses the whole system until a key is pressed instead of re-running the same opcode. 
+- Visualizer: New default screen and step backwards button has been completed. 
+- Snake: Set up the game. Snake shows on screen but cannot move yet
 
-For our next release, it will be the same as we have planned. We will have the game snake done and polished with no bugs. Any bugs and features unfinished from this release will also be completed for next release.
+## **README**
 
-### List of all system changes:
-- UI: New Icon buttons for the visualizer and improved keyboard input
-- Emulator: Clearer graphics and sound works
-- Visualizer: Added play, pause, step forward functionality and display of stack, register and memory. 
-
-
-
-## **README Emulator**
+### **README Emulator**
 
 The development of the Emulator has been fully completed in terms on functionality. The bugs from release 2 have been completed except two minor bugs. 
 
@@ -34,20 +34,18 @@ To run the emulator, follow these instructions:
 4) Dismiss the alert and press the start emulation button
 
 
-## **README Visualizer Step Controls**
+### **README Visualizer Step Controls**
 
 The visualizer has pause functionality, resume functionality and step forward functionality. All of this is indicated within the log as well. The step backwards functionality will be done for next release.
 
 To use the step controls, follow these instructions:
 
 1) While the emulator is running, click on the pause icon (two vertical bars)
-2) While the emulator is in the pause state, you may either press the resume icon (arrow to the right) or the step forward icon (the "+1" icon)
+2) While the emulator is in the pause state, you may either press the resume icon (arrow to the right),the step forward icon (the "+1" icon) or the step backwards icon (the "-1" icon)
 
-The "-1" icon currently does nothing
-
-
-## **README Assembler**
+### **README Assembler**
 The assembler follows instructions from the following reference: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#memmap. The assembler transforms assembly language instructions into chip8 supported opcodes. For example it will take SE V3 VA and output 53A0. Because we have created our own assembler, the assembly language used has been slightly modified from the reference noted above.
+
 
 ### How to run it:
 - In the same folder as this document, you’ll find a .jar file and an intellij project folder.
@@ -60,28 +58,52 @@ The assembler follows instructions from the following reference: http://devernay
 -	When writing instructions, only place 1 per line and separate each part of the instruction by a space, nothing else (no commas).
 -	Please see the exampleAssembly.txt file for an example of each instruction being used.
    
-## **README Testing**
+### **README Testing**
 
 The html page will have a button called "Run Opcode Tests", which will automatically test all the opcodes to see if it passed or failed. Please use the Google Chrome browser. To see whether the opcodes have passed or not, right click and select inspect. Then go to the console tab in the inspector and this will display text as to if the tests have passed. 
+
+### **README Snake**
+We have refered to this document: https://github.com/vinheim3/CHIP-8/tree/master/Snake during our development of the game
+
+To load snake into the emulator follow these steps:
+1) Go to the web browser by clicking the index.html
+2) Click load rom
+3) Go into the snake file and choose the SnakeROMfornow.txt
+4) Click start emulation
    
 ## **Emulator Bugs**
 
 These bugs have been found through unit testing and integrated testing by using public domain roms provided through the following website: [https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html]
 
 ### **Fixed bugs from last release**
-1) Sound works with the automatized testing and in external roms.
-2) Improved input keyboard delay from 70ms to 0.6ms on average
-3) Game can be loaded one after another without any glitches. 
-4) Score updates in games (Pong, Brix) 
-
-### **Bugs that have not been fixed**
 1) Clicking the run emulator multiple times causes it to glitch
 2) Paddle graphics glitch when the ball hits it 
 3) Rom input currently does not work properly. The input has to be copy and pasted to text files in order to run.
 4) Games don’t end after all lives have been used up. 
+5) Log delay in visualizer lags the entire program substantially
 
-### **New bugs**
-1) Log delay in visualizer lags the entire program substantially
+### **Fixed bugs that were found this release**
+1) Page crashes after a few minutes when left open because of the backwards step was using too much memory. 
+2) Could click step forward, backwards and play even though the program was not paused
+3) Faulty wait for key, which did not work the external roms.
+4) Many external ROMs would not work. These games were: 
+   - **Connect 4**  
+  Before:
+  ![image](https://cdn.discordapp.com/attachments/513589409661059082/555541036621889537/image.png)
+  After: 
+  ![image](https://cdn.discordapp.com/attachments/513589409661059082/555550962367070218/Screen_Shot_2019-03-13_at_5.35.58_PM.png)
+
+   - **Rush Hour**  
+  Before:
+  ![image](https://cdn.discordapp.com/attachments/513589409661059082/555541016149622795/image_1.png)
+  After:
+  ![image](https://cdn.discordapp.com/attachments/513589409661059082/555554042051559435/Screen_Shot_2019-03-13_at_5.52.50_PM.png)
+   
+   - **Tic Tac Toe**
+  ![image](https://cdn.discordapp.com/attachments/513589409661059082/555558784450428968/unknown.png)
+  Before: Could not get input of all the slots in the grid  
+  After: Game fully functions
+  
 
 
 --------------------------------------------------------------------
@@ -109,11 +131,16 @@ The goal of this project is to develop an interpreter like the original Chip-8 a
  - [x] Assembler can change mnemonics to opcodes, which can be ran in the emulator
  - [x] Emulator and Visualizer will be fully functional on Google Chrome
 
-#### Release 2: Completed Snake Game & Completed Visualizer
+#### Release 2: Completed Snake Game & Completed Visualizer [COMPLETED]
 
-- [ ] Provide interface feedback for users by showing keyboard presses (unfinished from release 1)
-- [ ] Allow user to step back one step (unfinished from release 1) 
+- [ ] Provide interface feedback for users by showing keyboard presses  [REMOVED FEATURE]
+- [x] Allow user to step back one step (unfinished from release 1) 
 - [ ] Have snake game polished and playable 
+
+#### Release 3: Completed Snake Game & Completed Flappy Bird Game
+- [ ] Have snake game polished and playable (unfinished from release 2)
+- [ ] Have flappy bird game polished and playable
+
 
 ## **Table of Contents**
 
@@ -188,7 +215,7 @@ We will be using *Javascript* in order to render the virtual machine. To debug o
 
 ### Timeline [UPDATED]
 
-![Image of First Gantt Timeline](https://cdn.discordapp.com/attachments/513589409661059082/550127862578020362/Gaant.png)
+![Image of First Gantt Timeline](https://cdn.discordapp.com/attachments/513589409661059082/555562961561845770/Gaant.png)
 
 ### Work Breakdown
 
@@ -221,11 +248,11 @@ Work Breakdown: **Visualizer**
 | Display memory during execution       | 2 days                  | Feb 9       |
 | Display registers during execution    | 2 days                  | Feb 9       |
 | Display instructions during execution | 2 days                  | Feb 9       |
-| Display key press during execution    **(DELAYED)**     | 1 day                   | Feb 10      |
+| Display key press during execution      | 1 day                   | Feb 10      |
 | Pause program                         | 1 day                   | Feb 10      |
 | Play program                          | 1 day                   | Feb 10      |
 | Step-forward one instruction          | 2 days                  | Feb 14      |
-| Step-backwards one instruction  **(DELAYED)**      | 3 days                  | Feb 20      |
+| Step-backwards one instruction        | 3 days                  | Feb 20      |
 | Finish debugging the Emulator         | 2 weeks                 | Feb 20      |
 | Testing                               | 3 days                  | Feb 23      |
 
@@ -249,19 +276,21 @@ Work Breakdown: **Snake**
 | ------- | ----------------------- | ----------- |
 | Display key press during execution | 3 day                   | Feb 10      |
 | Step-backwards one instruction    |  6 days | Mar 4   |
-| Snake   | 2 weeks                 | Mar 7       |
+| Snake   **(DELAYED)**  | 2 weeks                 | Mar 7       |
 | Testing | 3 days                  | Mar 9       |
 
 
 ### **Release 4: April 8 2019**
 Deliverables for Release 4:  
-- Flappy Bird: Finish development and testing by April 3  
+- Flappy Bird: Finish development and testing by April 3 
+- Snake: Finish development and testing by April 3  
 
 Work Breakdown: **Flappy Bird** 
 
 | Feature        | Estimated Time Required | Finish Date |
 | -------------- | ----------------------- | ----------- |
 | Flappy Bird    | 2 weeks                 | Mar 27      |
+| Snake   **(DELAYED)**  | 2 weeks                 | Mar 27       |
 | System Testing | 1 weeks                 | April 3     |
 
 ## **References**
