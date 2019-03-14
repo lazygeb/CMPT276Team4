@@ -111,14 +111,14 @@
 				</section>
 			
 				<section id="stepControl">
-					<p id="startEmulator">Start Emulation</p>
-					<p id="runTest">Run Opcode test</p>
+					<p class="stepControlActive" id="startEmulator">Start Emulation</p>
+					<p class="stepControlActive" id="runTest">Run Opcode test</p>
 					<h2>Step Controls: </h2>
 					<div class="icon_wrapper">
-						<img src="Icons/-1.svg" class="icon" title="Step back one frame"></img>
-						<img src="Icons/pause.svg" class="icon" id="pause" title="Pause on current frame"></img>
-						<img src="Icons/play.svg" class="icon" id="resume" title="Resume from current frame"></img>
-						<img src="Icons/+1.svg" class="icon" id="stepforward" title="Step forward one frame"></img>
+						<img src="Icons/-1.svg" class="icon stepControlInactive" id="stepBack" title="Step backwards one frame"></img>
+						<img src="Icons/pause.svg" class="icon stepControlActive" id="pause" title="Pause on current frame"></img>
+						<img src="Icons/play.svg" class="icon stepControlInactive" id="resume" title="Resume from current frame"></img>
+						<img src="Icons/+1.svg" class="icon stepControlInactive" id="stepForward" title="Step forwards one frame"></img>
 					</div>
 				</section>			
 

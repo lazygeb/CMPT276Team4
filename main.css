@@ -49,15 +49,25 @@ select {
 	border-radius: 3px;
 }
 
-#stepControl p, img{
-	background: lightgrey;
+.stepControlInactive{
+	background: white;
+	opacity: 0.1;
 	border-radius: 3px;
 	margin: .2rem 1rem;
 	margin-left: 0;
 	transition: .5s;
 }
 
-#stepControl p:hover, img:hover{
+.stepControlActive{
+	background: lightGrey;
+	opacity: 1;
+	border-radius: 3px;
+	margin: .2rem 1rem;
+	margin-left: 0;
+	transition: .5s;
+}
+
+.stepControlActive:hover{
 	background: white;
 	cursor: pointer;
 }

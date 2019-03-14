@@ -7,33 +7,66 @@
  */
  
 
+let stepBackward = new Array();
 var runEmulator = null;
 var pauseflag = false;
+var loadFlag = null;
 function main(usrFile) {
-        document.getElementById("runTest").onclick = function () { runTest()};
-        document.getElementById("startEmulator").onclick = function () { startEmulator(usrFile)};
+    document.getElementById("runTest").onclick = function () { runTest()};
+    document.getElementById("startEmulator").onclick = function () { 
+        if (loadFlag != false) {
+            startEmulator(usrFile);
+            loadFlag = false;
+        }
+    };
 } 
 
+function pushThisChip() {
+    if (stepBackward.length > 200) {
+        stepBackward.shift();
+    }
+    let newChip = new Chip8();
+    newChip = chip.deepCopy(newChip);
+    stepBackward.push(newChip);
+}
+
+function callSetInt(){
+	runEmulator = 
+        setInterval(function() {
+            if (chip.getWaitKeyFlag() == true || pauseflag == true) {
+                window.clearInterval(runEmulator);
+            }
+            else {
+                chip.runEmulator(); 
+            }
+        }, 1);
+}
+
 function startEmulator(usrFile) {
-	let chip = new Chip8();
+    chip = new Chip8();
     chip.reset();
     if (usrFile) {
         chip.loadProgram(prog);
     }
+    callSetInt();
 
-    //click  >> 
-    //click  <<
-    //run like norm
-	runEmulator = setInterval(function() { chip.runEmulator(); }, 1);
+}
     //window.requestAnimationFrame(chip.runEmulator());
 
     //If click  pause -> clear setinterval
-   
     document.getElementById("pause").onclick = function() {
-		if (pauseflag == false){
-			window.clearInterval(runEmulator);
-			chip.updateHTMLLogMessage("Emulator Paused");
-			pauseflag = true;
+        if (pauseflag === false) {
+            chip.updateHTMLLogMessage("Emulator Paused");
+
+			//for the UI 
+			document.getElementById("resume").classList.add("stepControlActive");
+			document.getElementById("stepForward").classList.add("stepControlActive");
+			document.getElementById("stepBack").classList.add("stepControlActive");
+			document.getElementById("resume").classList.remove("stepControlInactive");
+			document.getElementById("stepBack").classList.remove("stepControlInactive");
+			document.getElementById("stepForward").classList.remove("stepControlInactive");
+
+            pauseflag = true;
 		}
     };
     
@@ -41,52 +74,76 @@ function startEmulator(usrFile) {
     //If click  resume -> run emulator is true
 	document.getElementById("resume").onclick = function() {
 		if (pauseflag == true){
-			runEmulator = setInterval(function(){ chip.runEmulator(); }, 1); 
+			callSetInt();
     		chip.updateHTMLLogMessage("Emulator Resumed");
+
+			//for the UI
+			document.getElementById("resume").classList.remove("stepControlActive");
+			document.getElementById("stepForward").classList.remove("stepControlActive");
+			document.getElementById("stepBack").classList.remove("stepControlActive");
+			document.getElementById("resume").classList.add("stepControlInactive");
+			document.getElementById("stepBack").classList.add("stepControlInactive");
+			document.getElementById("stepForward").classList.add("stepControlInactive");
+
 			pauseflag = false;
 		}
     };
-    
-    
 
     //If click step forward -> move forward one opcode
-    
-    document.getElementById("stepforward").onclick = function() { 
-		if (pauseflag == true){
-			chip.runEmulator();
-			chip.updateHTMLLogMessage("Stepped Forward");
-		}
+    document.getElementById("stepForward").onclick = function() { 
+		if (pauseflag === false) return;
+		chip.runEmulator();
+		chip.updateHTMLLogMessage("Stepped Forward");
+
     };
-    
 
-    
- 
+    document.getElementById("stepBack").onclick = function() {
+		if (pauseflag === false) return;
+        window.clearInterval(runEmulator);
+        
+        chip.updateHTMLLogMessage("Stepped Backwards");
+        stepBackward.pop(); //get rid of one (cause we run through one at the end)
+        let otherChip = stepBackward.pop();
+        console.log(otherChip.register.toString());
+        console.log(otherChip.stack.toString());
+        console.log(otherChip.programCounter.toString(16));
+        this.chip = otherChip.deepCopy(chip);
+        pauseflag = true;
+        chip.runEmulator(); //run that once (updates emulator every time you step back)
+    };
 
-	var translateKeys = {
-	        49: 1,
-            50: 2,
-            51: 3,
-            52: 12,
-            81: 4,
-            87: 5,
-            69: 6,
-            82: 13,
-            65: 7,
-            83: 8,
-            68: 9,
-            70: 14,
-            90: 10,
-            88: 0,
-            67: 11,
-            86: 15,
-					 };
-					 document.addEventListener("keydown", function(event) {
-						 chip.keydown(translateKeys[event.keyCode]);
-					 });
-					 document.addEventListener("keyup", function(event) {
-						 chip.keyup(translateKeys[event.keyCode]);
-					 });
-}
+    var translateKeys = {
+        49: 1,
+        50: 2,
+        51: 3,
+        52: 12,
+        81: 4,
+        87: 5,
+        69: 6,
+        82: 13,
+        65: 7,
+        83: 8,
+        68: 9,
+        70: 14,
+        90: 10,
+        88: 0,
+        67: 11,
+        86: 15,
+    };
+
+    document.addEventListener("keydown", function(event) {
+        chip.keydown(translateKeys[event.keyCode]);
+        if (chip.getWaitKeyFlag() == true && pauseflag == false) {
+            chip.runEmulator();
+            callSetInt();
+        }
+    });
+
+    document.addEventListener("keyup", function(event) {
+        chip.keyup(translateKeys[event.keyCode]);
+    });
+
+
 
 function runTest() {
     opCoTest();
@@ -113,6 +170,8 @@ function handleFiles() {
             j++;
         }
         alert("Your file has been loaded, please press \"Start Emulation\"");
+        loadFlag = true; //makes sure runEmulator only runs once
+        pauseflag = false; //resets the pause flag when new game is put in
     main(true); //call main, with true boolean to show it should load a file
     };
     reader.readAsBinaryString(file);
@@ -120,5 +179,4 @@ function handleFiles() {
 
 
 main(false);
-
 

@@ -62,7 +62,7 @@ The assembler follows instructions from the following reference: http://devernay
    
 ## **README Testing**
 
-The html page will have a button called "Run Opcode Tests", which will automatically test all the opcodes to see if it passed or failed. Please use the Google Chrome browser. To see wheter the opcodes have passed or not, right click and select inspect. Then go to the console tab in the inspector and this will display text as to if the tests have passed. 
+The html page will have a button called "Run Opcode Tests", which will automatically test all the opcodes to see if it passed or failed. Please use the Google Chrome browser. To see whether the opcodes have passed or not, right click and select inspect. Then go to the console tab in the inspector and this will display text as to if the tests have passed. 
    
 ## **Emulator Bugs**
 
@@ -182,7 +182,7 @@ We will be engaging in three types of testing to ensure the validation of our pr
 
 ### Main language and libraries 
 
-We will be using *Javascript* in order to render the virtual machine. To debug our code, we will be using the *Chrome Browser*. 
+We will be using *Javascript* in order to render the virtual machine. To debug our code, we will be using the *Chrome Browser Development Tools*. 
 
 ## **Work Breakdown and Project Schedule**
 

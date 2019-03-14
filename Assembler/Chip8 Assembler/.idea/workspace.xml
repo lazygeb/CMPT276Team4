@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9dea849a-f509-487b-b266-35f2a9bbdcd3" name="Default Changelist" comment="" />
+    <list default="true" id="9dea849a-f509-487b-b266-35f2a9bbdcd3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Chip8_Assembler_jar/Chip8 Assembler.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Chip8_Assembler_jar/Chip8 Assembler.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chip8 Assembler/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chip8 Assembler/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/programFile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/programFile.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/testInstructions.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/testInstructions.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Instructions for using the assembler.docx" beforeDir="false" afterPath="$PROJECT_DIR$/../Instructions for using the assembler.docx" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,12 +23,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="16" column="3" lean-forward="true" selection-start-line="16" selection-start-column="3" selection-end-line="16" selection-end-column="3" />
+            <state relative-caret-position="-2460">
+              <caret line="31" column="12" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="12" />
               <folding>
-                <element signature="e#0#9817#0" expanded="true" />
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/testInstructions.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="700">
+              <caret line="35" column="11" selection-start-line="35" selection-start-column="11" selection-end-line="35" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -31,9 +48,19 @@
       </file>
     </leaf>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>system.out</find>
+      <find>system</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/src/testInstructions.txt" />
         <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
@@ -44,6 +71,7 @@
     <option name="width" value="2750" />
     <option name="height" value="1240" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -72,8 +100,8 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549952363989" />
-    <property name="last_opened_file_path" value="$USER_HOME$/OneDrive/Desktop/CMPT276Team4/Assembler/input.txt" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551653916758" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -94,7 +122,7 @@
     <configuration name="Main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="Chip8 Assembler" />
-      <option name="PROGRAM_PARAMETERS" value="&quot;\Users\mathi\OneDrive\Desktop\CMPT276Team4\Assembler\input.txt&quot;" />
+      <option name="PROGRAM_PARAMETERS" value="--test" />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method v="2">
@@ -115,17 +143,21 @@
       <workItem from="1549838448944" duration="15722000" />
       <workItem from="1549916741122" duration="10890000" />
       <workItem from="1549945653134" duration="4608000" />
+      <workItem from="1551131091098" duration="2572000" />
+      <workItem from="1551139478453" duration="427000" />
+      <workItem from="1551652490295" duration="1541000" />
+      <workItem from="1551654491266" duration="452000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31220000" />
+    <option name="totallyTimeSpent" value="36212000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="-6" width="1381" height="885" extended-state="7" />
+    <frame x="-6" y="-6" width="1381" height="885" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14814815" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15646258" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -163,19 +195,25 @@
     <entry file="file://$PROJECT_DIR$/programFile">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/programFile.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="16" column="3" lean-forward="true" selection-start-line="16" selection-start-column="3" selection-end-line="16" selection-end-column="3" />
+        <state relative-caret-position="-2460">
+          <caret line="31" column="12" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="12" />
           <folding>
-            <element signature="e#0#9817#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/testInstructions.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="700">
+          <caret line="35" column="11" selection-start-line="35" selection-start-column="11" selection-end-line="35" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/programFile.txt">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
   <component name="masterDetails">

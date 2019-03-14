@@ -54,11 +54,11 @@ class Chip8{
         this.millitime = 0;
     }
 
- 
+
 
     /**
      * @method loadProgram
-     * @param {Array} program 
+     * @param {Array} program
      * Responsible for loading program into the memory
      */
     loadProgram(program){
@@ -116,7 +116,21 @@ class Chip8{
         this.stackPointer = 0;  //top of stack is 0
         this.indexRegister = 0;
         this.keyState = new Uint8Array(16);
-        let program = [0xE1, 0x9E, 0xE1, 0xA1, 0xE1, 0xA1];  //default program
+        let program = [0x61, 0x01, 0x62, 0x01, 0xA2, 0x40, 0xD1, 0x2F, 0x61, 
+            0x0A, 0x62, 0x01, 0xA2, 0x50, 0xD1, 0x2F, 0x61, 0x14, 0x62, 0x01, 
+            0xA2, 0x60, 0xD1, 0x2F, 0x61, 0x1E, 0x62, 0x01, 0xA2, 0x70, 0xD1, 
+            0x2F, 0x61, 0x2D, 0x62, 0x01, 0xA2, 0x60, 0xD1, 0x2F, 0x61, 0x01, 
+            0x62, 0x50, 0xA2, 0x80, 0xD1, 0x2F, 0x61, 0x0A, 0x62, 0x50, 0xA2, 
+            0x50, 0xD1, 0x2F, 0x61, 0x14, 0x62, 0x50, 0xA2, 0x90, 0xD1, 0x2F, 
+            0x00, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xFF, 
+            0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xC3, 0xC3, 0xC3, 
+            0xC3, 0xC3, 0xC3, 0xC3, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 
+            0xFF, 0xFF, 0xC3, 0xC3, 0xC3, 0xFF, 0xFF, 0xC3, 0xC3, 0xC3, 0xC3, 
+            0x00, 0x00, 0x00, 0x00, 0x00, 0xF0, 0xFC, 0xCF, 0xC3, 0xC3, 0xC3, 
+            0xC3, 0xC3, 0xC3, 0xFF, 0xFC, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFC, 
+            0xFE, 0xC6, 0xC6, 0xFE, 0xFE, 0xCC, 0xCE, 0xC6, 0xC7, 0xC3, 0x00, 
+            0x00, 0x00, 0x00, 0x00, 0xC3, 0xF7, 0xFF, 0xCB, 0xC3, 0xC3, 0xC3, 
+            0xC3, 0xC3, 0xC3, 0xC3, 0x00, 0x00, 0x00];  //default program
         this.loadProgram(program); //loads Array: program into memory
         this.progLength = program.length;
 		this.logCount = 0;
@@ -137,6 +151,10 @@ class Chip8{
             this.stack[i] = 0x0
         }
 
+    }
+
+    getWaitKeyFlag(){
+        return this.waitForKeyFlag;
     }
 
     //Called when DelayTimer is > 0 
@@ -231,14 +249,15 @@ class Chip8{
         };
         document.addEventListener('keyup', handler, false);
 		*/
-		this.keyState[key] = 0; 
+        this.keyState[key] = 0;
     }
 
     //For opcode 0xFX0A. Signals to emulator if next opcode should 
     //should be read depending if key was pressed or not
     waitForKeyPressed() {
-        this.keydown();
-        this.keyup();
+        // this.keydown();
+        // this.keyup();
+
         if (this.waitKey !== undefined) { //key has been pressed
             let key = this.waitKey; //temp variable to store the key pressed 
             this.waitKey = undefined; //reset variable and waitForKeyFlag
@@ -282,6 +301,7 @@ class Chip8{
      * Method for running emulator
      */
     runEmulator(){
+        pushThisChip();
         let opcode = this.memory[this.programCounter] << 8 | this.memory[this.programCounter + 1]; //From reference 1
         this.programCounter += 2;
         this.oneCycle(opcode);
@@ -295,7 +315,6 @@ class Chip8{
         }
         this.updateHTML(opcode.toString(16));
         this.startDelayTimer();
-
     }
 
     updateHTML(opcode) { //call this after every cycle
@@ -330,7 +349,7 @@ class Chip8{
 			const paragraph = document.createElement('p');
 			paragraph.innerHTML = time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "<br>";
 			document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
-			if (this.logCount < 200) {
+			if (this.logCount < 14) {
 				this.logCount++;
 			} else {
 				document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);
@@ -354,8 +373,35 @@ class Chip8{
 		//let currLog =  <p> + time + ": " + "<strong>" + message + "</strong>" + "</p> <br>";
 		//document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
 		document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
+		if (this.logCount < 14) {
+			this.logCount++;
+		} else {
+			document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);
+		}
+		
 		//debug.log(this.lastOpcode + " " + opcode);
     }
+
+    deepCopy(newChip) { //copies all values into newChip object reference
+        newChip.memory = [...this.memory];
+        newChip.stack = [...this.stack];
+        newChip.register = [...this.register];
+        newChip.delayTimer = this.delayTimer;
+        newChip.sountTimer = this.soundTimer;
+        newChip.programCounter = this.programCounter;
+        newChip.drawFlag = this.drawFlag;
+        newChip.graphics = [...this.graphics];
+        newChip.stackPointer = this.stackPointer;
+        newChip.indexRegister = this.indexRegister;
+        newChip.keyState = [...this.keyState];
+        newChip.progLength = this.progLength;
+        newChip.waitForKeyFlag = this.waitForKeyFlag;
+        newChip.waitKey = this.waitKey;
+        newChip.lastOpcode = this.lastOpcode;
+        newChip.instruction = this.instruction;
+        return newChip;
+    }
+
 
     /**
      * @method oneCycle
@@ -364,6 +410,7 @@ class Chip8{
      * and runs one cycle of Chip8 CPU
      */
     oneCycle(opcode) {
+
         let reg1 = 0x00;
         let reg2 = 0x00;
         let tempVal = 0x00;
@@ -439,8 +486,9 @@ class Chip8{
                 reg1 = reg1 >> 8;
                 tempVal = opcode & 0x00FF;
                 tempVal = tempVal + this.register[reg1];
+                tempVal = tempVal & 0xFF; //truncate if larger than 2 bytes
                 this.register[reg1] = tempVal;
-				this.instruction = "ADD V" + reg1.toString(16) + " " + tempVal.toString(16);
+				this.instruction = "ADD V" + reg1.toString(16) + " " + (opcode & 0x00FF).toString(16);
                 break;
             
             case 0x8: //opcodes 8xy0 through 8xyE
@@ -469,7 +517,7 @@ class Chip8{
                         tempVal = this.register[reg1] + this.register[reg2];
                         if (tempVal > 255) {
                             this.register[0xF] = 1;
-                            tempVal = tempVal & 0x0FF;
+                            tempVal = tempVal & 0x0FF; //truncate sum
                         }
                         this.register[reg1] = tempVal;
 						this.instruction = "ADD V" + reg1.toString(16) + " V" + reg2.toString(16);
@@ -546,7 +594,7 @@ class Chip8{
                 this.register[reg1] = tempVal;
 				this.instruction = "RND V" + reg1.toString(16) + " " + tempVal.toString(16);
                 break;
-            case 0xD: //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision
+            case 0xD: //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite starting at mem loc I at (Vx, Vy), set VF = collision            
                 reg1 = opcode & 0x0F00;
                 reg1 = reg1 >> 8; //x coordinate
                 let xCoord = this.register[reg1];
@@ -584,7 +632,7 @@ class Chip8{
                     }
                 }
                 this.drawFlag = true;
-				this.instruction = "DRAW";
+                this.instruction = "DRAW";
                 break;
             case 0xE:
                 reg1 = opcode & 0x0F00;
@@ -619,6 +667,7 @@ class Chip8{
                         break;
                     case 0x0A: //opcode 0xFx0A --> LD Vx, K -- wait for a key press, store the value of the key in Vx
                         this.register[reg1] = this.waitForKeyPressed();
+                        //console.log(this.register[reg1]);
 						this.instruction = "LD V" + reg1.toString(16) + " K";
                         break;
                     case 0x15: //opcode 0xFx15 --> LD DT, Vx -- set delay timer = Vx
@@ -647,7 +696,7 @@ class Chip8{
 						this.instruction = "LD B V" + reg1.toString(16);
                         break;
                     case 0x55: //opcode 0xFx55 --> LD [I], Vx -- Store registers V0 through Vx in memory starting at I
-                        for (let i = 0; i < this.register[reg1]; i++) {
+                        for (let i = 0; i <= reg1; i++) {
                             this.memory[this.indexRegister + i] = this.register[i];
                         }
 						this.instruction = "LD I V" + reg1.toString(16);
@@ -661,11 +710,11 @@ class Chip8{
                 }
                 break;
         }//increment programCounter by 2 after running oneCycle()
-        if (this.delayTimer !== 0 && this.delayFlag == true) {
+        if (this.delayTimer !== 0 && this.delayFlag === true) {
             var delayTimeout = setTimeout(() => { this.startDelayTimer(delayTimeout);}, 1000);
             this.delayFlag = false;
         } 
-        if (this.soundTimer !== 0 && this.soundFlag == true) {
+        if (this.soundTimer !== 0 && this.soundFlag === true) {
                 var soundTimeout = setTimeout(() => {this.startSoundTimer(soundTimeout)}, 1000);
                 this.soundFlag = false; 
         }

@@ -59,6 +59,7 @@ function clrDisp() {
     else {
         console.log("Opcode 00E0: Pass");
     }
+    chip.updateHTML(0x00E0.toString(16));
 }
 
 //add function ret here
@@ -80,7 +81,7 @@ function ret() {
     else {
         console.log("Opcode 00EE: Failed");
     }
-
+    chip.updateHTML(0x00EE.toString(16));
 }
 
 function oneNNN() {
@@ -94,6 +95,7 @@ function oneNNN() {
     } else {
         console.log("Opcode 1nnn: Pass");
     }
+    chip.updateHTML(0x1ABC.toString(16));
 }
 
 function twoNNN() {
@@ -116,6 +118,7 @@ function twoNNN() {
     else {
         console.log("Opcode 2nnn: Pass");
     }
+    chip.updateHTML(0x2ABC.toString(16));
 }
 
 function threeXKK() { //opcode 0x3xkk, if register Vx == kk, skip to next instruction (PC + 2)
@@ -138,6 +141,7 @@ function threeXKK() { //opcode 0x3xkk, if register Vx == kk, skip to next instru
     else {
         console.log("Opcode 3xkk: Pass");
     }
+    chip.updateHTML(0x35A6.toString(16));
 }
 
 function fourXKK() { //opcode 0x4xkk --> SNE Vx, byte -- if this.register Vx != kk, skip next instruction (PC + 2)
@@ -145,6 +149,7 @@ function fourXKK() { //opcode 0x4xkk --> SNE Vx, byte -- if this.register Vx != 
     chip.register[5] = 0xA6; //case 1: Vx == kk
     let pc = chip.programCounter;
     chip.oneCycle(0x45A6); //here register[5] should be equal to A6 therefore PC should not increase
+    chip.updateHTML(0x45A6.toString(16));
     if (chip.programCounter !== pc) {
         works = false;
     }
@@ -159,6 +164,7 @@ function fourXKK() { //opcode 0x4xkk --> SNE Vx, byte -- if this.register Vx != 
     else {
         console.log("Opcode 4xkk: Pass");
     }
+    chip.updateHTML(0x45A7.toString(16));
 }
 
 function fiveXY0(){ //opcode 0x5xy0 --> SE Vx, Vy -- if this.register Vx & Vy are equal, skip next instruction
@@ -176,6 +182,7 @@ function fiveXY0(){ //opcode 0x5xy0 --> SE Vx, Vy -- if this.register Vx & Vy ar
     else {
         console.log("Opcode 5xy0: Pass");
     }
+    chip.updateHTML(0x5560.toString(16));
 }
 
 function sixXKK(){ //opcode 0x6xkk --> LD Vx, byte -- place value kk into this.register Vx
@@ -191,13 +198,14 @@ function sixXKK(){ //opcode 0x6xkk --> LD Vx, byte -- place value kk into this.r
     else {
         console.log("Opcode 6xkk: Pass");
     }
+    chip.updateHTML(0x65A6.toString(16));
 }
 
 function sevenXKK(){  //opcode 0x7xkk --> ADD Vx, byte -- add value kk to Vx and place in Vx
 	let works = true;
 	chip.register[5] = 0xA6;
 	chip.oneCycle(0x75A6);
-	if (chip.register[5] !== 0xA6+0xA6){
+	if (chip.register[5] !== ((0xA6+0xA6) & 0xFF)){ //'&' is to truncate
 		works = false;
 	}
 	if (!works) {
@@ -206,6 +214,7 @@ function sevenXKK(){  //opcode 0x7xkk --> ADD Vx, byte -- add value kk to Vx and
     else {
         console.log("Opcode 7xkk: Pass");
     }
+    chip.updateHTML(0x75A6.toString(16));
 }
 
 function eightXY1(){ //opcode 8xy1 --> OR Vx, Vy -- set Vx = Vx OR Vy (bitwise OR operation)
@@ -222,6 +231,7 @@ function eightXY1(){ //opcode 8xy1 --> OR Vx, Vy -- set Vx = Vx OR Vy (bitwise O
     else {
         console.log("Opcode 8xy1: Pass");
     }
+    chip.updateHTML(0x8561.toString(16));
 }
 
 function eightXY2() { //opcode 8xy2 --> AND Vx, Vy -- set Vx = Vx and Vy
@@ -238,6 +248,7 @@ function eightXY2() { //opcode 8xy2 --> AND Vx, Vy -- set Vx = Vx and Vy
     else {
         console.log("Opcode 8xy2: Failed");
     }
+    chip.updateHTML(0x8AC2.toString(16));
 }
 
 function eightXY3() { //opcode 8xy3 --> XOR Vx, Vy -- set Vx = Vx XOR Vy
@@ -254,6 +265,7 @@ function eightXY3() { //opcode 8xy3 --> XOR Vx, Vy -- set Vx = Vx XOR Vy
     else {
         console.log("Opcode 8xy3: Failed");
     }
+    chip.updateHTML(0x8BE3.toString(16));
 }
 
 function eightXY4() { //opcode 8xy4 --> ADD Vx, Vy -- set Vx = Vx + Vy, set VF = carry
@@ -274,6 +286,7 @@ function eightXY4() { //opcode 8xy4 --> ADD Vx, Vy -- set Vx = Vx + Vy, set VF =
     else {
         console.log("Opcode 8xy4: Failed")
     }
+    chip.updateHTML(0x89B4.toString(16));
 }
 
 function eightXY5() { //opcode 8xy5 --> SUB Vx, Vy -- set Vx = Vx - Vy, set VF = NOT borrow
@@ -293,6 +306,7 @@ function eightXY5() { //opcode 8xy5 --> SUB Vx, Vy -- set Vx = Vx - Vy, set VF =
     else {
         console.log("Opcode 8xy5: Failed");
     }
+    chip.updateHTML(0x80E5.toString(16));
 }
 
 function eightXY6() { //opcode 8xy6 --> SHR Vx {, Vy} -- set Vx = Vx SHR 1 => if the least-sig bit of Vx is 1,
@@ -311,6 +325,7 @@ function eightXY6() { //opcode 8xy6 --> SHR Vx {, Vy} -- set Vx = Vx SHR 1 => if
     else {
         console.log("Opcode 8xy6: Failed");
     }
+    chip.updateHTML(0x8806.toString(16));
 }
 
 function eightXY7(){ //opcode 8xy7 --> SUBN Vx, Vy -- set Vx = Vy - Vx, set VF = Not borrow
@@ -330,6 +345,7 @@ function eightXY7(){ //opcode 8xy7 --> SUBN Vx, Vy -- set Vx = Vy - Vx, set VF =
     else {
         console.log("Opcode 8xy7: Pass");
     }
+    chip.updateHTML(0x8567.toString(16));
 }
 
 function eightXYE() { //opcode 8xyE --> SHL Vx, {, Vy} -- set Vx = Vx SHL 1
@@ -348,14 +364,19 @@ function eightXYE() { //opcode 8xyE --> SHL Vx, {, Vy} -- set Vx = Vx SHL 1
     else {
         console.log("Opcode 8xyE: Failed");
     }
+    chip.updateHTML(0x830E.toString(16));
 }
 
 function CXKK() {
     let works = false;
     chip.oneCycle(0xC1FF);
+    chip.updateHTML(0xC1FF.toString(16));
     chip.oneCycle(0xC2FF);
+    chip.updateHTML(0xC2FF.toString(16));
     chip.oneCycle(0xC3FF);
+    chip.updateHTML(0xC3FF.toString(16));
     chip.oneCycle(0xC4FF);
+    chip.updateHTML(0xC4FF.toString(16));
     if (chip.register[1] !== chip.register[2] || chip.register[1] !== chip.register[3] ||
         chip.register[1] !== chip.register[4] || chip.register[2] !== chip.register[3] ||
         chip.register[2] !== chip.register[4] || chip.register[3] !== chip.register[4]) {
@@ -378,6 +399,7 @@ function DXYN(){  //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite star
 	chip.oneCycle(0x6508); //sets V5 to 8 (so the top left pixel will intercept on zeros)
 	chip.oneCycle(0xd235); //draws a 0 a little below top left corner
 	chip.oneCycle(0xd455); //draws a 0 below and to the right
+    chip.updateHTML(0xD455.toString(16));
 	chip.updateDisplay();
 	if (chip.register[0xF] === 0){
 		works = false;
@@ -422,7 +444,7 @@ function EX9E() {
         if (chip.programCounter !== pc) {
             works = false;
         }
-            
+        chip.updateHTML(opcode.toString(16));
     }
 
     if (!works) {
@@ -464,7 +486,8 @@ function EXA1(){
 
         if (chip.programCounter !== pc + 2) {
             works = false;
-        }       
+        }
+        chip.updateHTML(opcode.toString(16));
     }
 
     if (!works) {
@@ -496,7 +519,8 @@ function FX07() {
         }
         if (chip.delayTimer !== 0) {
             setInterval(function(){ chip.startDelayTimer();}, 1000);
-        } 
+        }
+        chip.updateHTML(opcode.toString(16));
     }
     if (!works) {
         console.log("Opcode Fx07: Failed");
@@ -526,6 +550,7 @@ function FX18() {
         chip.soundTimer = chip.register[i];
 
         chip.oneCycle(opcode);
+        chip.updateHTML(opcode.toString(16));
 
         if (chip.soundTimer !== chip.register[i]) {
             works = false;
@@ -533,7 +558,7 @@ function FX18() {
         if (chip.soundTimer !== 0) {
             var run = setInterval(function(){ 
                 chip.startSoundTimer();
-                if (chip.soundTimer == 0) {
+                if (chip.soundTimer === 0) {
                     clearInterval(run);
                 }
             }, 1000);
@@ -566,6 +591,7 @@ function FX15(){
         chip.register[i] = chip.delayTimer;
 
         chip.oneCycle(opcode);
+        chip.updateHTML(opcode.toString(16));
 
         if(chip.register[i] !== chip.delayTimer){
             works = false;
@@ -593,6 +619,7 @@ function FX1E () { //opcode 0xFx1E --> ADD I, Vx -- set I = I + Vx
     else {
         console.log("Opcode Fx1E: Failed");
     }
+    chip.updateHTML(0xF81E.toString(16));
 }
 
 function FX29 () { //opcode 0xFx29 --> LD F, Vx -- set I = location of sprite for digit Vx
@@ -611,6 +638,7 @@ function FX29 () { //opcode 0xFx29 --> LD F, Vx -- set I = location of sprite fo
     else {
         console.log("Opcode Fx29: Failed");
     }
+    chip.updateHTML(0xF029.toString(16));
 }
 
 function FX33 () { //opcode 0xFx33 --> LD B, Vx -- store BCD representation of Vx in memory locations I, I+1 & I + 2
@@ -631,6 +659,7 @@ function FX33 () { //opcode 0xFx33 --> LD B, Vx -- store BCD representation of V
     else {
         console.log("Opcode Fx33: Failed");
     }
+    chip.updateHTML(0xFA33.toString(16));
 }
 
 function ANNN () { //opcode Annn --> LD I, addr -- set this.register I = nnn
@@ -643,6 +672,7 @@ function ANNN () { //opcode Annn --> LD I, addr -- set this.register I = nnn
     else {
         console.log("Opcode ANNN: Failed");
     }
+    chip.updateHTML(opcode.toString(16));
 }
 
 function BNNN () { //opcode Bnnn --> JP V0, addr -- jump to location nnn + V0
@@ -655,6 +685,7 @@ function BNNN () { //opcode Bnnn --> JP V0, addr -- jump to location nnn + V0
     else {
         console.log("Opcode BNNN: Failed");
     }
+    chip.updateHTML(opcode.toString(16));
 }
 
 function eightXY0(){ //opcode 8xy0 --> LD Vx, Vy -- set Vx = Vy
@@ -669,6 +700,7 @@ function eightXY0(){ //opcode 8xy0 --> LD Vx, Vy -- set Vx = Vy
     else {
         console.log("Opcode 8XY0: Failed");
     }
+    chip.updateHTML(opcode.toString(16));
 }
 
 function  nineXY0(){//opcode 9xy0 --> SNE Vx, Vy -- skip next instruction if Vx != Vy
@@ -678,6 +710,7 @@ function  nineXY0(){//opcode 9xy0 --> SNE Vx, Vy -- skip next instruction if Vx 
     chip.register[2] = 1;
     chip.programCounter = 0;
     chip.oneCycle(opcode);
+    chip.updateHTML(opcode.toString(16));
     if (chip.programCounter !== 2) {
         works = false;
     }
@@ -695,6 +728,7 @@ function  nineXY0(){//opcode 9xy0 --> SNE Vx, Vy -- skip next instruction if Vx 
     else {
         console.log("Opcode 9xy0: Failed");
     }
+    chip.updateHTML(opcode.toString(16));
 }
 
 function FX55(){//opcode 0xFx55 --> LD [I], Vx -- Store registers V0 through Vx in memory starting at I
@@ -717,6 +751,7 @@ function FX55(){//opcode 0xFx55 --> LD [I], Vx -- Store registers V0 through Vx 
     else {
         console.log("Opcode Fx55: Failed");
     }
+    chip.updateHTML(opcode.toString(16));
 }
 
 function FX65(){ //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx from memory starting at I
@@ -740,6 +775,7 @@ function FX65(){ //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx 
     else {
         console.log("Opcode Fx65: Failed");
     }
+    chip.updateHTML(opcode.toString(16));
 }
 
 function FX0A() {
@@ -765,9 +801,10 @@ function FX0A() {
 
         //onecycle
         chip.oneCycle(opcode);
+        chip.updateHTML(opcode.toString(16));
 
         //Simulate Keypress -> on the second interval, pc should increase.
-        if (intervalCount == 1) {
+        if (intervalCount === 1) {
             chip.keyState[1] = 1;
             chip.waitKey = 1; 
             chip.register[1] = 1;
@@ -780,17 +817,17 @@ function FX0A() {
         }
 
         //if tpc -2 != pc -> problem, only for interval 0 
-        if (intervalCount == 0 && tempPC - 2 != chip.programCounter) {
+        if (intervalCount === 0 && tempPC - 2 !== chip.programCounter) {
             console.log("Opcode Fx0A: Failed");
             clearInterval(runEmulator);
         }
         //if tpc != pc -> problem, only for interval 1 since key has been pressed 
-        if (intervalCount == 1 && tempPC != chip.programCounter) {
+        if (intervalCount === 1 && tempPC !== chip.programCounter) {
             console.log("Opcode Fx0A: Failed");
             clearInterval(runEmulator);
         }
         
-        if (intervalCount == 1 && tempPC == chip.programCounter) {
+        if (intervalCount === 1 && tempPC === chip.programCounter) {
             console.log("Opcode Fx0A: Pass");
 
             clearInterval(runEmulator);
@@ -803,7 +840,6 @@ function FX0A() {
 
         intervalCount++;
     }, 1);
-
 }
 
 
