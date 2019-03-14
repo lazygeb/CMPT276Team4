@@ -63,6 +63,8 @@ The assembler follows instructions from the following reference: http://devernay
 The html page will have a button called "Run Opcode Tests", which will automatically test all the opcodes to see if it passed or failed. Please use the Google Chrome browser. To see whether the opcodes have passed or not, right click and select inspect. Then go to the console tab in the inspector and this will display text as to if the tests have passed. 
 
 ### **README Snake**
+We have refered to this document: https://github.com/vinheim3/CHIP-8/tree/master/Snake during our development of the game
+
 To load snake into the emulator follow these steps:
 1) Go to the web browser by clicking the index.html
 2) Click load rom
