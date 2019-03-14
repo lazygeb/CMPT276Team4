@@ -20,7 +20,9 @@ Showing the keyboard input will not be implemented in the system, unfortunately.
 - Visualizer: New default screen and step backwards button has been completed. 
 - Snake: Set up the game. Snake shows on screen but cannot move yet
 
-## **README Emulator**
+## **README**
+
+### **README Emulator**
 
 The development of the Emulator has been fully completed in terms on functionality. The bugs from release 2 have been completed except two minor bugs. 
 
@@ -32,7 +34,7 @@ To run the emulator, follow these instructions:
 4) Dismiss the alert and press the start emulation button
 
 
-## **README Visualizer Step Controls**
+### **README Visualizer Step Controls**
 
 The visualizer has pause functionality, resume functionality and step forward functionality. All of this is indicated within the log as well. The step backwards functionality will be done for next release.
 
@@ -41,7 +43,7 @@ To use the step controls, follow these instructions:
 1) While the emulator is running, click on the pause icon (two vertical bars)
 2) While the emulator is in the pause state, you may either press the resume icon (arrow to the right),the step forward icon (the "+1" icon) or the step backwards icon (the "-1" icon)
 
-## **README Assembler**
+### **README Assembler**
 The assembler follows instructions from the following reference: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#memmap. The assembler transforms assembly language instructions into chip8 supported opcodes. For example it will take SE V3 VA and output 53A0. Because we have created our own assembler, the assembly language used has been slightly modified from the reference noted above.
 
 
@@ -56,11 +58,16 @@ The assembler follows instructions from the following reference: http://devernay
 -	When writing instructions, only place 1 per line and separate each part of the instruction by a space, nothing else (no commas).
 -	Please see the exampleAssembly.txt file for an example of each instruction being used.
    
-## **README Testing**
+### **README Testing**
 
 The html page will have a button called "Run Opcode Tests", which will automatically test all the opcodes to see if it passed or failed. Please use the Google Chrome browser. To see whether the opcodes have passed or not, right click and select inspect. Then go to the console tab in the inspector and this will display text as to if the tests have passed. 
 
-## **README Snake**
+### **README Snake**
+To load snake into the emulator follow these steps:
+1) Go to the web browser by clicking the index.html
+2) Click load rom
+3) Go into the snake file and choose the SnakeROMfornow.txt
+4) Click start emulation
    
 ## **Emulator Bugs**
 
