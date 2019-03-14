@@ -23,18 +23,20 @@
     <body>
         <h1 id="cmpt276-chip8-group4">CMPT276-Chip8-Group4</h1>
 <p>Team 4 Members: Gabriele Dal Cengio, Lina Dang-Nguyen, Nishan Ghimire, Mathieu Laflamme, Harman Singh, Calvin So</p>
-<h2 id="release-2"><strong>Release 2</strong></h2>
+<h2 id="release-3"><strong>Release 3</strong></h2>
 <h2 id="summary-of-changes-from-previous-release"><strong>Summary of changes from previous release</strong></h2>
-<p>Almost all the planned use cases from release 1 have been completed. The first feature that has not been completed is the backwards function due to unexpected development issues. Our original design did not show the sprites correctly and had memory errors so we had to brainstorm new designs, which lead to development being delayed. We have started development again and will complete the feature by the next release. The last feature that has not been completed was the visualizer showing keyboard input as time did not permit for the development of this feature. It has been added to our backlog and will be completed for the next release.</p>
-<p>These delays do not affect our schedule much as we have completed the assembler ahead of schedule. The assembler is written in java and is fully functional and ready to be used for game development. For our visualizer, we have implemented a pause, play and step forward functionality. The display of the memory, stack and registers are also fully functioning.</p>
-<p>All major bugs from last release have been fixed. Specifically, sound now works with external roms and the speed of the keyboard has significantly improved. Refer to the <a href="#Emulator-bugs">document</a> for a detailed list of the bugs fixed. Minor bugs like the the ball glitching when hitting the paddle will be added to the backlog and fixed for next release. The rom still has to be copy and pasted in to a text file to be run.</p>
-<p>For testing, last release we decided to assign someone to research on jest and if it was worth using. The results from that was it was too time consuming to use jest and the google chrome debugger will do the job just fine. As a result, for the future releases, we will be using the google chrome debugger to test out or code.</p>
-<p>For our next release, it will be the same as we have planned. We will have the game snake done and polished with no bugs. Any bugs and features unfinished from this release will also be completed for next release.</p>
-<h3 id="list-of-all-system-changes">List of all system changes:</h3>
+<h3 id="what-was-implemented"><strong>What was implemented</strong></h3>
+<p>The backwards step has been completed and fully tested. It works with all the games. We were able to optimize it to make it more efficient so that it does not use as much memory. Previously, it would go up to 3-4gb of memory.</p>
+<p>We also optimized keyboard input and UI. For the keyboard input, the changes were specific to the wait key. Previously, it would keep on running the same opcode until the key was hit but now the system actually pauses until a keyboard is hit. This prevents the emulator from making redundant calls. The buttons for the visualizer controls have also been improved. You cannot click the play and forward buttons without pausing first. The buttons will be greyed out if the user is not allowed to click it. This improves the user experience so they will not try to click buttons that they aren’t allowed to. Another improvement to the visualizer is when users click the start emulation without any ROMs running, the screen will prompt them to load a ROM.  There were also many bugs fixed and this will be outlined in the <a href="#Emulator-bugs">bugs section</a>.</p>
+<h3 id="what-was-not-implemented"><strong>What was not implemented</strong></h3>
+<p>The completion of Snake has not been completed.  We have begun development of it but due to the overwhelming number of bugs and optimizations, we are behind schedule. Planning and designing for snake required some time as well. Since the bugs have been fixed, we will have two people developing Flappy Bird and another two working on Snake. The remaining two will work on perfecting the program for the final release.</p>
+<p>Showing the keyboard input will not be implemented in the system, unfortunately. We have tried it out on the visualizer but it causes the website to lag. As a result, we decided to no longer include it in the use cases.</p>
+<h3 id="list-of-all-system-changes"><strong>List of all system changes:</strong></h3>
 <ul>
-<li>UI: New Icon buttons for the visualizer and improved keyboard input</li>
-<li>Emulator: Clearer graphics and sound works</li>
-<li>Visualizer: Added play, pause, step forward functionality and display of stack, register and memory.</li>
+<li>UI: Buttons will be grayed out if user is not allowed to click button. Number of opcodes that show in the log has been decreased.</li>
+<li>Emulator: WaitKey pauses the whole system until a key is pressed instead of re-running the same opcode.</li>
+<li>Visualizer: New default screen and step backwards button has been completed.</li>
+<li>Snake: Set up the game. Snake shows on screen but cannot move yet</li>
 </ul>
 <h2 id="readme-emulator"><strong>README Emulator</strong></h2>
 <p>The development of the Emulator has been fully completed in terms on functionality. The bugs from release 2 have been completed except two minor bugs.</p>
@@ -44,6 +46,13 @@
 <li>Click on “choose file” under file input</li>
 <li>Navigate to the rom folder and open the maze.txt example file</li>
 <li>Dismiss the alert and press the start emulation button</li>
+</ol>
+<h2 id="readme-visualizer-step-controls"><strong>README Visualizer Step Controls</strong></h2>
+<p>The visualizer has pause functionality, resume functionality and step forward functionality. All of this is indicated within the log as well. The step backwards functionality will be done for next release.</p>
+<p>To use the step controls, follow these instructions:</p>
+<ol>
+<li>While the emulator is running, click on the pause icon (two vertical bars)</li>
+<li>While the emulator is in the pause state, you may either press the resume icon (arrow to the right),the step forward icon (the &quot;+1&quot; icon) or the step backwards icon (the &quot;-1&quot; icon)</li>
 </ol>
 <h2 id="readme-assembler"><strong>README Assembler</strong></h2>
 <p>The assembler follows instructions from the following reference: <a href="http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#memmap">http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#memmap</a>. The assembler transforms assembly language instructions into chip8 supported opcodes. For example it will take SE V3 VA and output 53A0. Because we have created our own assembler, the assembly language used has been slightly modified from the reference noted above.</p>
@@ -61,26 +70,47 @@
 <li>Please see the exampleAssembly.txt file for an example of each instruction being used.</li>
 </ul>
 <h2 id="readme-testing"><strong>README Testing</strong></h2>
-<p>The html page will have a button called &quot;Run Opcode Tests&quot;, which will automatically test all the opcodes to see if it passed or failed. Please use the Google Chrome browser. To see wheter the opcodes have passed or not, right click and select inspect. Then go to the console tab in the inspector and this will display text as to if the tests have passed.</p>
+<p>The html page will have a button called &quot;Run Opcode Tests&quot;, which will automatically test all the opcodes to see if it passed or failed. Please use the Google Chrome browser. To see whether the opcodes have passed or not, right click and select inspect. Then go to the console tab in the inspector and this will display text as to if the tests have passed.</p>
+<h2 id="readme-snake"><strong>README Snake</strong></h2>
 <h2 id="emulator-bugs"><strong>Emulator Bugs</strong></h2>
 <p>These bugs have been found through unit testing and integrated testing by using public domain roms provided through the following website: [<a href="https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html">https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html</a>]</p>
 <h3 id="fixed-bugs-from-last-release"><strong>Fixed bugs from last release</strong></h3>
-<ol>
-<li>Sound works with the automatized testing and in external roms.</li>
-<li>Improved input keyboard delay from 70ms to 0.6ms on average</li>
-<li>Game can be loaded one after another without any glitches.</li>
-<li>Score updates in games (Pong, Brix)</li>
-</ol>
-<h3 id="bugs-that-have-not-been-fixed"><strong>Bugs that have not been fixed</strong></h3>
 <ol>
 <li>Clicking the run emulator multiple times causes it to glitch</li>
 <li>Paddle graphics glitch when the ball hits it</li>
 <li>Rom input currently does not work properly. The input has to be copy and pasted to text files in order to run.</li>
 <li>Games don’t end after all lives have been used up.</li>
-</ol>
-<h3 id="new-bugs"><strong>New bugs</strong></h3>
-<ol>
 <li>Log delay in visualizer lags the entire program substantially</li>
+</ol>
+<h3 id="fixed-bugs-that-were-found-this-release"><strong>Fixed bugs that were found this release</strong></h3>
+<ol>
+<li>Page crashes after a few minutes when left open because of the backwards step was using too much memory.</li>
+<li>Could click step forward, backwards and play even though the program was not paused</li>
+<li>Faulty wait for key, which did not work the external roms.</li>
+<li>Many external ROMs would not work. These games were:
+<ul>
+<li>
+<p><strong>Connect 4</strong><br>
+Before:
+<img src="https://cdn.discordapp.com/attachments/513589409661059082/555541036621889537/image.png" alt="image">
+After:
+<img src="https://cdn.discordapp.com/attachments/513589409661059082/555550962367070218/Screen_Shot_2019-03-13_at_5.35.58_PM.png" alt="image"></p>
+</li>
+<li>
+<p><strong>Rush Hour</strong><br>
+Before:
+<img src="https://cdn.discordapp.com/attachments/513589409661059082/555541016149622795/image_1.png" alt="image">
+After:
+<img src="https://cdn.discordapp.com/attachments/513589409661059082/555554042051559435/Screen_Shot_2019-03-13_at_5.52.50_PM.png" alt="image"></p>
+</li>
+<li>
+<p><strong>Tic Tac Toe</strong>
+<img src="https://cdn.discordapp.com/attachments/513589409661059082/555558784450428968/unknown.png" alt="image">
+Before: Could not get input of all the slots in the grid<br>
+After: Game fully functions</p>
+</li>
+</ul>
+</li>
 </ol>
 <hr>
 <h2 id="introduction"><strong>Introduction</strong></h2>
@@ -102,11 +132,16 @@
 <li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Assembler can change mnemonics to opcodes, which can be ran in the emulator</li>
 <li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Emulator and Visualizer will be fully functional on Google Chrome</li>
 </ul>
-<h4 id="release-2-completed-snake-game--completed-visualizer">Release 2: Completed Snake Game &amp; Completed Visualizer</h4>
+<h4 id="release-2-completed-snake-game--completed-visualizer-completed">Release 2: Completed Snake Game &amp; Completed Visualizer [COMPLETED]</h4>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Provide interface feedback for users by showing keyboard presses (unfinished from release 1)</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Allow user to step back one step (unfinished from release 1)</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Provide interface feedback for users by showing keyboard presses  [REMOVED FEATURE]</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Allow user to step back one step (unfinished from release 1)</li>
 <li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Have snake game polished and playable</li>
+</ul>
+<h4 id="release-3-completed-snake-game--completed-flappy-bird-game">Release 3: Completed Snake Game &amp; Completed Flappy Bird Game</h4>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Have snake game polished and playable (unfinished from release 2)</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Have flappy bird game polished and playable</li>
 </ul>
 <h2 id="table-of-contents"><strong>Table of Contents</strong></h2>
 <ul>
@@ -174,10 +209,10 @@
 </li>
 </ul>
 <h3 id="main-language-and-libraries">Main language and libraries</h3>
-<p>We will be using <em>Javascript</em> in order to render the virtual machine. To debug our code, we will be using the <em>Chrome Browser</em>.</p>
+<p>We will be using <em>Javascript</em> in order to render the virtual machine. To debug our code, we will be using the <em>Chrome Browser Development Tools</em>.</p>
 <h2 id="work-breakdown-and-project-schedule"><strong>Work Breakdown and Project Schedule</strong></h2>
 <h3 id="timeline-updated">Timeline [UPDATED]</h3>
-<p><img src="https://cdn.discordapp.com/attachments/513589409661059082/550127862578020362/Gaant.png" alt="Image of First Gantt Timeline"></p>
+<p><img src="https://cdn.discordapp.com/attachments/513589409661059082/555562961561845770/Gaant.png" alt="Image of First Gantt Timeline"></p>
 <h3 id="work-breakdown">Work Breakdown</h3>
 <h3 id="release-1-feb-6-2019"><strong>Release 1: Feb 6 2019</strong></h3>
 <p>Deliverables for Release 1:</p>
@@ -268,7 +303,7 @@
 <td>Feb 9</td>
 </tr>
 <tr>
-<td>Display key press during execution    <strong>(DELAYED)</strong></td>
+<td>Display key press during execution</td>
 <td>1 day</td>
 <td>Feb 10</td>
 </tr>
@@ -288,7 +323,7 @@
 <td>Feb 14</td>
 </tr>
 <tr>
-<td>Step-backwards one instruction  <strong>(DELAYED)</strong></td>
+<td>Step-backwards one instruction</td>
 <td>3 days</td>
 <td>Feb 20</td>
 </tr>
@@ -353,7 +388,7 @@
 <td>Mar 4</td>
 </tr>
 <tr>
-<td>Snake</td>
+<td>Snake   <strong>(DELAYED)</strong></td>
 <td>2 weeks</td>
 <td>Mar 7</td>
 </tr>
@@ -368,6 +403,7 @@
 <p>Deliverables for Release 4:</p>
 <ul>
 <li>Flappy Bird: Finish development and testing by April 3</li>
+<li>Snake: Finish development and testing by April 3</li>
 </ul>
 <p>Work Breakdown: <strong>Flappy Bird</strong></p>
 <table>
@@ -381,6 +417,11 @@
 <tbody>
 <tr>
 <td>Flappy Bird</td>
+<td>2 weeks</td>
+<td>Mar 27</td>
+</tr>
+<tr>
+<td>Snake   <strong>(DELAYED)</strong></td>
 <td>2 weeks</td>
 <td>Mar 27</td>
 </tr>
