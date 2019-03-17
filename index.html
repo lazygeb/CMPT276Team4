@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Abel|Catamaran|Lato|Libre+Franklin|Rubik" rel="stylesheet">
 
   <title>CMPT276 Group 4</title>
   <link rel="stylesheet" href="normalize.css">
@@ -23,10 +23,10 @@
 	<div class="wrapper">
 		<h1> Group 4's Chip8 Interpreter </h1>
 		<div class="splitWrapper">
-			<canvas id="canvas" width="560" height="280"></canvas>
+			<canvas class ="shadow" id="canvas" width="560" height="280"></canvas>
 			
-			<section class="visualizerWrapper">
-					 <section class="visualizer" id="stack">
+			<section class="visualizerWrapper whiteBox">
+					 <section class="visualizer shadow" id="stack">
 						 <h3>Stack:</h3>
 						 <div class="mriWrapper">
 							 <div><p>0: </p> <p id="V0-Stack">0x0</p></div>
@@ -49,7 +49,7 @@
 							 <div><p>f: </p> <p id="V15-Stack">0x0</p></div>
 						 </div>
 					 </section>
-					 <section class="visualizer" id="memory">
+					 <section class="visualizer shadow" id="memory">
 						 <h3>Memory:</h3>
 						 <div class="mriWrapper">
 							 <div><p>PC: </p><p id="PC">0x0 </p></div>
@@ -82,8 +82,8 @@
 						 </div>
 					 </section>
 			</section>
-			<section class="visualizerWrapper" id="visLogWrapper" >
-					 <section class="visualizer" id="visLog">
+			<section class="visualizerWrapper whiteBox" id="visLogWrapper" >
+					 <section class="visualizer shadow" id="visLog">
 						 <h3>Log</h3>
 						 <div class="mriWrapper">
 							 <div id="log">
@@ -95,7 +95,7 @@
 		</div>
 		
 		<div class="splitWrapper">
-			<section id="controls">
+			<section class="whiteBox" id="controls">
 			<!--
 				<form id="gameWrapper">
     				<h2 class ="identifier">Game: </h2>
