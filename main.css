@@ -200,13 +200,14 @@ li {
 }
 
 [type="file"] + label {
+
   background-color: #b3c2bf;
-  border-radius: 5rem;
+  border-radius: 5px;
   color: #3b3a36;
   cursor: pointer;
   display: inline-block;
   font-family: 'Rubik', sans-serif;
-  width: 10rem;
+  width: 9.5rem;
   margin-right: 12rem;
   margin-bottom: 1rem;
   transition: background-color 0.3s;
