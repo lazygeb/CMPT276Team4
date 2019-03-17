@@ -17,6 +17,7 @@ function main(usrFile) {
         if (loadFlag != false) {
             startEmulator(usrFile);
             loadFlag = false;
+			document.getElementById("startEmulator").classList.add("emulatorRunning");
         }
     };
 } 
@@ -149,7 +150,7 @@ function runTest() {
     opCoTest();
 }
 
-let inputElement = document.getElementById("myFile");
+let inputElement = document.getElementById("file");
 inputElement.addEventListener("change", handleFiles, false);
 let file;
 let prog;
@@ -172,6 +173,7 @@ function handleFiles() {
         alert("Your file has been loaded, please press \"Start Emulation\"");
         loadFlag = true; //makes sure runEmulator only runs once
         pauseflag = false; //resets the pause flag when new game is put in
+		document.getElementById("startEmulator").classList.remove("emulatorRunning");
     main(true); //call main, with true boolean to show it should load a file
     };
     reader.readAsBinaryString(file);

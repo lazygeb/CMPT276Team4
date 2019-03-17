@@ -277,7 +277,7 @@ class Chip8{
 
     //clears canvas back to black
     clearScreen() {
-        this.ctx.fillStyle = "#000";
+        this.ctx.fillStyle = "#3b3a36";
         this.ctx.fillRect(0, 0, 64 * this.scale, 32 * this.scale);
     }
 
@@ -285,7 +285,7 @@ class Chip8{
     updateDisplay() {
         let x = 0;
         let y = 0;
-        this.ctx.fillStyle = "#000";
+        this.ctx.fillStyle = "#3b3a36";
         this.ctx.fillRect(0, 0, 64 * this.scale, 32 * this.scale);
         for (let i = 0; i < this.graphics.length; i++) {
             if (this.graphics[i] !== 0x0) {

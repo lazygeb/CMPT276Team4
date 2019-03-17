@@ -1,3 +1,6 @@
+/*https://benmarshall.me/styling-file-inputs/ used this website as reference for changing the file input button */
+
+
 body {
 	font-family: 'Rubik', sans-serif;
 	background: #e3e3e3;
@@ -19,9 +22,9 @@ h3 {
 	margin-bottom: 0;
 }
 
-input {
-	
-}
+
+
+
 
 .wrapper {
 	margin: 0 auto;
@@ -58,7 +61,7 @@ select {
 }
 
 .stepControlInactive{
-	background: white;
+	background: #c0dfd9;
 	opacity: 0.1;
 	border-radius: 5px;
 	margin: .2rem 1rem;
@@ -67,7 +70,7 @@ select {
 }
 
 .stepControlActive{
-	background: lightGrey;
+	background: #b3c2bf;
 	opacity: 1;
 	border-radius: 5px;
 	margin: .2rem 1rem;
@@ -76,7 +79,7 @@ select {
 }
 
 .stepControlActive:hover{
-	background: white;
+	background: #c0dfd9;
 	cursor: pointer;
 }
 
@@ -184,4 +187,37 @@ li {
 
 #controls section > *{
 	display: block;
+}
+
+[type="file"] {
+	border: 0;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute !important;
+	white-space: nowrap;
+	width: 1px;  
+}
+
+[type="file"] + label {
+  background-color: #b3c2bf;
+  border-radius: 5rem;
+  color: #3b3a36;
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'Rubik', sans-serif;
+  width: 10rem;
+  margin-right: 12rem;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s;
+}
+ 
+[type="file"]:focus + label,
+[type="file"] + label:hover, [type="file"] + label:active {
+    background-color: #c0dfd9;
+}
+
+.emulatorRunning {
+	background-color: #c0dfd9;
 }
