@@ -1,0 +1,1 @@
+If you want to try to run this, follow bobby's javafx tutorial with including the libraries. I haven't generated a jar yet :) 
