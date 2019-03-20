@@ -49,6 +49,7 @@ class Chip8{
 		this.lastOpcode = 0;
 		this.instruction = "";
 		this.logCount = 0;
+		this.logToggle = false;
         this.chiptime = 0;
         this.chiptime2 = 0;
         this.millitime = 0;
@@ -134,6 +135,7 @@ class Chip8{
         this.loadProgram(program); //loads Array: program into memory
         this.progLength = program.length;
 		this.logCount = 0;
+		this.logToggle = false;
         this.chiptime = 0;
         this.chiptime2 = 0;
 
@@ -337,6 +339,7 @@ class Chip8{
 
 		//this.lastOpcode = opcode;
 		//debug.log(this.lastOpcode + " " + opcode);
+		if (!this.logToggle) return;
         this.updateHTMLOpcodeLog(opcode)
     }
 
@@ -349,8 +352,9 @@ class Chip8{
 			const paragraph = document.createElement('p');
 			paragraph.innerHTML = time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "<br>";
 			document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
-			if (this.logCount < 14) {
+			if (this.logCount < 16) {
 				this.logCount++;
+				console.log(this.logCount);
 			} else {
 				document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);
 			}
@@ -373,7 +377,7 @@ class Chip8{
 		//let currLog =  <p> + time + ": " + "<strong>" + message + "</strong>" + "</p> <br>";
 		//document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
 		document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
-		if (this.logCount < 14) {
+		if (this.logCount < 16) {
 			this.logCount++;
 		} else {
 			document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);

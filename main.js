@@ -11,6 +11,7 @@ let stepBackward = new Array();
 var runEmulator = null;
 var pauseflag = false;
 var loadFlag = null;
+var logToggle = false;
 function main(usrFile) {
     document.getElementById("runTest").onclick = function () { runTest()};
     document.getElementById("startEmulator").onclick = function () { 
@@ -18,8 +19,12 @@ function main(usrFile) {
             startEmulator(usrFile);
             loadFlag = false;
 			document.getElementById("startEmulator").classList.add("emulatorRunning");
+			if (logToggle) {
+				chip.logToggle = true;
+			}
         }
     };
+	document.getElementById("logToggle").onclick = function () { toggleLog()};
 } 
 
 function pushThisChip() {
@@ -50,7 +55,6 @@ function startEmulator(usrFile) {
         chip.loadProgram(prog);
     }
     callSetInt();
-
 }
     //window.requestAnimationFrame(chip.runEmulator());
 
@@ -148,6 +152,28 @@ function startEmulator(usrFile) {
 
 function runTest() {
     opCoTest();
+}
+
+function toggleLog() {
+	if (!logToggle) {
+	//turns on
+		logToggle = true;
+		if (chip!= null) {
+			chip.logToggle = true;
+			document.getElementById("logToggle").innerText = "Toggle Log Off";
+			document.getElementById("log").innerHTML = "";
+			chip.logCount = 0;
+		}
+	} else {
+	//turns off
+		logToggle = false;
+		if (chip!= null) {
+			chip.logToggle = false;
+			document.getElementById("logToggle").innerText = "Toggle Log On";
+			chip.updateHTMLLogMessage("Click on \"Toggle Log On\" to bring back the logs");
+			document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);
+		}
+	}
 }
 
 let inputElement = document.getElementById("file");
