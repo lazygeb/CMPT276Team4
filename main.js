@@ -197,7 +197,13 @@ function handleFiles() {
             j++;
         }
         alert("Your file has been loaded, please press \"Start Emulation\"");
-        loadFlag = true; //makes sure runEmulator only runs once
+        
+		//input name
+		var fileElement = document.getElementById('file');
+			var filename = fileElement.files[0].name;
+			document.getElementById("fileUploadBox").innerText = filename + " uploaded";
+
+		loadFlag = true; //makes sure runEmulator only runs once
         pauseflag = false; //resets the pause flag when new game is put in
 		document.getElementById("startEmulator").classList.remove("emulatorRunning");
     main(true); //call main, with true boolean to show it should load a file
