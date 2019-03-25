@@ -28,24 +28,24 @@ function assemblerMain(lines) {
        let opcodes = [];
         lines.forEach(function(line) {
             line = line.trim();
-            let tokens = line.split("\\s+"); //split every space (ignores multiple spaces in a row)
+            let tokens = line.split(" "); //split every space (ignores multiple spaces in a row)
             //int opcode = getInstruction(tokens);
             hasComment = false;
             //the following loop checks for comments, it ignores anything after the //
-            // for (i = 0; i < tokens.length && !hasComment; i++) {
-            //     //hasComment = false;
-            //     if (tokens[i].startsWith("//")) {
-            //         hasComment = true;
-            //         let tempTokens = new String[i];
-            //         for (j = 0; j < i; j++) {
-            //             tempTokens[j] = tokens[j];
-            //         }
-            //         tokens = tempTokens; 
-            //     }
-            // }
+            for (i = 0; i < tokens.length && !hasComment; i++) {
+                //hasComment = false;
+                if (tokens[i].startsWith('//')) {
+                    hasComment = true;
+                    let tempTokens = i;
+                    for (j = 0; j < i; j++) {
+                        tempTokens[j] = tokens[j];
+                    }
+                    tokens = tempTokens; 
+                    console.log("in " + tokens );
+                }
+            }
             let opcode = getInstruction(tokens);
             if (opcode == 0) {
-                console.log(tokens.length);
                 throw new InputMismatchException("Invalid instruction: " + line);
             }
             opcodes.push(opcode);
@@ -69,11 +69,12 @@ function assemblerMain(lines) {
 
 //call the right function
 function getInstruction(tokens) {
-    console.log("why");
+    console.log("getin " + tokens.length );
     if (tokens.length < 2) {
         return oneArgOpcode(tokens[0]);
     }
     else if (tokens.length < 3) {
+        console.log("is in" );
         return twoArgOpcode(tokens[0], tokens[1]);
     }
     else if (tokens.length < 4) {
@@ -82,6 +83,7 @@ function getInstruction(tokens) {
     else if (tokens.length < 5) {
         return fourArgOpcode(tokens[0], tokens[1], tokens[2], tokens[3]);
     }
+    console.log("nope" );
     return 0;
 }
 
@@ -102,7 +104,7 @@ function oneArgOpcode(instruction) {
 
 function twoArgOpcode(instruction, arg1) {
     if ( opcodeCheck(instruction,"SYS")) {
-        console.log(parseInt(arg1, 16));
+        console.log("SYS " + parseInt(arg1, 16));
         return parseInt(arg1, 16); //should convert a hex string into an int number
     }
     else if (opcodeCheck(instruction,"JP")) {
@@ -159,8 +161,8 @@ function twoArgOpcode(instruction, arg1) {
             return sprite;
         }
         catch (e){
-            alert(e);
-            break;
+            console.log(e);
+            throw new IllegalArgumentException(e);
         }
     }
     return 0;
