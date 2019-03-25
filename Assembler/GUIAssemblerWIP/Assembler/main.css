@@ -1,0 +1,177 @@
+body {
+	font-family: 'Lato', sans-serif;
+}
+
+p, h1, h2 {
+	display: block;
+}
+
+h2 {
+	font-size: 1.1rem;
+}
+
+h3 {
+	font-size: .8rem;
+	margin: .25rem;
+	margin-bottom: 0;
+}
+
+.wrapper {
+	margin: 0 auto;
+	width: 60rem;
+	overflow: hidden;
+}
+
+.splitWrapper {
+	display: inline-block;
+	overflow: hidden;
+	vertical-align: top;
+	max-width: 60%;
+}
+
+canvas {
+    display: block;
+	float: left;
+	border: 1px solid black;
+}
+
+section{
+	display: block;
+	vertical-align: top;
+}
+
+#gameWrapper {
+	display: block;
+	vertical-align: top;
+}
+
+select {
+	border-radius: 3px;
+}
+
+.stepControlInactive{
+	background: white;
+	opacity: 0.1;
+	border-radius: 3px;
+	margin: .2rem 1rem;
+	margin-left: 0;
+	transition: .5s;
+}
+
+.stepControlActive{
+	background: lightGrey;
+	opacity: 1;
+	border-radius: 3px;
+	margin: .2rem 1rem;
+	margin-left: 0;
+	transition: .5s;
+}
+
+.stepControlActive:hover{
+	background: white;
+	cursor: pointer;
+}
+
+.icon_wrapper {
+	display: inline;
+}
+
+.icon {
+	width: 2rem;
+	height: auto;
+	padding: 0;
+	margin: 0;
+}
+
+ul {
+	padding: 0;
+	margin: 1rem 0;
+	width: 100px;
+}
+
+li {
+	font-family: monospace;
+	font-size: 1.3rem;
+	display: inline;
+	text-decoration: none;
+	padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.visualizerWrapper  {
+    width: 15rem;
+	float: left;
+}
+
+#visLogWrapper {
+	float: right;
+	width: 20rem;
+	margin-right: .4rem;
+}
+
+.visualizer {
+	width: 100%;
+	margin: 0;
+	overflow: auto;
+}
+
+#instructions {
+	border: none;
+	height: auto;
+}
+
+.inline {
+	display: inline;
+}
+
+.visualizer p {
+	line-height: .2rem;
+	font-size: 0.65rem;
+}
+
+#stack, #memory {
+	display: inline-block;
+	border: 1px solid black;
+	width: 5.3rem;
+	height: 20rem;
+	margin: 0rem 0;
+	margin-top: 1rem;
+	margin-right: .5rem;
+}
+
+#memory {
+	width: 8.2rem;
+}
+
+#visLog {
+	display: inline-block;
+	border: 1px solid black;
+	width: 100%;
+	height: 20rem;
+	margin: 0rem 0;
+	margin-top: 1rem;
+}
+
+.log {
+}
+
+.mriWrapper {
+	display: inline-block;
+	margin: 0;
+	margin-right: 1rem;
+	margin-left: .5rem;
+	padding: 0;
+	vertical-align: top;
+}
+
+.mriWrapper div > * {
+	display: inline;
+}
+
+#controls {
+	width: 49%;
+}
+
+#controls section > *{
+	display: block;
+}
