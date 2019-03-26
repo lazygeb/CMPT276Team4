@@ -98,15 +98,16 @@
 		
 		<div class="splitWrapper">
 			<section class="whiteBox" id="controls">
-			<!--
+			
 				<form id="gameWrapper">
     				<h2 class ="identifier">Game: </h2>
-      				<select name="games">
+      				<select name="games" id="games" onChange="updateGameFromSelect()">
+						<option value="default">choose a game</option>
   						<option value="snake">SNAKE</option>
   						<option value="flappy_bird">FLAPPY BIRD</option>
 					</select>
-				</form>                       NEXT RELEASE
-				--> 
+				</form>                       
+				
 				<h2>Rom Input</h2>
 				<!--<section class="buttonWrapper" id="fileinput">-->
 					
