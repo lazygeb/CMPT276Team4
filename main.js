@@ -194,11 +194,13 @@ function updateGameFromSelect() {
 		if (lol.options[lol.selectedIndex].value === "snake") {
 			//play snake
 			snakeOK = true;
-			alert("play snek");
+			alert("Snek has been loaded, please press \"Start Emulation\"");
+			document.getElementById("fileUploadBox").innerText = "Snake loaded";
 		} else {
 			//play floppy
 			floppyOK = true;
-			alert("pl0y flippy snam");
+			alert("Floppy B0rd has been loaded, please press \"Start Emulation\"");
+			document.getElementById("fileUploadBox").innerText = "Floppy B-iard loaded";
 		}
 	}
 
