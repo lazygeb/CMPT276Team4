@@ -1,7 +1,7 @@
 
-
 let inputElement = document.getElementById("myFile");
 inputElement.addEventListener("change", handleFiles, false);
+
 function handleFiles() {
     file = this.files[0];
     console.log("main");
@@ -12,24 +12,43 @@ function handleFiles() {
     reader.onload = function(event) {
         result = reader.result; //result = contents of file
         lines = this.result.split('\n');
-        // lines.forEach(function(line) {
-        //     console.log("line: " + line);
+        if (document.getElementById('convertTypes').selectedOptions[0].text){
+            assemblerMain(lines);
+        }
+        else {
+            //dissemble
+        }
     
-        // });
-
-        assemblerMain(lines);
-        
     };
     reader.readAsText(file);
-    console.log(file);
-
-   // assemblerMain(file);
 }
 // Start file download.
 document.getElementById("textConvertButton").addEventListener("click", function(){
     // Generate download of hello.txt file with some content
     var text = document.getElementById("textBox").value;
-    var filename = "hello.txt";
-    
-    download(filename, text);
+    lines = text.split('\n');
+    assemblerMain(lines);
 }, false);
+
+let txtFileElement = document.getElementById("loadFile");
+txtFileElement.addEventListener("change", loadTxt, false);
+
+function loadTxt() {
+    file = this.files[0];
+    
+    let reader = new FileReader();
+    let result;
+    let text = "";
+    reader.onload = function(event) {
+        text += reader.result; //result = contents of file
+        console.log(text);
+        document.getElementById("textBox").value = text;
+    }
+    reader.readAsText(file, 'UTF-8')
+
+    
+   // });
+}
+
+
+

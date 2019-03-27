@@ -4,6 +4,7 @@ body {
 
 p, h1, h2 {
 	display: block;
+	
 }
 
 h2 {
@@ -12,13 +13,11 @@ h2 {
 
 h3 {
 	font-size: .8rem;
-	margin: .25rem;
-	margin-bottom: 0;
 }
 
 .wrapper {
 	margin: 0 auto;
-	width: 60rem;
+	width: 70rem;
 	overflow: hidden;
 }
 
@@ -27,49 +26,6 @@ h3 {
 	overflow: hidden;
 	vertical-align: top;
 	max-width: 60%;
-}
-
-canvas {
-    display: block;
-	float: left;
-	border: 1px solid black;
-}
-
-section{
-	display: block;
-	vertical-align: top;
-}
-
-#gameWrapper {
-	display: block;
-	vertical-align: top;
-}
-
-select {
-	border-radius: 3px;
-}
-
-.stepControlInactive{
-	background: white;
-	opacity: 0.1;
-	border-radius: 3px;
-	margin: .2rem 1rem;
-	margin-left: 0;
-	transition: .5s;
-}
-
-.stepControlActive{
-	background: lightGrey;
-	opacity: 1;
-	border-radius: 3px;
-	margin: .2rem 1rem;
-	margin-left: 0;
-	transition: .5s;
-}
-
-.stepControlActive:hover{
-	background: white;
-	cursor: pointer;
 }
 
 .icon_wrapper {
@@ -86,7 +42,7 @@ select {
 ul {
 	padding: 0;
 	margin: 1rem 0;
-	width: 100px;
+	width: 200px;
 }
 
 li {
@@ -98,80 +54,54 @@ li {
     border-radius: 3px;
 }
 
-.visualizerWrapper  {
-    width: 15rem;
-	float: left;
+* {box-sizing: border-box}
+
+/* Style the tab */
+.tab {
+  float: left;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  width: 30%;
+  height: 100%;
 }
 
-#visLogWrapper {
-	float: right;
-	width: 20rem;
-	margin-right: .4rem;
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  display: block;
+  background-color: inherit;
+	color: black;
+  padding: 15px 20px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: center;
+  cursor: pointer;
+	transition: 0.3s;
+	padding-right: 120px;
 }
 
-.visualizer {
-	width: 100%;
-	margin: 0;
-	overflow: auto;
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
 }
 
-#instructions {
-	border: none;
-	height: auto;
+/* Create an active/current "tab button" class */
+.tab button.active {
+  background-color: #ccc;
 }
 
-.inline {
+/* Style the tab content */
+.tabcontent {
+	display: none;
+  float: left;
+  padding: 0px 9px;
+  border: 1px solid #ccc;
+  width: 40%;
+  border-left: none;
+  height: 100%;
+}
+
+textHeader, loadButton {
 	display: inline;
 }
-
-.visualizer p {
-	line-height: .2rem;
-	font-size: 0.65rem;
-}
-
-#stack, #memory {
-	display: inline-block;
-	border: 1px solid black;
-	width: 5.3rem;
-	height: 20rem;
-	margin: 0rem 0;
-	margin-top: 1rem;
-	margin-right: .5rem;
-}
-
-#memory {
-	width: 8.2rem;
-}
-
-#visLog {
-	display: inline-block;
-	border: 1px solid black;
-	width: 100%;
-	height: 20rem;
-	margin: 0rem 0;
-	margin-top: 1rem;
-}
-
-.log {
-}
-
-.mriWrapper {
-	display: inline-block;
-	margin: 0;
-	margin-right: 1rem;
-	margin-left: .5rem;
-	padding: 0;
-	vertical-align: top;
-}
-
-.mriWrapper div > * {
-	display: inline;
-}
-
-#controls {
-	width: 49%;
-}
-
-#controls section > *{
-	display: block;
-}
+ 

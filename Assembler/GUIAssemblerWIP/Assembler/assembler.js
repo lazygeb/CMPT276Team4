@@ -24,6 +24,7 @@ function assemblerMain(lines) {
     let OP = [];
     let test = false;
     let path;
+    let line;
    try {
        let opcodes = [];
         lines.forEach(function(line) {
@@ -36,7 +37,7 @@ function assemblerMain(lines) {
                 //hasComment = false;
                 if (tokens[i].startsWith('//')) {
                     hasComment = true;
-                    let tempTokens = i;
+                    let tempTokens = new Array(i);
                     for (j = 0; j < i; j++) {
                         tempTokens[j] = tokens[j];
                     }
@@ -46,6 +47,8 @@ function assemblerMain(lines) {
             }
             let opcode = getInstruction(tokens);
             if (opcode == 0) {
+                console.log(line);
+                alert("Invalid Instruction: " + line);
                 throw new InputMismatchException("Invalid instruction: " + line);
             }
             opcodes.push(opcode);
@@ -156,12 +159,13 @@ function twoArgOpcode(instruction, arg1) {
         try {
             let sprite = parseInt(arg1, 16);
             if (arg1.length() < 4) {
+                alert(new IllegalArgumentException("Sprite is not length 4"));
                 throw new IllegalArgumentException("Sprite is not length 4");
             }
             return sprite;
         }
         catch (e){
-            console.log(e);
+            alert(new IllegalArgumentException(e));
             throw new IllegalArgumentException(e);
         }
     }
@@ -350,8 +354,9 @@ function writeOpcodes(opcodes) {
         console.log(fileWriter);
     });
     
-    
-    //download("program.txt",fileWriter);
+    document.getElementById("submitFile").addEventListener("click", function(){
+        download("program.txt",fileWriter);
+    });
 }
 
 
