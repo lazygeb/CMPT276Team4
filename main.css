@@ -2,18 +2,22 @@
 
 body {
 	font-family: 'Rubik', sans-serif;
-	background: #e3e3e3;
-	}
+	background: #f5eeee;
+}
+
+::selection {
+	background: #fde8f5;
+}
 
 p, a, h1, h2 {
 	display: block;
-	color: #3b3a36;
+	color: #ea21a2;
 	text-decoration: none;
 }
 
 h2 {
 	font-size: 1.1rem;
-	color: #3b3a36;
+	color: #ea21a2;
 }
 
 .secondaryH2 {
@@ -27,8 +31,13 @@ h2 {
 
 h3 {
 	font-size: .8rem;
+	color: #ea21a2;
 	margin: .25rem;
 	margin-bottom: 0;
+}
+
+p {
+	color: #171313;
 }
 
 
@@ -51,7 +60,7 @@ h3 {
 canvas {
     display: block;
 	float: left;
-	border: 1.5px solid #b3c2bf;
+	border: 1.5px solid #171313;
 	border-radius: 5px;
 }
 
@@ -70,7 +79,7 @@ select {
 }
 
 .stepControlInactive{
-	background: #c0dfd9;
+	background: #fde8f5;
 	opacity: 0.1;
 	border-radius: 5px;
 	margin: .2rem 1rem;
@@ -79,16 +88,20 @@ select {
 }
 
 .stepControlActive{
-	background: #b3c2bf;
+	background: #f5eeee;
+	border: 1.5px solid #171313;
 	opacity: 1;
 	border-radius: 5px;
+	padding: 0.2rem;
 	margin: .2rem 1rem;
 	margin-left: 0;
+	text-align: center;
 	transition: .5s;
+	
 }
 
 .stepControlActive:hover{
-	background: #c0dfd9;
+	background: #f48acf;
 	cursor: pointer;
 }
 
@@ -151,7 +164,7 @@ li {
 
 #stack, #memory {
 	display: inline-block;
-	border: 1.5px solid #b3c2bf;
+	border: 1.5px solid #171313;
 	border-radius: 5px;
 	width: 5.3rem;
 	height: 20rem;
@@ -166,7 +179,7 @@ li {
 
 #visLog {
 	display: inline-block;
-	border: 1.5px solid #b3c2bf;
+	border: 1.5px solid #171313;
 	border-radius: 5px;
 	width: 100%;
 	height: 20rem;
@@ -211,23 +224,30 @@ li {
 
 [type="file"] + label {
 
-  background-color: #b3c2bf;
+  background-color: #f5eeee;
   border-radius: 5px;
-  color: #3b3a36;
+  border: 1.5px solid #171313;
+  color: #171313;
   cursor: pointer;
   display: inline-block;
   font-family: 'Rubik', sans-serif;
-  width: 9.5rem;
+  width: 9rem;
   margin-right: 12rem;
   margin-bottom: 1rem;
+  text-align: center;
+  padding: 0.2rem;
   transition: background-color 0.3s;
 }
  
 [type="file"]:focus + label,
 [type="file"] + label:hover, [type="file"] + label:active {
-    background-color: #c0dfd9;
+    background-color: #f48acf;
 }
 
 .emulatorRunning {
-	background-color: #c0dfd9;
+	background-color: #f48acf;
+}
+
+a {
+	color: #171313;
 }

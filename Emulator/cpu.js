@@ -273,13 +273,13 @@ class Chip8{
     
     //draws single pixel at point specified by scale of canvas element
     drawPixel(x, y) {
-        this.ctx.fillStyle = "#fff";
+        this.ctx.fillStyle = "#ea21a2";
         this.ctx.fillRect(x * this.scale, y * this.scale, this.scale, this.scale);
     }
 
     //clears canvas back to black
     clearScreen() {
-        this.ctx.fillStyle = "#3b3a36";
+        this.ctx.fillStyle = "#000";
         this.ctx.fillRect(0, 0, 64 * this.scale, 32 * this.scale);
     }
 
@@ -287,7 +287,7 @@ class Chip8{
     updateDisplay() {
         let x = 0;
         let y = 0;
-        this.ctx.fillStyle = "#3b3a36";
+        this.ctx.fillStyle = "#000";
         this.ctx.fillRect(0, 0, 64 * this.scale, 32 * this.scale);
         for (let i = 0; i < this.graphics.length; i++) {
             if (this.graphics[i] !== 0x0) {
