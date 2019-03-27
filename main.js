@@ -11,14 +11,20 @@ let stepBackward = new Array();
 var runEmulator = null;
 var pauseflag = false;
 var loadFlag = null;
+var logToggle = false;
 function main(usrFile) {
     document.getElementById("runTest").onclick = function () { runTest()};
     document.getElementById("startEmulator").onclick = function () { 
         if (loadFlag != false) {
             startEmulator(usrFile);
             loadFlag = false;
+			document.getElementById("startEmulator").classList.add("emulatorRunning");
+			if (logToggle) {
+				chip.logToggle = true;
+			}
         }
     };
+	document.getElementById("logToggle").onclick = function () { toggleLog()};
 } 
 
 function pushThisChip() {
@@ -45,11 +51,19 @@ function callSetInt(){
 function startEmulator(usrFile) {
     chip = new Chip8();
     chip.reset();
-    if (usrFile) {
+	if (usrFile) {
         chip.loadProgram(prog);
     }
+    if (snakeOK) {
+		//broken snake hardcoded rn.
+		chip.program = [0x6a, 0x08, 0x6b, 0x04, 0x66, 0x00, 0x67, 0x04, 0xf8, 0x55, 0xfb, 0x1e, 0xf5, 0x65, 0xf8, 0x55, 0xd0, 0x11, 0x60, 0x05, 0xe0, 0xa1, 0x67, 0x00, 0x60, 0x07, 0xe0, 0xa1, 0x67, 0x12, 0x60, 0x08, 0xe0, 0xa1, 0x67, 0x08, 0x60, 0x09, 0xe0, 0xa1, 0x67, 0x04, 0x00, 0xee, 0x80, 0x70, 0x74, 0xff, 0x00, 0xee, 0x74, 0x01, 0x00, 0xee, 0x75, 0x01, 0x00, 0xee, 0x73, 0xff, 0x00, 0xee, 0x7a, 0x02, 0xfa, 0x1e, 0x80, 0x40, 0x80, 0x50, 0xf1, 0x65, 0x00, 0xee, 0xf9, 0x65, 0xd4, 0x51, 0x3f, 0x01, 0x00, 0xee, 0x60, 0x08, 0x61, 0x10, 0x7a, 0xfe, 0xf8, 0x55, 0xfb, 0x1e, 0xf1, 0x65, 0xf9, 0x55, 0xd4, 0x51];
+		chip.loadProgram(chip.program);
+	} else if(floppyOK) {
+		//still broken snake hardcoded
+		chip.program = [0x6a, 0x08, 0x6b, 0x04, 0x66, 0x00, 0x67, 0x04, 0xf8, 0x55, 0xfb, 0x1e, 0xf5, 0x65, 0xf8, 0x55, 0xd0, 0x11, 0x60, 0x05, 0xe0, 0xa1, 0x67, 0x00, 0x60, 0x07, 0xe0, 0xa1, 0x67, 0x12, 0x60, 0x08, 0xe0, 0xa1, 0x67, 0x08, 0x60, 0x09, 0xe0, 0xa1, 0x67, 0x04, 0x00, 0xee, 0x80, 0x70, 0x74, 0xff, 0x00, 0xee, 0x74, 0x01, 0x00, 0xee, 0x75, 0x01, 0x00, 0xee, 0x73, 0xff, 0x00, 0xee, 0x7a, 0x02, 0xfa, 0x1e, 0x80, 0x40, 0x80, 0x50, 0xf1, 0x65, 0x00, 0xee, 0xf9, 0x65, 0xd4, 0x51, 0x3f, 0x01, 0x00, 0xee, 0x60, 0x08, 0x61, 0x10, 0x7a, 0xfe, 0xf8, 0x55, 0xfb, 0x1e, 0xf1, 0x65, 0xf9, 0x55, 0xd4, 0x51];
+		chip.loadProgram(chip.program);
+	}
     callSetInt();
-
 }
     //window.requestAnimationFrame(chip.runEmulator());
 
@@ -149,7 +163,52 @@ function runTest() {
     opCoTest();
 }
 
-let inputElement = document.getElementById("myFile");
+function toggleLog() {
+	if (!logToggle) {
+	//turns on
+		logToggle = true;
+		if (chip!= null) {
+			chip.logToggle = true;
+			document.getElementById("logToggle").innerText = "Toggle Log Off";
+			document.getElementById("log").innerHTML = "";
+			chip.logCount = 0;
+		}
+	} else {
+	//turns off
+		logToggle = false;
+		if (chip!= null) {
+			chip.logToggle = false;
+			document.getElementById("logToggle").innerText = "Toggle Log On";
+			chip.updateHTMLLogMessage("Click on \"Toggle Log On\" to bring back the logs");
+			document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);
+		}
+	}
+}
+
+//function to update game rom name and input to snake or flappy bird when select is chosen
+let snakeOK, floppyOK = false;
+function updateGameFromSelect() {
+	snakeOK = false;
+	floppyOK = false;
+	var lol = document.getElementById("games");
+	if (lol.options[lol.selectedIndex].value !== "default") {
+		if (lol.options[lol.selectedIndex].value === "snake") {
+			//play snake
+			snakeOK = true;
+			alert("Snek has been loaded, please press \"Start Emulation\"");
+			document.getElementById("fileUploadBox").innerText = "Snake loaded";
+		} else {
+			//play floppy
+			floppyOK = true;
+			alert("Floppy B0rd has been loaded, please press \"Start Emulation\"");
+			document.getElementById("fileUploadBox").innerText = "Floppy B-iard loaded";
+		}
+	}
+
+}
+
+
+let inputElement = document.getElementById("file");
 inputElement.addEventListener("change", handleFiles, false);
 let file;
 let prog;
@@ -170,8 +229,15 @@ function handleFiles() {
             j++;
         }
         alert("Your file has been loaded, please press \"Start Emulation\"");
-        loadFlag = true; //makes sure runEmulator only runs once
+        
+		//input name
+		var fileElement = document.getElementById('file');
+		var filename = fileElement.files[0].name;
+		document.getElementById("fileUploadBox").innerText = filename + " uploaded";
+
+		loadFlag = true; //makes sure runEmulator only runs once
         pauseflag = false; //resets the pause flag when new game is put in
+		document.getElementById("startEmulator").classList.remove("emulatorRunning");
     main(true); //call main, with true boolean to show it should load a file
     };
     reader.readAsBinaryString(file);

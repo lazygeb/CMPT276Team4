@@ -1,24 +1,52 @@
+/*https://benmarshall.me/styling-file-inputs/ used this website as reference for changing the file input button */
+
 body {
-	font-family: 'Lato', sans-serif;
+	font-family: 'Rubik', sans-serif;
+	background: #f5eeee;
 }
 
-p, h1, h2 {
+::selection {
+	background: #fde8f5;
+}
+
+p, a, h1, h2 {
 	display: block;
+	color: #ea21a2;
+	text-decoration: none;
 }
 
 h2 {
 	font-size: 1.1rem;
+	color: #ea21a2;
+}
+
+.secondaryH2 {
+    margin-top: 1.5rem;
+}
+
+.primaryH2 {
+    margin-top: 0;
+	top: 0;
 }
 
 h3 {
 	font-size: .8rem;
+	color: #ea21a2;
 	margin: .25rem;
 	margin-bottom: 0;
 }
 
+p {
+	color: #171313;
+}
+
+
+
+
+
 .wrapper {
 	margin: 0 auto;
-	width: 60rem;
+	width: 63rem;
 	overflow: hidden;
 }
 
@@ -32,7 +60,8 @@ h3 {
 canvas {
     display: block;
 	float: left;
-	border: 1px solid black;
+	border: 1.5px solid #171313;
+	border-radius: 5px;
 }
 
 section{
@@ -46,29 +75,33 @@ section{
 }
 
 select {
-	border-radius: 3px;
+	border-radius: 5px;
 }
 
 .stepControlInactive{
-	background: white;
+	background: #fde8f5;
 	opacity: 0.1;
-	border-radius: 3px;
+	border-radius: 5px;
 	margin: .2rem 1rem;
 	margin-left: 0;
 	transition: .5s;
 }
 
 .stepControlActive{
-	background: lightGrey;
+	background: #f5eeee;
+	border: 1.5px solid #171313;
 	opacity: 1;
-	border-radius: 3px;
+	border-radius: 5px;
+	padding: 0.2rem;
 	margin: .2rem 1rem;
 	margin-left: 0;
+	text-align: center;
 	transition: .5s;
+	
 }
 
 .stepControlActive:hover{
-	background: white;
+	background: #f48acf;
 	cursor: pointer;
 }
 
@@ -95,17 +128,17 @@ li {
 	display: inline;
 	text-decoration: none;
 	padding: 2px 6px;
-    border-radius: 3px;
+    border-radius: 5px;
 }
 
 .visualizerWrapper  {
-    width: 15rem;
+    width: 16rem;
 	float: left;
 }
 
 #visLogWrapper {
-	float: right;
-	width: 20rem;
+	float: left;
+	width: 19rem;
 	margin-right: .4rem;
 }
 
@@ -131,7 +164,8 @@ li {
 
 #stack, #memory {
 	display: inline-block;
-	border: 1px solid black;
+	border: 1.5px solid #171313;
+	border-radius: 5px;
 	width: 5.3rem;
 	height: 20rem;
 	margin: 0rem 0;
@@ -145,7 +179,8 @@ li {
 
 #visLog {
 	display: inline-block;
-	border: 1px solid black;
+	border: 1.5px solid #171313;
+	border-radius: 5px;
 	width: 100%;
 	height: 20rem;
 	margin: 0rem 0;
@@ -174,4 +209,45 @@ li {
 
 #controls section > *{
 	display: block;
+}
+
+[type="file"] {
+	border: 0;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute !important;
+	white-space: nowrap;
+	width: 1px;  
+}
+
+[type="file"] + label {
+
+  background-color: #f5eeee;
+  border-radius: 5px;
+  border: 1.5px solid #171313;
+  color: #171313;
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'Rubik', sans-serif;
+  width: 9rem;
+  margin-right: 12rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  padding: 0.2rem;
+  transition: background-color 0.3s;
+}
+ 
+[type="file"]:focus + label,
+[type="file"] + label:hover, [type="file"] + label:active {
+    background-color: #f48acf;
+}
+
+.emulatorRunning {
+	background-color: #f48acf;
+}
+
+a {
+	color: #171313;
 }

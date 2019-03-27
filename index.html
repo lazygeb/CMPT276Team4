@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Abel|Catamaran|Lato|Libre+Franklin|Rubik" rel="stylesheet">
 
   <title>CMPT276 Group 4</title>
   <link rel="stylesheet" href="normalize.css">
@@ -23,10 +23,10 @@
 	<div class="wrapper">
 		<h1> Group 4's Chip8 Interpreter </h1>
 		<div class="splitWrapper">
-			<canvas id="canvas" width="560" height="280"></canvas>
+			<canvas class ="shadow" id="canvas" width="560" height="280"></canvas>
 			
-			<section class="visualizerWrapper">
-					 <section class="visualizer" id="stack">
+			<section class="visualizerWrapper whiteBox">
+					 <section class="visualizer shadow" id="stack">
 						 <h3>Stack:</h3>
 						 <div class="mriWrapper">
 							 <div><p>0: </p> <p id="V0-Stack">0x0</p></div>
@@ -49,7 +49,7 @@
 							 <div><p>f: </p> <p id="V15-Stack">0x0</p></div>
 						 </div>
 					 </section>
-					 <section class="visualizer" id="memory">
+					 <section class="visualizer shadow" id="memory">
 						 <h3>Memory:</h3>
 						 <div class="mriWrapper">
 							 <div><p>PC: </p><p id="PC">0x0 </p></div>
@@ -82,12 +82,14 @@
 						 </div>
 					 </section>
 			</section>
-			<section class="visualizerWrapper" id="visLogWrapper" >
-					 <section class="visualizer" id="visLog">
+			<section class="visualizerWrapper whiteBox" id="visLogWrapper" >
+					 <section class="visualizer shadow" id="visLog">
 						 <h3>Log</h3>
 						 <div class="mriWrapper">
 							 <div id="log">
-								 <p id="welcome"> Welcome to group 4's chip8 emulator! <br> Pick a rom and click <b>Run Emulation</b> to start! <br> <p>
+								 <p id="welcome"> Welcome to group 4's chip8 emulator! <br> 
+								                  Pick a rom and click <b>Run Emulation</b> to start! <br> 
+												  <b>Toggle Log On</b> Turns on the logs and instructions <br><p>
 						     </div>
 						 </div>
 					 </section>
@@ -95,36 +97,43 @@
 		</div>
 		
 		<div class="splitWrapper">
-			<section id="controls">
-			<!--
+			<section class="whiteBox" id="controls">
+			
 				<form id="gameWrapper">
-    				<h2 class ="identifier">Game: </h2>
-      				<select name="games">
+    				<h2 class="primaryH2">Game: </h2>
+      				<select name="games" id="games" onChange="updateGameFromSelect()">
+						<option value="default">choose a game</option>
   						<option value="snake">SNAKE</option>
   						<option value="flappy_bird">FLAPPY BIRD</option>
 					</select>
-				</form>                       NEXT RELEASE
-				--> 
-				<section id="fileinput">
-					<h2>Rom Input</h2>
-					<input type="file" id="myFile"/>
-				</section>
+				</form>                       
+				
+				<h2 class="secondaryH2">Rom Input</h2>
+				<!--<section class="buttonWrapper" id="fileinput">-->
+					
+					<!--<input type="file" id="myFile"/>-->
+					<!--<button class="btn">Upload a file</button>-->
+					<input type="file" id="file" />
+					<label for="file" id="fileUploadBox">Upload a File</label>
+					
+				<!--</section>-->
 			
 				<section id="stepControl">
 					<p class="stepControlActive" id="startEmulator">Start Emulation</p>
 					<p class="stepControlActive" id="runTest">Run Opcode test</p>
-					<h2>Step Controls: </h2>
+					<h2 class="secondaryH2">Step Controls: </h2>
 					<div class="icon_wrapper">
 						<img src="Icons/-1.svg" class="icon stepControlInactive" id="stepBack" title="Step backwards one frame"></img>
 						<img src="Icons/pause.svg" class="icon stepControlActive" id="pause" title="Pause on current frame"></img>
 						<img src="Icons/play.svg" class="icon stepControlInactive" id="resume" title="Resume from current frame"></img>
 						<img src="Icons/+1.svg" class="icon stepControlInactive" id="stepForward" title="Step forwards one frame"></img>
 					</div>
+					<p class="stepControlActive" id="logToggle">Toggle Log On</p>
 				</section>			
 
 				<section id="keyboardInput">
 					<ul>
-						<h2>Controls:</h2>
+						<h2 class="secondaryH2">Controls:</h2>
 					</ul>
 					<ul>
 						<li>1</li>
@@ -150,6 +159,11 @@
 						<li>c</li>
 						<li>v</li>
 					</ul>
+				</section>
+
+				<section id="assemblerLinkContainer"> 
+					<h2 class="secondaryH2">Assembler: </h2>
+					<a href="assembler.html" class="stepControlActive" id="assemblerLink">Open in new tab</a>
 				</section>
 			</section>
 		</div>
