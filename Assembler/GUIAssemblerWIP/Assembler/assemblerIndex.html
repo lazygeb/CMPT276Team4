@@ -24,9 +24,9 @@
 			</section>
             <section id="fileinput">
                 <h2>convert file</h2>
-                <select id="convertTypes">
-                    <option>Mnemonic to Opcode (Assembler)</option>
-                    <option>Opcode to Mnemonic (Dissembler)</option>
+                <select id="convertTypes" onChange="hideElements()">
+                    <option value="ass">Mnemonic to Opcode (Assembler)</option>
+                    <option value="dis">Opcode to Mnemonic (Dissembler)</option>
                 </select>                
             </section>
             <div>

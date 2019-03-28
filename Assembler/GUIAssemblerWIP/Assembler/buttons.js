@@ -59,6 +59,16 @@ function mnemButton(evt, mnemonic) {
    // });
 }
 
+function hideElements() {
+	let scroll = document.getElementById("convertTypes");
+	if (scroll.options[scroll.selectedIndex].value === "dis") {
+		document.getElementById("mnemonicOptions").style.display = "none";
+		document.getElementById("rightcol").style.display = "none";
+	} else {
+		document.getElementById("mnemonicOptions").style.display = "inline-block";
+		document.getElementById("rightcol").style.display = "inline-block";
+	}
+}
 
 
 
