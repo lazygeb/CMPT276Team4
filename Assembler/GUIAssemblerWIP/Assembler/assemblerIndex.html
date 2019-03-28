@@ -47,6 +47,7 @@
                             SUBN/SHL</button>
                         <button class="tablinks" onclick="openTab(event, 'RAND/DRAW/DUMP/READ')">RAND/DRAW/
                             DUMP/READ</button>
+                        <button class="tablinks" onclick="openTab(event, 'SPRITE')">SPRITE</button>
                 </div>
                 <!-- Tab content -->
                 <div id="LD" class="tabcontent"> 
@@ -252,25 +253,34 @@
                         </h3>
                     </ul>
                     <ul>
-                        <button class="mnemonic" onclick="mnemButton(event, 'READ Vx')">SHL Vx</button>
+                        <button class="mnemonic" onclick="mnemButton(event, 'READ Vx')">READ Vx</button>
                         <h3>
                             Read registers V0 through Vx from memory starting at location I.
                         </h3>
                     </ul>
                 </div>
+                <div id="SPRITE" class="tabcontent">
+                    <ul>
+                        <button class="mnemonic" onclick="mnemButton(event, 'SPRITE hex')">SPRITE hex</button>
+                            <h3>
+                                Loads a sprite into the program using a 4 digit hexadecimal number
+                            </h3>
+                    </ul>
+                </div>        
 
             </section>
         </div>
 
-		<div class="splitWrapper">
+		<div class="splitWrapper" id="rightcol">
                 
-                <h2 id="textHeader">Input Text</h2>
-                <h2>Load File into Text Box</h2>
-                <input type="file" id="loadFile" accept=".txt"/>
+            <h2 id="textHeader">Input Text</h2>
+            <h2>Load File into Text Box</h2>
+            <input type="file" id="loadFile" accept=".txt"/>
             <section id="textInput">
-                    <textarea id="textBox" rows="28" cols = "60"></textarea>
+                    <textarea id="textBox" rows="28" cols = "48"></textarea>
             </section>
-            <input type="button" id = "textConvertButton" value="Generate chip8 txt file"/>
+            <button id="clearButton">Clear</button>
+            <input type="button" id = "textConvertButton" value="Generate Chip8 txt file"/>
         </div>
         
     </div>

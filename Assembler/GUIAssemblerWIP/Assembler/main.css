@@ -25,7 +25,7 @@ h3 {
 	display: inline-block;
 	overflow: hidden;
 	vertical-align: top;
-	max-width: 60%;
+	/* max-width: 60%; */
 }
 
 .icon_wrapper {
@@ -59,10 +59,9 @@ li {
 /* Style the tab */
 .tab {
   float: left;
-  border: 1px solid #ccc;
   background-color: #f1f1f1;
-  width: 30%;
-  height: 100%;
+  width: 33%;
+	height: 100%;
 }
 
 /* Style the buttons that are used to open the tab content */
@@ -77,7 +76,8 @@ li {
   text-align: center;
   cursor: pointer;
 	transition: 0.3s;
-	padding-right: 120px;
+	padding-right: 120px; 
+	max-width: 90px;
 }
 
 /* Change background color of buttons on hover */
@@ -94,14 +94,22 @@ li {
 .tabcontent {
 	display: none;
   float: left;
-  padding: 0px 9px;
+	padding: 0px 15px;
+	margin-left: 9px;
   border: 1px solid #ccc;
-  width: 40%;
-  border-left: none;
+  width: 250px;
+	border-left: none;
   height: 100%;
 }
 
-textHeader, loadButton {
-	display: inline;
+#clearButton {
+	float:right;
 }
- 
+
+#myFile {
+	padding-right: 10px;
+}
+
+#textBox {
+	resize: none;
+}

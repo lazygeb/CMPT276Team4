@@ -28,6 +28,7 @@ document.getElementById("textConvertButton").addEventListener("click", function(
     var text = document.getElementById("textBox").value;
     lines = text.split('\n');
     assemblerMain(lines);
+    console.log("we out here");
 }, false);
 
 let txtFileElement = document.getElementById("loadFile");
