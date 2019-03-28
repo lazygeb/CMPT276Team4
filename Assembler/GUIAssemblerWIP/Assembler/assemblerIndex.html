@@ -15,15 +15,15 @@
 
 <body>
 	<div class="wrapper">
-        <h1> chip8 4thewin assembler </h1>
+        <marquee> chip8 4thewin assembler </marquee>
 
         <div class ="splitWrapper" id="firstWrapper"> 
 			<section id="assemblerLinkContainer"> 
-				<h2 class="secondaryH2">interpreter: </h2>
+				<marquee class="secondarymarquee">interpreter: </marquee>
 				<a href="../../../index.html" class="stepControlActive" id="assemblerLink">go back</a>
 			</section>
             <section id="fileinput">
-                <h2>convert file</h2>
+                <marquee>convert file</marquee>
                 <select id="convertTypes" onChange="hideElements()">
                     <option value="ass">Mnemonic to Opcode (Assembler)</option>
                     <option value="dis">Opcode to Mnemonic (Dissembler)</option>
@@ -36,7 +36,7 @@
                 <input type="button" id = "submitFile" value="Convert File"/>
             </div>
             <section id="mnemonicOptions">
-                <h2>mnemonic</h2>
+                <marquee>mnemonic</marquee>
                 <div class="tab">
                         <button class="tablinks" onclick="openTab(event, 'LD')">LD</button>
                         <button class="tablinks" onclick="openTab(event, 'SE/SNE')">SE/SNE</button>
@@ -276,10 +276,10 @@
 
 		<div class="splitWrapper" id="rightcol">
                 
-            <h2 id="textHeader">input text or load file</h2>
+            <marquee id="textHeader">input text or load file</marquee>
             <input type="file" id="loadFile" accept=".txt"/>
             <section id="textInput">
-                    <textarea id="textBox" rows="26" cols = "42"></textarea>
+                    <div id="textBox"></div>
             </section>
             <button id="clearButton">Clear</button>
             <input type="button" id = "textConvertButton" value="Generate Chip8 txt file"/>

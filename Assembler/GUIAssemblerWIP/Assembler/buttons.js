@@ -47,15 +47,13 @@ function close(evt, mnemonic) {
     evt.currentTarget.className += "";
 }
 
+var text;
 function mnemButton(evt, mnemonic) {
     //document.getElementById(mnemonic).addEventListener("click", function(){
     console.log(mnemonic.toString())
-    var text = document.getElementById("textBox").value;
-    if (text != '') {
-        text += '\n';
-    }
-    text += mnemonic;
-    document.getElementById("textBox").value = text;
+    
+	text += "<marquee>" + mnemonic + "</marquee><br>";
+    document.getElementById("textBox").innerHTML = text;
    // });
 }
 
