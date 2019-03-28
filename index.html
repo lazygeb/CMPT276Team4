@@ -21,13 +21,13 @@
 <body>
 
 	<div class="wrapper">
-		<h1> Group 4's Chip8 Interpreter </h1>
+		<h1> chip8 4tw </h1>
 		<div class="splitWrapper">
 			<canvas class ="shadow" id="canvas" width="560" height="280"></canvas>
 			
 			<section class="visualizerWrapper whiteBox">
 					 <section class="visualizer shadow" id="stack">
-						 <h3>Stack:</h3>
+						 <h3>stack:</h3>
 						 <div class="mriWrapper">
 							 <div><p>0: </p> <p id="V0-Stack">0x0</p></div>
 							 <div><p>1: </p> <p id="V1-Stack">0x0</p></div>
@@ -50,7 +50,7 @@
 						 </div>
 					 </section>
 					 <section class="visualizer shadow" id="memory">
-						 <h3>Memory:</h3>
+						 <h3>memory:</h3>
 						 <div class="mriWrapper">
 							 <div><p>PC: </p><p id="PC">0x0 </p></div>
 							 <div><p>I: </p><p id="I">0x0 </p></div>
@@ -84,7 +84,7 @@
 			</section>
 			<section class="visualizerWrapper whiteBox" id="visLogWrapper" >
 					 <section class="visualizer shadow" id="visLog">
-						 <h3>Log</h3>
+						 <h3>log</h3>
 						 <div class="mriWrapper">
 							 <div id="log">
 								 <p id="welcome"> Welcome to group 4's chip8 emulator! <br> 
@@ -100,7 +100,7 @@
 			<section class="whiteBox" id="controls">
 			
 				<form id="gameWrapper">
-    				<h2 class="primaryH2">Game: </h2>
+    				<h2 class="primaryH2">game: </h2>
       				<select name="games" id="games" onChange="updateGameFromSelect()">
 						<option value="default">choose a game</option>
   						<option value="snake">SNAKE</option>
@@ -108,32 +108,32 @@
 					</select>
 				</form>                       
 				
-				<h2 class="secondaryH2">Rom Input</h2>
+				<h2 class="secondaryH2">rom input</h2>
 				<!--<section class="buttonWrapper" id="fileinput">-->
 					
 					<!--<input type="file" id="myFile"/>-->
 					<!--<button class="btn">Upload a file</button>-->
 					<input type="file" id="file" />
-					<label for="file" id="fileUploadBox">Upload a File</label>
+					<label for="file" id="fileUploadBox">upload a file</label>
 					
 				<!--</section>-->
 			
 				<section id="stepControl">
-					<p class="stepControlActive" id="startEmulator">Start Emulation</p>
-					<p class="stepControlActive" id="runTest">Run Opcode test</p>
-					<h2 class="secondaryH2">Step Controls: </h2>
+					<p class="stepControlActive" id="startEmulator">start emulation</p>
+					<p class="stepControlActive" id="runTest">run opcode test</p>
+					<h2 class="secondaryH2">step controls: </h2>
 					<div class="icon_wrapper">
 						<img src="Icons/-1.svg" class="icon stepControlInactive" id="stepBack" title="Step backwards one frame"></img>
 						<img src="Icons/pause.svg" class="icon stepControlActive" id="pause" title="Pause on current frame"></img>
 						<img src="Icons/play.svg" class="icon stepControlInactive" id="resume" title="Resume from current frame"></img>
 						<img src="Icons/+1.svg" class="icon stepControlInactive" id="stepForward" title="Step forwards one frame"></img>
 					</div>
-					<p class="stepControlActive" id="logToggle">Toggle Log On</p>
+					<p class="stepControlActive" id="logToggle">toggle log on</p>
 				</section>			
 
 				<section id="keyboardInput">
 					<ul>
-						<h2 class="secondaryH2">Controls:</h2>
+						<h2 class="secondaryH2">controls:</h2>
 					</ul>
 					<ul>
 						<li>1</li>
@@ -162,8 +162,8 @@
 				</section>
 
 				<section id="assemblerLinkContainer"> 
-					<h2 class="secondaryH2">Assembler: </h2>
-					<a href="assembler.html" class="stepControlActive" id="assemblerLink">Open in new tab</a>
+					<h2 class="secondaryH2">assembler: </h2>
+					<a href="Assembler/GUIAssemblerWIP/Assembler/assemblerIndex.html" target="_blank" class="stepControlActive" id="assemblerLink">open in new tab</a>
 				</section>
 			</section>
 		</div>

@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Abel|Catamaran|Lato|Libre+Franklin|Rubik" rel="stylesheet">
 
   <title>CMPT276 Group 4</title>
   <link rel="stylesheet" href="normalize.css">
@@ -15,12 +15,15 @@
 
 <body>
 	<div class="wrapper">
-        <h1> Group 4's Chip8 Assembler </h1>
+        <h1> chip8 4thewin assembler </h1>
 
-        <div class ="splitWrapper"> 
-
+        <div class ="splitWrapper" id="firstWrapper"> 
+			<section id="assemblerLinkContainer"> 
+				<h2 class="secondaryH2">interpreter: </h2>
+				<a href="../../../index.html" class="stepControlActive" id="assemblerLink">go back</a>
+			</section>
             <section id="fileinput">
-                <h2>Convert File</h2>
+                <h2>convert file</h2>
                 <select id="convertTypes">
                     <option>Mnemonic to Opcode (Assembler)</option>
                     <option>Opcode to Mnemonic (Dissembler)</option>
@@ -33,7 +36,7 @@
                 <input type="button" id = "submitFile" value="Convert File"/>
             </div>
             <section id="mnemonicOptions">
-                <h2>Mnemonic</h2>
+                <h2>mnemonic</h2>
                 <div class="tab">
                         <button class="tablinks" onclick="openTab(event, 'LD')">LD</button>
                         <button class="tablinks" onclick="openTab(event, 'SE/SNE')">SE/SNE</button>
@@ -53,218 +56,218 @@
                 <div id="LD" class="tabcontent"> 
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'LD Vx byte')">LD Vx byte</button>
-                        <h3>Set Vx = kk. The interpreter puts the value kk into register Vx.</h3>
+                        <p>Set Vx = kk. The interpreter puts the value kk into register Vx.</p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'LD Vx Vy')">LD Vx Vy</button>
-                        <h3>Set Vx = Vy. Stores the value of register Vy in register Vx.</h3>
+                        <p>Set Vx = Vy. Stores the value of register Vy in register Vx.</p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'LD addr')">LD addr</button>
-                        <h3>Set I = nnn. The value of register I is set to nnn.</h3>
+                        <p>Set I = nnn. The value of register I is set to nnn.</p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'LD Vx DT')">LD Vx DT</button>
-                        <h3>Set Vx = delay timer value.</h3>
+                        <p>Set Vx = delay timer value.</p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'LD Vx K')">LD Vx K</button>
-                        <h3>
+                        <p>
                             Wait for a key press, store the value of the key in Vx. All execution stops until a key is pressed, then the value of that key is stored in Vx.
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'LD DT Vx')">LD DT Vx</button>
-                        <h3>Set delay timer = Vx.</h3>
+                        <p>Set delay timer = Vx.</p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'LD ST Vx')">LD ST Vx</button>
-                        <h3>Set sound timer = Vx.</h3>
+                        <p>Set sound timer = Vx.</p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'LD F Vx')">LD F Vx</button>
-                        <h3>Set I = location of sprite for digit Vx. The value of I is set to the location for the hexadecimal sprite corresponding to the value of Vx. </h3>
+                        <p>Set I = location of sprite for digit Vx. The value of I is set to the location for the hexadecimal sprite corresponding to the value of Vx. </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'LD B Vx')">LD B Vx</button>
-                        <h3>
+                        <p>
                             Store BCD representation of Vx in memory locations I, I+1, and I+2. The interpreter takes the decimal value of Vx, and places the hundreds digit 
                             in memory at location in I, the tens digit at location I+1, and the ones digit at location I+2.
-                        </h3>
+                        </p>
                     </ul>
                 </div>
                 <div id="SE/SNE" class="tabcontent">
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'SE Vx byte')">SE Vx byte</button>
-                        <h3>Skip next instruction if Vx = kk.</h3>
+                        <p>Skip next instruction if Vx = kk.</p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'SE Vx Vy')">SE Vx Vy</button>
-                        <h3>Skip next instruction if Vx = Vy.</h3>
+                        <p>Skip next instruction if Vx = Vy.</p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'SNE Vx byte')">SNE Vx byte</button>
-                        <h3>Skip next instruction if Vx != kk.</h3>
+                        <p>Skip next instruction if Vx != kk.</p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'SNE Vx Vy')">SNE Vx Vy</button>
-                        <h3>Skip next instruction if Vx != Vy.</h3>
+                        <p>Skip next instruction if Vx != Vy.</p>
                     </ul>
                 </div>
                 <div id="ADD/OR/XOR/AND" class="tabcontent">
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'ADD I Vx')">ADD I Vx</button>
-                        <h3>Set I = I + Vx.</h3>
+                        <p>Set I = I + Vx.</p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'ADD Vx byte')">ADD Vx byte</button>
-                        <h3>Set Vx = Vx + kk.</h3>
+                        <p>Set Vx = Vx + kk.</p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'ADD Vx Vy')">ADD Vx Vy</button>
-                        <h3>
+                        <p>
                             Set Vx = Vx + Vy, set VF = carry. The values of Vx and Vy are added together. If the 
                             result is greater than 8 bits (i.e., > 255,) VF is set to 1, otherwise 0. Only the lowest 8 bits of the result are kept, and stored in Vx.
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'OR Vx Vy')">OR Vx Vy</button>
-                        <h3>
+                        <p>
                             Set Vx = Vx OR Vy. 
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'XOR Vx Vy')">XOR Vx Vy</button>
-                        <h3>
+                        <p>
                             Set Vx = Vx XOR Vy. 
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'AND Vx Vy')">AND Vx Vy</button>
-                        <h3>
+                        <p>
                             Set Vx = Vx AND Vy. 
-                        </h3>
+                        </p>
                     </ul>
                 </div>
                 <div id="JP/SKP/SKNP" class="tabcontent">
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'JP addr')">JP addr</button>
-                        <h3>
+                        <p>
                             Jump to location nnn.
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'JP V0 addr')">JP V0 addr</button>
-                        <h3>
+                        <p>
                             Jump to location nnn + V0.
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'SKP Vx')">SKP Vx</button>
-                        <h3>
+                        <p>
                             Skip next instruction if key with the value of Vx is pressed. Checks the keyboard, and if the key corresponding to the value of Vx is currently in 
                             the down position, PC is increased by 2.
                                 
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'SKNP Vx')">SKNP Vx</button>
-                        <h3>
+                        <p>
                             Skip next instruction if key with the value of Vx is not pressed.
                             Checks the keyboard, and if the key corresponding to the value of Vx is currently in the up position, PC is increased by 2.                                
-                        </h3>
+                        </p>
                     </ul>
                 </div>
                 <div id="SYS/CLS/RET/CALL" class="tabcontent">
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'SYS addr')">SYS addr</button>
-                        <h3>
+                        <p>
                             Jump to a machine code routine at nnn.
                             This instruction is only used on the old computers on which Chip-8 was   originally implemented. It is ignored by modern interpreters.  
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'CLS')">CLS</button>
-                        <h3>
+                        <p>
                             Clear the display.
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'RET')">RET</button>
-                        <h3>
+                        <p>
                             Return from a subroutine.
                             The interpreter sets the program counter to the address at the top of the stack, then subtracts 1 from the stack pointer.          
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'CALL addr')">CALL addr</button>
-                        <h3>
+                        <p>
                             Call subroutine at nnn.
                             The interpreter increments the stack pointer, then puts the current PC on the top of the stack. The PC is then set to nnn.     
-                        </h3>
+                        </p>
                     </ul>
                 </div>
                 <div id="SUB/SHR/SUBN/SHL" class="tabcontent">
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'SUB Vx Vy')">SUB Vx Vy</button>
-                        <h3>
+                        <p>
                             Set Vx = Vx - Vy, set VF = NOT borrow. If Vx > Vy, then VF is set to 1, otherwise 0. Then Vy is subtracted from Vx, and the 
                             results stored in Vx.
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'SHR Vx')">SHR Vx</button>
-                        <h3>
+                        <p>
                             Set Vx = Vx SHR 1. If the least-significant bit of Vx is 1, then VF is set to 1, otherwise 0. Then Vx is divided by 2.
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'SUBN Vx Vy')">SUBN Vx Vy</button>
-                        <h3>
+                        <p>
                             Set Vx = Vy - Vx, set VF = NOT borrow. If Vy > Vx, then VF is set to 1, otherwise 0. Then Vx is subtracted from Vy, and the results stored in Vx   
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'SHL Vx')">SHL Vx</button>
-                        <h3>
+                        <p>
                             Set Vx = Vx SHL 1.
                             If the most-significant bit of Vx is 1, then VF is set to 1, otherwise to 0. Then Vx is multiplied by 2.
-                        </h3>
+                        </p>
                     </ul>
                 </div>
                 <div id="RAND/DRAW/DUMP/READ" class="tabcontent">
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'RAND Vx byte')">RAND Vx byte</button>
-                        <h3>
+                        <p>
                             Set Vx = random byte AND kk. The interpreter generates a random number from 0 to 255, which is then ANDed with the value kk. The results are stored 
                             in Vx. See instruction 8xy2 for more information on AND.
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'DRAW Vx Vy nibble')">DRAW Vx Vy nibble</button>
-                        <h3>
+                        <p>
                             Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'DUMP Vx')">DUMP Vx</button>
-                        <h3>
+                        <p>
                             Store registers V0 through Vx in memory starting at location I
-                        </h3>
+                        </p>
                     </ul>
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'READ Vx')">READ Vx</button>
-                        <h3>
+                        <p>
                             Read registers V0 through Vx from memory starting at location I.
-                        </h3>
+                        </p>
                     </ul>
                 </div>
                 <div id="SPRITE" class="tabcontent">
                     <ul>
                         <button class="mnemonic" onclick="mnemButton(event, 'SPRITE hex')">SPRITE hex</button>
-                            <h3>
+                            <p>
                                 Loads a sprite into the program using a 4 digit hexadecimal number
-                            </h3>
+                            </p>
                     </ul>
                 </div>        
 
@@ -273,11 +276,10 @@
 
 		<div class="splitWrapper" id="rightcol">
                 
-            <h2 id="textHeader">Input Text</h2>
-            <h2>Load File into Text Box</h2>
+            <h2 id="textHeader">input text or load file</h2>
             <input type="file" id="loadFile" accept=".txt"/>
             <section id="textInput">
-                    <textarea id="textBox" rows="28" cols = "48"></textarea>
+                    <textarea id="textBox" rows="26" cols = "42"></textarea>
             </section>
             <button id="clearButton">Clear</button>
             <input type="button" id = "textConvertButton" value="Generate Chip8 txt file"/>
