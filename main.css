@@ -123,8 +123,8 @@ ul {
 }
 
 li {
-	font-family: monospace;
-	font-size: 1.3rem;
+	font-family: Ubuntu Mono, monospace;
+	font-size: 1rem;
 	display: inline;
 	text-decoration: none;
 	padding: 2px 6px;
