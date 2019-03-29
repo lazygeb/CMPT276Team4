@@ -60,7 +60,7 @@ function assemblerMain(lines) {
            //System.out.println(hex);
            OP.push(hex);
        });
-       writeOpcodes(opcodes);
+       return writeOpcodes(opcodes);
        if (test) {
            test(OP);
        }
@@ -353,10 +353,7 @@ function writeOpcodes(opcodes) {
         iterator++;
         console.log(fileWriter);
     });
-    
-    document.getElementById("submitFile").addEventListener("click", function(){
-        download("program.txt",fileWriter);
-    });
+    return fileWriter;
 }
 
 

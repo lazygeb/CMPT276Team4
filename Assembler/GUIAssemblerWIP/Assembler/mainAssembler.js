@@ -13,7 +13,10 @@ function handleFiles() {
         result = reader.result; //result = contents of file
         lines = this.result.split('\n');
         if (document.getElementById('convertTypes').selectedOptions[0].text){
-            assemblerMain(lines);
+            let convertedFile = assemblerMain(lines);
+            document.getElementById("submitFile").addEventListener("click", function(){
+                download("program.txt",convertedFile);
+            });
         }
         else {
             //dissemble
@@ -27,8 +30,7 @@ document.getElementById("textConvertButton").addEventListener("click", function(
     // Generate download of hello.txt file with some content
     var text = document.getElementById("textBox").value;
     lines = text.split('\n');
-    assemblerMain(lines);
-    console.log("we out here");
+    download("program.txt",assemblerMain(lines));
 }, false);
 
 let txtFileElement = document.getElementById("loadFile");
@@ -46,9 +48,6 @@ function loadTxt() {
         document.getElementById("textBox").value = text;
     }
     reader.readAsText(file, 'UTF-8')
-
-    
-   // });
 }
 
 

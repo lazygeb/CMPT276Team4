@@ -51,7 +51,7 @@ p, a {
 
 .wrapper {
 	margin: 0 auto;
-	width: 63rem;
+	width: 73rem;
 	overflow: hidden;
 }
 
@@ -63,7 +63,6 @@ p, a {
 
 section{
 	display: block;
-	vertical-align: top;
 }
 
 .stepControlActive{
@@ -206,10 +205,25 @@ button:hover{
 }
 
 #firstWrapper {
-	width: 26rem;
+	width: 24rem;
 }
 
 ul > p {
 	margin-top: .2rem;
 	margin-bottom: 1rem;
 }
+
+#thirdWrapper {
+	overflow-y: scroll;
+	overflow-x: wrap;
+	width: 24rem;
+	height: 35rem;
+	float: right;
+	
+}
+
+#manualText {
+	margin-left: 2rem;
+	display: none;
+}
+
