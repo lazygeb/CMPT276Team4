@@ -1,10 +1,39 @@
+/*gui for the javascript assembler*/
+/*https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp for the scrollbar*/
 body {
-	font-family: 'Lato', sans-serif;
+	font-family: 'Rubik', sans-serif;
+	background: #f5eeee;
 }
 
-p, h1, h2 {
+::selection {
+	background: #fde8f5;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f5eeee; 
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f48acf;
+  transition: 0.5s;
+}
+
+p, a, h1, h2 {
 	display: block;
-	
+	color: #ea21a2;
+	text-decoration: none;
 }
 
 h2 {
@@ -13,11 +42,16 @@ h2 {
 
 h3 {
 	font-size: .8rem;
+	color: #ea21a2;
+}
+
+p, a {
+	color: #171313;
 }
 
 .wrapper {
 	margin: 0 auto;
-	width: 70rem;
+	width: 73rem;
 	overflow: hidden;
 }
 
@@ -25,7 +59,32 @@ h3 {
 	display: inline-block;
 	overflow: hidden;
 	vertical-align: top;
-	max-width: 60%;
+}
+
+section{
+	display: block;
+}
+
+.stepControlActive{
+	background: #f5eeee;
+	border: 1.5px solid #171313;
+	opacity: 1;
+	border-radius: 5px;
+	padding: 0.2rem;
+	margin: .2rem 1rem;
+	margin-left: 0;
+	text-align: center;
+	transition: .5s;
+	width: 6rem;
+}
+
+.stepControlActive:hover{
+	background: #f48acf;
+	cursor: pointer;
+}
+
+select {
+	border-radius: 5px;
 }
 
 .icon_wrapper {
@@ -59,49 +118,112 @@ li {
 /* Style the tab */
 .tab {
   float: left;
-  border: 1px solid #ccc;
   background-color: #f1f1f1;
-  width: 30%;
-  height: 100%;
+  width: 33%;
+	height: 100%;
 }
 
 /* Style the buttons that are used to open the tab content */
 .tab button {
   display: block;
-  background-color: inherit;
-	color: black;
-  padding: 15px 20px;
+  background: #f5eeee;
+  padding: 0.2rem;
   width: 100%;
-  border: none;
+  border: 1.5px solid #171313;
   outline: none;
   text-align: center;
   cursor: pointer;
-	transition: 0.3s;
-	padding-right: 120px;
+  padding-right: 120px; 
+  max-width: 90px;
+  border-radius: 5px;
+  text-align: center;
+  transition: .5s;
 }
 
 /* Change background color of buttons on hover */
 .tab button:hover {
-  background-color: #ddd;
+  background: #f48acf;
+  cursor: pointer;
 }
 
 /* Create an active/current "tab button" class */
 .tab button.active {
-  background-color: #ccc;
+  background-color: #f48acf;
 }
 
 /* Style the tab content */
 .tabcontent {
-	display: none;
+  display: none;
   float: left;
-  padding: 0px 9px;
   border: 1px solid #ccc;
-  width: 40%;
-  border-left: none;
-  height: 100%;
+  overflow: auto;
+  padding-right: 0;
+  margin-top: 0.1rem;
+  margin-left: 1rem;
+  vertical-align: top;
+  max-height: 21.1rem;
 }
 
-textHeader, loadButton {
-	display: inline;
+.tabcontent button {
+	margin-left: 1rem;
 }
- 
+
+#clearButton {
+	float:right;
+}
+
+#myFile {
+	padding-right: 10px;
+}
+
+#textBox {
+	resize: none;
+	width: 22rem;
+}
+
+button {
+	background: #f5eeee;
+	border: 1.5px solid #171313;
+	opacity: 1;
+	border-radius: 5px;
+	padding: 0.2rem;
+	margin: .2rem 1rem;
+	margin-left: 0;
+	text-align: center;
+	transition: .5s;
+	width: 6rem;
+}
+
+button:hover{
+	background: #f48acf;
+	cursor: pointer;
+}
+
+#clearButton {
+	margin: 0;
+	height: 1.5rem;
+}
+
+#firstWrapper {
+	width: 24rem;
+}
+
+ul > p {
+	margin-top: .2rem;
+	margin-bottom: 1rem;
+}
+
+#thirdWrapper {
+	overflow-y: scroll;
+	overflow-x: wrap;
+	width: 24rem;
+	height: 35rem;
+	float: right;
+	
+}
+
+#manualText {
+	margin-left: 2rem;
+	display: none;
+}
+

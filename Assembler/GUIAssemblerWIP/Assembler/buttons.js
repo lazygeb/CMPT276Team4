@@ -1,6 +1,5 @@
 function openTab(evt, mnemonic) {
-    console.log(document.getElementById(mnemonic).style.display);
-    if (document.getElementById(mnemonic).style.display == "block") { 
+    if (document.getElementById(mnemonic).style.display == "inline-block") { 
         close(evt,mnemonic);
     } 
     else {
@@ -24,7 +23,7 @@ function open(evt, mnemonic) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
     // Show the current tab, and add an "active" class to the link that opened the tab
-    document.getElementById(mnemonic).style.display = "block";
+    document.getElementById(mnemonic).style.display = "inline-block";
     evt.currentTarget.className += " active";
 }
 
@@ -40,24 +39,47 @@ function close(evt, mnemonic) {
     // Get all elements with class="tablinks" and remove the class "active"
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace("","active");
+        tablinks[i].className = tablinks[i].className.replace("active","");
     }
     // Show the current tab, and add an "active" class to the link that opened the tab
     document.getElementById(mnemonic).style.display = "none";
-    evt.currentTarget.className += " active";
+    evt.currentTarget.className += "";
 }
 
 function mnemButton(evt, mnemonic) {
-    //document.getElementById(mnemonic).addEventListener("click", function(){
-    console.log(mnemonic.toString())
-    var text = document.getElementById("textBox").value;
+    let text = document.getElementById("textBox").value;
     if (text != '') {
         text += '\n';
     }
     text += mnemonic;
     document.getElementById("textBox").value = text;
-   // });
 }
+
+function hideElements() {
+	let scroll = document.getElementById("convertTypes");
+	if (scroll.options[scroll.selectedIndex].value === "dis") {
+		document.getElementById("mnemonicOptions").style.display = "none";
+		document.getElementById("secondWrapper").style.display = "none";
+	} else {
+		document.getElementById("mnemonicOptions").style.display = "inline-block";
+		document.getElementById("secondWrapper").style.display = "inline-block";
+	}
+}
+
+document.getElementById("clearButton").addEventListener("click", function(){
+    let text = "";
+    document.getElementById("textBox").value = text;
+});
+
+document.getElementById("manualButton").addEventListener("click", function(){
+    if (document.getElementById("manualText").style.display == "inline-block") {
+        document.getElementById("manualText").style.display = "none";
+    }
+    else {
+        document.getElementById("manualText").style.display = "inline-block";
+    }
+    
+});
 
 
 
