@@ -12,7 +12,7 @@ function handleFiles() {
     reader.onload = function(event) {
         result = reader.result; //result = contents of file
         lines = this.result.split('\n');
-        if (document.getElementById('convertTypes').selectedOptions[0].text){
+        if (document.getElementById("convertTypes").innerText === "ass"){
             let convertedFile = assemblerMain(lines);
             document.getElementById("submitFile").addEventListener("click", function(){
                 download("program.txt",convertedFile);
@@ -20,6 +20,8 @@ function handleFiles() {
         }
         else {
             //dissemble
+            dissemblerMain(lines);
+            //file download is done inside dissembler.js file
         }
     
     };
@@ -46,7 +48,7 @@ function loadTxt() {
         text += reader.result; //result = contents of file
         console.log(text);
         document.getElementById("textBox").value = text;
-    }
+    };
     reader.readAsText(file, 'UTF-8')
 }
 

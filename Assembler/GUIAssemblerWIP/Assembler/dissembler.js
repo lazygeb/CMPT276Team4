@@ -13,6 +13,8 @@
 function dissemblerMain(lines) {
     try {
         let mnemonics = [];
+        let memLoc = 0;
+        console.log("dissembler");
         lines.forEach(function(line) {
             line = line.trim();
             let tokens = line.split(" "); //split every space (ignores multiple spaces in a row)
@@ -20,7 +22,8 @@ function dissemblerMain(lines) {
             //let opcode = getMnemonic(tokens);
             console.log(tokens.toString());
             tokens.forEach(function(token) {
-                let instruction = getMnemonic(parseInt(token, 16));
+                let instruction = getMnemonic(parseInt(token, 16), memLoc);
+                memLoc += 2;
                 console.log(instruction);
                 mnemonics.push(instruction);
             });
@@ -53,7 +56,7 @@ function writeMnemonics(opcodes) {
     });
 }
 
-function getMnemonic(opcode) {
+function getMnemonic(opcode, memLoc) {
     if (opcode < 0 || opcode > 0xFFFF) {
         throw "Invalid opcode: " + opcode.toString(16);
     }
@@ -67,38 +70,38 @@ function getMnemonic(opcode) {
             break;
         case 0x0: //opcodes that start with 0
             if ((opcode & 0x0FFF) === 0x0E0) { //opcode 0x00E0 --> CLS
-                instruction = "CLS";
+                instruction = "CLS           ";
             }
             else if ((opcode & 0x0FFF) === 0x00EE) { //opcode 0x00EE --> RET
-                instruction = "RET";
+                instruction = "RET           ";
             }
             else {
                 tempVal = opcode & 0xFFF;
-                instruction = "SYS " + tempVal.toString(16);
+                instruction = "SYS " + tempVal.toString(16) + "       ";
             }
             break;
 
         case 0x1: //opcode 0x1nnn --> JMP addr
             tempVal = opcode & 0x0FFF;
-            instruction = "JMP " + tempVal.toString(16);
+            instruction = "JMP " + tempVal.toString(16) + "       ";
             break;
 
         case 0x2: //opcode 0x2nnn --> Call addr
             tempVal = opcode & 0x0FFF;
-            instruction = "CALL " + tempVal.toString(16);
+            instruction = "CALL " + tempVal.toString(16) + "      ";
             break;
 
         case 0x3: //opcode 0x3xkk --> SE Vx, byte
             reg1= opcode & 0x0F00;
             reg1 = reg1 >> 8; //this.register number = x
             tempVal = opcode & 0x00FF; //kk == last 2 digits of opcode
-            instruction = "SE V" + reg1.toString(16) + " " + tempVal.toString(16);
+            instruction = "SE V" + reg1.toString(16) + " " + tempVal.toString(16) + "      ";
             break;
         case 0x4: //opcode 0x4xkk --> SNE Vx, byte
             reg1 = opcode & 0x0F00;
             reg1 = reg1 >> 8; //register number =  x
             tempVal = opcode & 0x00FF; //kk == last 2 digits of opcode
-            instruction = "SNE V" + reg1.toString(16) + " " + tempVal.toString(16);
+            instruction = "SNE V" + reg1.toString(16) + " " + tempVal.toString(16) + "     ";
             break;
 
         case 0x5: //opcode 0x5xy0 --> SE Vx, Vy
@@ -106,20 +109,20 @@ function getMnemonic(opcode) {
             reg1 = reg1 >> 8; // reg1 = x
             reg2 = opcode & 0x00F0;
             reg2 = reg2 >> 4; // reg2 = y
-            instruction = "SE V" + reg1.toString(16) + " V" + reg2.toString(16);
+            instruction = "SE V" + reg1.toString(16) + " V" + reg2.toString(16) + "      ";
             break;
 
         case 0x6: //opcode 0x6xkk --> LD Vx, byte
             reg1 = opcode & 0x0F00;
             reg1 = reg1 >> 8;
             tempVal = opcode & 0x00FF;
-            instruction = "LD V" + reg1.toString(16) + " " + tempVal.toString(16);
+            instruction = "LD V" + reg1.toString(16) + " " + tempVal.toString(16) + "      ";
             break;
 
         case 0x7: //opcode 0x7xkk --> ADD Vx, byte
             reg1 = opcode & 0x0F00;
             reg1 = reg1 >> 8;
-            instruction = "ADD V" + reg1.toString(16) + " " + (opcode & 0x00FF).toString(16);
+            instruction = "ADD V" + reg1.toString(16) + " " + (opcode & 0x00FF).toString(16) + "     ";
             break;
 
         case 0x8: //opcodes 8xy0 through 8xyE
@@ -129,31 +132,31 @@ function getMnemonic(opcode) {
             reg2 = reg2 >> 4; //Vy
             switch (opcode & 0x000F) {
                 case 0x0: //opcode 8xy0 --> LD Vx, Vy
-                    instruction = "LD V" + reg1.toString(16) + " V" + reg2.toString(16);
+                    instruction = "LD V" + reg1.toString(16) + " V" + reg2.toString(16) + "      ";
                     break;
                 case 0x1: //opcode 8xy1 --> OR Vx, Vy
-                    instruction = "OR V" + reg1.toString(16) + " V" + reg2.toString(16);
+                    instruction = "OR V" + reg1.toString(16) + " V" + reg2.toString(16) + "      ";
                     break;
                 case 0x2: //opcode 8xy2 --> AND Vx, Vy
-                    instruction = "AND V" + reg1.toString(16) + " V" + reg2.toString(16);
+                    instruction = "AND V" + reg1.toString(16) + " V" + reg2.toString(16) + "     ";
                     break;
                 case 0x3: //opcode 8xy3 --> XOR Vx, Vy
-                    instruction = "XOR V" + reg1.toString(16) + " V" + reg2.toString(16);
+                    instruction = "XOR V" + reg1.toString(16) + " V" + reg2.toString(16) + "     ";
                     break;
                 case 0x4: //opcode 8xy4 --> ADD Vx, Vy
-                    instruction = "ADD V" + reg1.toString(16) + " V" + reg2.toString(16);
+                    instruction = "ADD V" + reg1.toString(16) + " V" + reg2.toString(16) + "     ";
                     break;
                 case 0x5: //opcode 8xy5 --> SUB Vx, Vy
-                    instruction = "SUB V" + reg1.toString(16) + " V" + reg2.toString(16);
+                    instruction = "SUB V" + reg1.toString(16) + " V" + reg2.toString(16) + "     ";
                     break;
                 case 0x6: //opcode 8xy6 --> SHR Vx {, Vy}
-                    instruction = "SHR V" + reg1.toString(16) + " V" + reg2.toString(16);
+                    instruction = "SHR V" + reg1.toString(16) + "        " ;
                     break;
                 case 0x7: //opcode 8xy7 --> SUBN Vx, Vy
-                    instruction = "SUBN V" + reg1.toString(16) + " V" + reg2.toString(16);
+                    instruction = "SUBN V" + reg1.toString(16) + " V" + reg2.toString(16) + "    ";
                     break;
                 case 0xE: //opcode 8xyE --> SHL Vx, {, Vy}
-                    instruction = "SHL V" + reg1.toString(16) + " V" + reg2.toString(16);
+                    instruction = "SHL V" + reg1.toString(16) + "        ";
                     break;
             }
             break;
@@ -162,21 +165,21 @@ function getMnemonic(opcode) {
             reg1 = reg1 >> 8; //Vx
             reg2 = opcode & 0x00F0;
             reg2 = reg2 >> 4; //Vy
-            instruction = "SNE V" + reg1.toString(16) + " V" + reg2.toString(16);
+            instruction = "SNE V" + reg1.toString(16) + " V" + reg2.toString(16) + "     ";
             break;
         case 0xA: //opcode Annn --> LD I, addr
             tempVal = opcode & 0x0FFF;
-            instruction = "LD I " + tempVal.toString(16);
+            instruction = "LD I " + tempVal.toString(16) + "      ";
             break;
         case 0xB: //opcode Bnnn --> JP V0, addr
             tempVal = opcode & 0x0FFF;
-            instruction = "JP V0 " + tempVal.toString(16);
+            instruction = "JP V0 " + tempVal.toString(16) + "     ";
             break;
         case 0xC: //opcode Cxkk --> RND Vx, byte
             reg1 = opcode & 0x0F00;
             reg1 = reg1 >> 8; //Vx
             tempVal = opcode & 0x00FF; //random & kk
-            instruction = "RND V" + reg1.toString(16) + " " + tempVal.toString(16);
+            instruction = "RND V" + reg1.toString(16) + " " + tempVal.toString(16) + "     ";
             break;
         case 0xD: //opcode Dxyn --> DRW Vx, Vy, nibble
             reg1 = opcode & 0x0F00;
@@ -184,17 +187,18 @@ function getMnemonic(opcode) {
             reg2 = opcode & 0x00F0;
             reg2 = reg2 >> 4; //y coordinate
             tempVal = opcode & 0x000F; //n
-            instruction = "DRAW V" + reg1 + " V" + reg2 + " " + tempVal ;
+            instruction = "DRAW V" + reg1.toString(16) + " V" + reg2.toString(16) + " "
+                + tempVal.toString(16) + "  ";
             break;
         case 0xE:
             reg1 = opcode & 0x0F00;
             reg1 = reg1 >>> 8;
             switch(opcode & 0x00FF) {
                 case 0x9E: // opcode Ex9E --> SKP Vx
-                    instruction = "SKP V" + reg1.toString(16);
+                    instruction = "SKP V" + reg1.toString(16) + "        ";
                     break;
                 case 0xA1: // opcode ExA1 --> SKNP Vx
-                    instruction = "SKNP V" + reg1.toString(16);
+                    instruction = "SKNP V" + reg1.toString(16) + "       ";
                     break;
             }
             break;
@@ -203,37 +207,39 @@ function getMnemonic(opcode) {
             reg1 = reg1 >>> 8;
             switch(opcode & 0x00FF) {
                 case 0x07: //opcode 0xFx07 --> LD Vx, DT
-                    instruction = "LD V" + reg1.toString(16) + " DT";
+                    instruction = "LD V" + reg1.toString(16) + " DT      ";
                     break;
                 case 0x0A: //opcode 0xFx0A --> LD Vx, K
-                    instruction = "LD V" + reg1.toString(16) + " K";
+                    instruction = "LD V" + reg1.toString(16) + " K       ";
                     break;
                 case 0x15: //opcode 0xFx15 --> LD DT, Vx
-                    instruction = "LD DT V" + reg1.toString(16);
+                    instruction = "LD DT V" + reg1.toString(16) + "      ";
                     break;
                 case 0x18: //opcode 0xFx18 --> LD ST, Vx
-                    instruction = "LD ST V" + reg1.toString(16);
+                    instruction = "LD ST V" + reg1.toString(16) + "      ";
                     break;
                 case 0x1E: //opcode 0xFx1E --> ADD I, Vx -- set I = I + Vx
-                    instruction = "ADD I V" + reg1.toString(16);
+                    instruction = "ADD I V" + reg1.toString(16) + "      ";
                     break;
                 case 0x29: //opcode 0xFx29 --> LD F, Vx
-                    instruction = "LD F V" + reg1.toString(16);
+                    instruction = "LD F V" + reg1.toString(16) + "       ";
                     break;
                 case 0x33: //opcode 0xFx33 --> LD B, Vx
-                    instruction = "LD B V" + reg1.toString(16);
+                    instruction = "LD B V" + reg1.toString(16) + "       ";
                     break;
                 case 0x55: //opcode 0xFx55 --> LD [I], Vx
-                    instruction = "LD I V" + reg1.toString(16);
+                    instruction = "LD I V" + reg1.toString(16) + "       ";
                     break;
                 case 0x65: //opcode 0xFx65 --> LD Vx, [I]
-                    instruction = "LD V" + reg1.toString(16) + " I";
+                    instruction = "LD V" + reg1.toString(16) + " I       ";
                     break;
             }
             break;
     }
     if (instruction === undefined) {
-        instruction = "SPRITE " + opcode.toString(16);
+        instruction = "SPRITE " + opcode.toString(16) + "   ";
     }
+
+    instruction += "//mem loc: " + memLoc + "   opcode: " + opcode.toString(16);
     return instruction;
 }
