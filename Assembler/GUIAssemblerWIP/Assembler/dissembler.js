@@ -83,7 +83,7 @@ function getMnemonic(opcode, memLoc) {
 
         case 0x1: //opcode 0x1nnn --> JMP addr
             tempVal = opcode & 0x0FFF;
-            instruction = "JMP " + tempVal.toString(16) + "       ";
+            instruction = "JP " + tempVal.toString(16) + "        ";
             break;
 
         case 0x2: //opcode 0x2nnn --> Call addr
@@ -169,7 +169,7 @@ function getMnemonic(opcode, memLoc) {
             break;
         case 0xA: //opcode Annn --> LD I, addr
             tempVal = opcode & 0x0FFF;
-            instruction = "LD I " + tempVal.toString(16) + "      ";
+            instruction = "LD " + tempVal.toString(16) + "        ";
             break;
         case 0xB: //opcode Bnnn --> JP V0, addr
             tempVal = opcode & 0x0FFF;
@@ -179,7 +179,7 @@ function getMnemonic(opcode, memLoc) {
             reg1 = opcode & 0x0F00;
             reg1 = reg1 >> 8; //Vx
             tempVal = opcode & 0x00FF; //random & kk
-            instruction = "RND V" + reg1.toString(16) + " " + tempVal.toString(16) + "     ";
+            instruction = "RAND V" + reg1.toString(16) + " " + tempVal.toString(16) + "    ";
             break;
         case 0xD: //opcode Dxyn --> DRW Vx, Vy, nibble
             reg1 = opcode & 0x0F00;
@@ -228,10 +228,10 @@ function getMnemonic(opcode, memLoc) {
                     instruction = "LD B V" + reg1.toString(16) + "       ";
                     break;
                 case 0x55: //opcode 0xFx55 --> LD [I], Vx
-                    instruction = "LD I V" + reg1.toString(16) + "       ";
+                    instruction = "DUMP V" + reg1.toString(16) + "       ";
                     break;
                 case 0x65: //opcode 0xFx65 --> LD Vx, [I]
-                    instruction = "LD V" + reg1.toString(16) + " I       ";
+                    instruction = "READ V" + reg1.toString(16) + "       ";
                     break;
             }
             break;

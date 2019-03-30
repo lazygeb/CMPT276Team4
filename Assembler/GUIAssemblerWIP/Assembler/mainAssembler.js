@@ -4,7 +4,6 @@ inputElement.addEventListener("change", handleFiles, false);
 
 function handleFiles() {
     file = this.files[0];
-    console.log("main");
     
     let reader = new FileReader();
     let result;
@@ -12,7 +11,7 @@ function handleFiles() {
     reader.onload = function(event) {
         result = reader.result; //result = contents of file
         lines = this.result.split('\n');
-        if (document.getElementById("convertTypes").innerText === "ass"){
+        if (document.getElementById("convertTypes").value === "ass"){
             let convertedFile = assemblerMain(lines);
             document.getElementById("submitFile").addEventListener("click", function(){
                 download("program.txt",convertedFile);

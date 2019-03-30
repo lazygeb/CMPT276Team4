@@ -29,29 +29,33 @@ function assemblerMain(lines) {
        let opcodes = [];
         lines.forEach(function(line) {
             line = line.trim();
-            let tokens = line.split(" "); //split every space (ignores multiple spaces in a row)
-            //int opcode = getInstruction(tokens);
-            hasComment = false;
-            //the following loop checks for comments, it ignores anything after the //
-            for (i = 0; i < tokens.length && !hasComment; i++) {
-                //hasComment = false;
-                if (tokens[i].startsWith('//')) {
-                    hasComment = true;
-                    let tempTokens = new Array(i);
-                    for (j = 0; j < i; j++) {
-                        tempTokens[j] = tokens[j];
+            let tokens = line.split(" ");
+            tokens = tokens.filter(function (value) {
+                return value !== "";
+            });//split every space (ignores multiple spaces in a row)
+            if (line !== "" && !line.startsWith("//")) {
+                //int opcode = getInstruction(tokens);
+                let hasComment = false;
+                //the following loop checks for comments, it ignores anything after the //
+                for (let i = 0; i < tokens.length && !hasComment; i++) {
+                    //hasComment = false;
+                    if (tokens[i].startsWith("//")) {
+                        hasComment = true;
+                        let tempTokens = [];
+                        for (let j = 0; j < i; j++) {
+                            console.log("push");
+                                tempTokens.push(tokens[j]);
+                        }
+                        tokens = tempTokens;
                     }
-                    tokens = tempTokens; 
-                    console.log("in " + tokens );
                 }
+                let opcode = getInstruction(tokens);
+                if (opcode === 0) {
+                    console.log(line);
+                    throw "Invalid instruction: " + line;
+                }
+                opcodes.push(opcode);
             }
-            let opcode = getInstruction(tokens);
-            if (opcode == 0) {
-                console.log(line);
-                alert("Invalid Instruction: " + line);
-                throw new InputMismatchException("Invalid instruction: " + line);
-            }
-            opcodes.push(opcode);
         });
        
        //System.out.println("\n");
@@ -70,14 +74,13 @@ function assemblerMain(lines) {
     }
 }
 
+
 //call the right function
 function getInstruction(tokens) {
-    console.log("getin " + tokens.length );
     if (tokens.length < 2) {
         return oneArgOpcode(tokens[0]);
     }
     else if (tokens.length < 3) {
-        console.log("is in" );
         return twoArgOpcode(tokens[0], tokens[1]);
     }
     else if (tokens.length < 4) {
@@ -86,7 +89,6 @@ function getInstruction(tokens) {
     else if (tokens.length < 5) {
         return fourArgOpcode(tokens[0], tokens[1], tokens[2], tokens[3]);
     }
-    console.log("nope" );
     return 0;
 }
 
@@ -95,7 +97,6 @@ function opcodeCheck(instruction,mnemonic) {
 }
 
 function oneArgOpcode(instruction) {
-    console.log(instruction);
     if (opcodeCheck(instruction,"CLS")) {
         return 0x00E0;
     }
@@ -107,7 +108,6 @@ function oneArgOpcode(instruction) {
 
 function twoArgOpcode(instruction, arg1) {
     if ( opcodeCheck(instruction,"SYS")) {
-        console.log("SYS " + parseInt(arg1, 16));
         return parseInt(arg1, 16); //should convert a hex string into an int number
     }
     else if (opcodeCheck(instruction,"JP")) {
@@ -156,18 +156,11 @@ function twoArgOpcode(instruction, arg1) {
         return 0xF000 + reg1 + 0x65;
     }
     else if (opcodeCheck(instruction,"SPRITE")) {
-        try {
             let sprite = parseInt(arg1, 16);
-            if (arg1.length() < 4) {
-                alert(new IllegalArgumentException("Sprite is not length 4"));
-                throw new IllegalArgumentException("Sprite is not length 4");
+            if (arg1.length < 4) {
+                throw "Sprite is not length 4";
             }
             return sprite;
-        }
-        catch (e){
-            alert(new IllegalArgumentException(e));
-            throw new IllegalArgumentException(e);
-        }
     }
     return 0;
 }
@@ -344,7 +337,7 @@ function writeOpcodes(opcodes) {
         }
         fileWriter += opcode.toString(16);
         console.log(opcode.toString(16));
-        if (iterator % 8 == 0) {
+        if (iterator % 8 === 0) {
             fileWriter += "\n";
         }
         else {
