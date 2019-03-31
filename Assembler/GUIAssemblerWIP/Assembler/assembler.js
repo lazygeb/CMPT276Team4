@@ -50,7 +50,7 @@ function assemblerMain(lines) {
                     }
                 }
                 let opcode = getInstruction(tokens);
-                if (opcode === 0) {
+                if (opcode === -1) {
                     console.log(line);
                     throw "Invalid instruction: " + line;
                 }
@@ -89,7 +89,7 @@ function getInstruction(tokens) {
     else if (tokens.length < 5) {
         return fourArgOpcode(tokens[0], tokens[1], tokens[2], tokens[3]);
     }
-    return 0;
+    return -1;
 }
 
 function opcodeCheck(instruction,mnemonic) {
@@ -103,7 +103,7 @@ function oneArgOpcode(instruction) {
     else if (opcodeCheck(instruction,"RET")) {
         return 0x00EE;
     }
-    return 0;
+    return -1;
 }
 
 function twoArgOpcode(instruction, arg1) {
@@ -162,7 +162,7 @@ function twoArgOpcode(instruction, arg1) {
             }
             return sprite;
     }
-    return 0;
+    return -1;
 }
 
 function threeArgOpcode(instruction, arg1, arg2) {
@@ -288,7 +288,7 @@ function threeArgOpcode(instruction, arg1, arg2) {
             }
         }
     }
-    return 0;
+    return -1;
 }
 
 function fourArgOpcode(instruction, arg1, arg2, arg3) {
@@ -302,7 +302,7 @@ function fourArgOpcode(instruction, arg1, arg2, arg3) {
         reg2 *= 0x10; //y
         return 0xD000 + reg1 + reg2 + nibble;
     }
-    return 0;
+    return -1;
 }
 function download(filename, text) {
     var element = document.createElement('a');
@@ -329,7 +329,10 @@ function writeOpcodes(opcodes) {
     });
     opcodes.forEach(function(opcode) {
         //intercept opcode if it needs zeros before any values
-        if (opcode < 0x100) {
+        if (opcode < 0x10) {
+            fileWriter += "000";
+        }
+        else if (opcode < 0x100) {
             fileWriter += "00";
         }
         else if (opcode < 0x1000) {

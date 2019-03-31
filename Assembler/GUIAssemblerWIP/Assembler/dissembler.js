@@ -13,7 +13,7 @@
 function dissemblerMain(lines) {
     try {
         let mnemonics = [];
-        let memLoc = 0;
+        let memLoc = 0x200;
         console.log("dissembler");
         lines.forEach(function(line) {
             line = line.trim();
@@ -240,6 +240,6 @@ function getMnemonic(opcode, memLoc) {
         instruction = "SPRITE " + opcode.toString(16) + "   ";
     }
 
-    instruction += "//mem loc: " + memLoc + "   opcode: " + opcode.toString(16);
+    instruction += "//mem loc: " + memLoc.toString(16) + "   opcode: " + opcode.toString(16);
     return instruction;
 }
