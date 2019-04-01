@@ -117,7 +117,6 @@ function startEmulator(usrFile) {
 
     callSetInt();
 }
-    //window.requestAnimationFrame(chip.runEmulator());
 
     //If click  pause -> clear setinterval
     document.getElementById("pause").onclick = function() {
