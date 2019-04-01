@@ -51,6 +51,7 @@ function callSetInt(){
 function startEmulator(usrFile) {
     chip = new Chip8();
     chip.reset();
+	document.getElementById("log").innerHTML = "";
 	if (usrFile && !snakeOK && !floppyOK) {
         chip.loadProgram(prog);
     }
