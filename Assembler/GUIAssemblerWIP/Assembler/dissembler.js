@@ -31,7 +31,7 @@ function dissemblerMain(lines) {
 
         console.log(mnemonics.toString());
 
-        writeMnemonics(mnemonics);
+        return writeMnemonics(mnemonics);
     }
     catch (e){
         alert(e);
@@ -49,11 +49,7 @@ function writeMnemonics(opcodes) {
         //iterator++;
         //console.log(fileWriter);
     });
-
-    console.log(fileWriter);
-    document.getElementById("submitFile").addEventListener("click", function(){
-        download("assemblyProgram.txt",fileWriter);
-    });
+    return fileWriter;
 }
 
 function getMnemonic(opcode, memLoc) {

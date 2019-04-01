@@ -1,6 +1,8 @@
 
 let inputElement = document.getElementById("myFile");
 inputElement.addEventListener("change", handleFiles, false);
+let dissembledFile = undefined;
+let assembledFile = undefined;
 
 function handleFiles() {
     file = this.files[0];
@@ -8,24 +10,30 @@ function handleFiles() {
     let reader = new FileReader();
     let result;
     let lines;
+    dissembledFile = undefined;
+    assembledFile = undefined;
     reader.onload = function(event) {
         result = reader.result; //result = contents of file
         lines = this.result.split('\n');
-        if (document.getElementById("convertTypes").value === "ass"){
-            let convertedFile = assemblerMain(lines);
-            document.getElementById("submitFile").addEventListener("click", function(){
-                download("program.txt",convertedFile);
-            });
+        if (document.getElementById("convertTypes").value === "assem"){
+            assembledFile = assemblerMain(lines);
         }
         else {
             //dissemble
-            dissemblerMain(lines);
-            //file download is done inside dissembler.js file
+            dissembledFile = dissemblerMain(lines);
         }
-    
     };
     reader.readAsText(file);
 }
+
+document.getElementById("submitFile").addEventListener("click", function(){
+    if (dissembledFile != undefined) {
+        download("assemblyProgram.txt",dissembledFile);
+    } 
+    else if (assembledFile != undefined) {
+        download("program.txt",assembledFile);
+    }
+});
 // Start file download.
 document.getElementById("textConvertButton").addEventListener("click", function(){
     // Generate download of hello.txt file with some content
