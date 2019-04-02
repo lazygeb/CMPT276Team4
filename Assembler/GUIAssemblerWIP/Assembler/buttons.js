@@ -57,7 +57,7 @@ function mnemButton(evt, mnemonic) {
 
 function hideElements() {
 	let scroll = document.getElementById("convertTypes");
-	if (scroll.options[scroll.selectedIndex].value === "dis") {
+	if (scroll.options[scroll.selectedIndex].value === "disem") {
 		document.getElementById("mnemonicOptions").style.display = "none";
 		document.getElementById("secondWrapper").style.display = "none";
 	} else {
