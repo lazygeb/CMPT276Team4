@@ -1,0 +1,206 @@
+JP 36a        //mem loc: 200   opcode: 136a
+LD 325        //mem loc: 202   opcode: a325 	draw snake head
+DRAW V4 V5 1  //mem loc: 204   opcode: d451
+SE Vf 1       //mem loc: 206   opcode: 3f01
+RET           //mem loc: 208   opcode: ee
+SE V4 V8      //mem loc: 20a   opcode: 5480
+JP 2de        //mem loc: 20c   opcode: 12de
+SE V5 V9      //mem loc: 20e   opcode: 5590
+JP 2de        //mem loc: 210   opcode: 12de
+LD V0 2       //mem loc: 212   opcode: 6002
+LD ST V0      //mem loc: 214   opcode: f018
+CALL 2c6      //mem loc: 216   opcode: 22c6
+ADD V6 1      //mem loc: 218   opcode: 7601
+CALL 2c6      //mem loc: 21a   opcode: 22c6
+LD V0 ff      //mem loc: 21c   opcode: 60ff
+LD V1 ff      //mem loc: 21e   opcode: 61ff
+ADD Vb fe     //mem loc: 220   opcode: 7bfe
+LD 390        //mem loc: 222   opcode: a390
+ADD I Vb      //mem loc: 224   opcode: fb1e
+DUMP V1       //mem loc: 226   opcode: f155
+ADD Vb fe     //mem loc: 228   opcode: 7bfe
+LD 390        //mem loc: 22a   opcode: a390
+ADD I Vb      //mem loc: 22c   opcode: fb1e
+DUMP V1       //mem loc: 22e   opcode: f155
+LD 325        //mem loc: 230   opcode: a325
+DRAW V4 V5 1  //mem loc: 232   opcode: d451
+JP 2a0        //mem loc: 234   opcode: 12a0
+RET           //mem loc: 236   opcode: ee
+LD V0 V7      //mem loc: 238   opcode: 8070 	move (direction)
+JP V0 25a     //mem loc: 23a   opcode: b25a
+RET           //mem loc: 23c   opcode: ee
+LD V0 5       //mem loc: 23e   opcode: 6005 	check user input
+SKNP V0       //mem loc: 240   opcode: e0a1
+LD V7 0       //mem loc: 242   opcode: 6700
+LD V0 7       //mem loc: 244   opcode: 6007
+SKNP V0       //mem loc: 246   opcode: e0a1
+LD V7 c       //mem loc: 248   opcode: 670c
+LD V0 8       //mem loc: 24a   opcode: 6008
+SKNP V0       //mem loc: 24c   opcode: e0a1
+LD V7 8       //mem loc: 24e   opcode: 6708
+LD V0 9       //mem loc: 250   opcode: 6009
+SKNP V0       //mem loc: 252   opcode: e0a1
+LD V7 4       //mem loc: 254   opcode: 6704
+RET           //mem loc: 256   opcode: ee
+RET           //mem loc: 258   opcode: ee
+ADD V5 ff     //mem loc: 25a   opcode: 75ff
+RET           //mem loc: 25c   opcode: ee
+ADD V4 1      //mem loc: 25e   opcode: 7401
+RET           //mem loc: 260   opcode: ee
+ADD V5 1      //mem loc: 262   opcode: 7501
+RET           //mem loc: 264   opcode: ee
+ADD V4 ff     //mem loc: 266   opcode: 74ff
+RET           //mem loc: 268   opcode: ee
+RET           //mem loc: 26a   opcode: ee
+LD 390        //mem loc: 26c   opcode: a390 	write snake head
+ADD Va 2      //mem loc: 26e   opcode: 7a02
+ADD I Va      //mem loc: 270   opcode: fa1e
+LD V0 V4      //mem loc: 272   opcode: 8040
+LD V1 V5      //mem loc: 274   opcode: 8150
+DUMP V1       //mem loc: 276   opcode: f155
+RET           //mem loc: 278   opcode: ee
+RET           //mem loc: 27a   opcode: ee
+LD 390        //mem loc: 27c   opcode: a390 	erase snake tail
+ADD I Vb      //mem loc: 27e   opcode: fb1e
+READ V1       //mem loc: 280   opcode: f165
+LD 325        //mem loc: 282   opcode: a325
+DRAW V0 V1 1  //mem loc: 284   opcode: d011
+ADD Vb 2      //mem loc: 286   opcode: 7b02
+RET           //mem loc: 288   opcode: ee
+RET           //mem loc: 28a   opcode: ee
+SNE V4 ff     //mem loc: 28c   opcode: 44ff 	check edges
+JP 2de        //mem loc: 28e   opcode: 12de
+SNE V4 40     //mem loc: 290   opcode: 4440
+JP 2de        //mem loc: 292   opcode: 12de
+SNE V5 ff     //mem loc: 294   opcode: 45ff
+JP 2de        //mem loc: 296   opcode: 12de
+SNE V5 20     //mem loc: 298   opcode: 4520
+JP 2de        //mem loc: 29a   opcode: 12de
+RET           //mem loc: 29c   opcode: ee
+RET           //mem loc: 29e   opcode: ee
+RAND V8 3f    //mem loc: 2a0   opcode: c83f 	spawn new food
+RAND V9 1f    //mem loc: 2a2   opcode: c91f
+LD V0 7       //mem loc: 2a4   opcode: 6007
+SUBN V0 V9    //mem loc: 2a6   opcode: 8097
+SE Vf 0       //mem loc: 2a8   opcode: 3f00
+JP 2b8        //mem loc: 2aa   opcode: 12b8
+LD V0 36      //mem loc: 2ac   opcode: 6036
+SUBN V0 V8    //mem loc: 2ae   opcode: 8087
+SE Vf 1       //mem loc: 2b0   opcode: 3f01
+JP 2b8        //mem loc: 2b2   opcode: 12b8
+JP 2a0        //mem loc: 2b4   opcode: 12a0
+RET           //mem loc: 2b6   opcode: ee
+LD 325        //mem loc: 2b8   opcode: a325 	draw food
+DRAW V8 V9 1  //mem loc: 2ba   opcode: d891
+SNE Vf 0      //mem loc: 2bc   opcode: 4f00
+RET           //mem loc: 2be   opcode: ee
+DRAW V8 V9 1  //mem loc: 2c0   opcode: d891
+JP 2a0        //mem loc: 2c2   opcode: 12a0
+RET           //mem loc: 2c4   opcode: ee
+LD 328        //mem loc: 2c6   opcode: a328 	draw score
+LD B V6       //mem loc: 2c8   opcode: f633
+READ V2       //mem loc: 2ca   opcode: f265
+LD V0 37      //mem loc: 2cc   opcode: 6037
+LD V3 0       //mem loc: 2ce   opcode: 6300
+LD F V1       //mem loc: 2d0   opcode: f129
+DRAW V0 V3 5  //mem loc: 2d2   opcode: d035
+ADD V0 5      //mem loc: 2d4   opcode: 7005
+LD F V2       //mem loc: 2d6   opcode: f229
+DRAW V0 V3 5  //mem loc: 2d8   opcode: d035
+RET           //mem loc: 2da   opcode: ee
+RET           //mem loc: 2dc   opcode: ee
+LD V0 f       //mem loc: 2de   opcode: 600f
+LD ST V0      //mem loc: 2e0   opcode: f018
+CALL 2e8      //mem loc: 2e2   opcode: 22e8 	call draw Game over
+CALL 31e      //mem loc: 2e4   opcode: 231e 	call done
+RET           //mem loc: 2e6   opcode: ee
+CLS           //mem loc: 2e8   opcode: e0 		draw Game Over
+LD V0 f       //mem loc: 2ea   opcode: 600f
+LD V1 8       //mem loc: 2ec   opcode: 6108
+LD 32b        //mem loc: 2ee   opcode: a32b
+DRAW V0 V1 7  //mem loc: 2f0   opcode: d017
+ADD V0 8      //mem loc: 2f2   opcode: 7008
+LD 334        //mem loc: 2f4   opcode: a334
+DRAW V0 V1 7  //mem loc: 2f6   opcode: d017
+ADD V0 8      //mem loc: 2f8   opcode: 7008
+LD 33d        //mem loc: 2fa   opcode: a33d
+DRAW V0 V1 7  //mem loc: 2fc   opcode: d017
+ADD V0 8      //mem loc: 2fe   opcode: 7008
+LD 346        //mem loc: 300   opcode: a346
+DRAW V0 V1 7  //mem loc: 302   opcode: d017
+LD V0 f       //mem loc: 304   opcode: 600f
+ADD V1 8      //mem loc: 306   opcode: 7108
+LD 34f        //mem loc: 308   opcode: a34f
+DRAW V0 V1 7  //mem loc: 30a   opcode: d017
+ADD V0 8      //mem loc: 30c   opcode: 7008
+LD 358        //mem loc: 30e   opcode: a358
+DRAW V0 V1 7  //mem loc: 310   opcode: d017
+ADD V0 8      //mem loc: 312   opcode: 7008
+LD 346        //mem loc: 314   opcode: a346
+DRAW V0 V1 7  //mem loc: 316   opcode: d017
+ADD V0 8      //mem loc: 318   opcode: 7008
+LD 361        //mem loc: 31a   opcode: a361
+DRAW V0 V1 7  //mem loc: 31c   opcode: d017
+JP 31e        //mem loc: 31e   opcode: 131e 	done (calls itself as an infinite loop to end game)
+RET           //mem loc: 320   opcode: ee
+SPRITE e000   //mem loc: 322   opcode: e000
+SPRITE ee80   //mem loc: 324   opcode: ee80
+RET           //mem loc: 326   opcode: ee
+SPRITE C000   //mem loc: 328   opcode: c000 	mem loc for score
+SPRITE 007e   //mem loc: 32a   opcode: 007e 	sprite 'G'
+SPRITE 4240   //mem loc: 32c   opcode: 4240
+SPRITE 6662   //mem loc: 32e   opcode: 6662
+SPRITE 627e   //mem loc: 330   opcode: 627e
+RET           //mem loc: 332   opcode: ee
+SPRITE 3c24   //mem loc: 334   opcode: 3c24 	sprite 'A'
+SPRITE 247E   //mem loc: 336   opcode: 247e
+SPRITE 6262   //mem loc: 338   opcode: 6262
+SPRITE 6200   //mem loc: 33a   opcode: 6200
+SPRITE 007f   //mem loc: 33c   opcode: 007f 	SPRITE 'M'
+SPRITE 4949   //mem loc: 33e   opcode: 4949
+SPRITE 6D6D   //mem loc: 340   opcode: 6d6d
+SPRITE 6D6D   //mem loc: 342   opcode: 6d6d
+RET           //mem loc: 344   opcode: ee
+SPRITE 7E40   //mem loc: 346   opcode: 7e40 	SPRITE 'E'
+SPRITE 407C   //mem loc: 348   opcode: 407c
+SPRITE 6060   //mem loc: 34a   opcode: 6060
+SPRITE 7E00   //mem loc: 34c   opcode: 7e00
+SPRITE 007e   //mem loc: 34e   opcode: 007e 	SPRITE 'O'
+SPRITE 4646   //mem loc: 350   opcode: 4646
+SPRITE 4242   //mem loc: 352   opcode: 4242
+SPRITE 427E   //mem loc: 354   opcode: 427e
+RET           //mem loc: 356   opcode: ee
+SPRITE 6161   //mem loc: 358   opcode: 6161 	SPRITE 'V'
+SPRITE 6161   //mem loc: 35a   opcode: 6161
+SPRITE 2322   //mem loc: 35c   opcode: 2322
+SPRITE 3E00   //mem loc: 35e   opcode: 3e00
+SPRITE 007e   //mem loc: 360   opcode: 007e 	SPRITE 'R'
+SPRITE 4242   //mem loc: 362   opcode: 4242
+SPRITE 7F61   //mem loc: 364   opcode: 7f61
+SPRITE 6161   //mem loc: 366   opcode: 6161
+RET           //mem loc: 368   opcode: ee
+LD Va 8       //mem loc: 36a   opcode: 6a08 	MAIN starts here
+LD Vb 4       //mem loc: 36c   opcode: 6b04
+LD V6 0       //mem loc: 36e   opcode: 6600
+LD V7 4       //mem loc: 370   opcode: 6704
+LD 390        //mem loc: 372   opcode: a390
+ADD I Vb      //mem loc: 374   opcode: fb1e
+READ V5       //mem loc: 376   opcode: f565
+LD 322        //mem loc: 378   opcode: a322
+DRAW V0 V1 1  //mem loc: 37a   opcode: d011
+CALL 2c6      //mem loc: 37c   opcode: 22c6 	draw initial score
+CALL 2a0      //mem loc: 37e   opcode: 22a0 	spawn first food
+CALL 23e      //mem loc: 380   opcode: 223e 	Loop start --> check user input
+CALL 238      //mem loc: 382   opcode: 2238 	move from input
+CALL 28c      //mem loc: 384   opcode: 228c		check edges
+CALL 26c      //mem loc: 386   opcode: 226c 	write head to memory
+CALL 202      //mem loc: 388   opcode: 2202 	draw snake head
+CALL 27c      //mem loc: 38a   opcode: 227c 	erase snake tail
+JP 380        //mem loc: 38c   opcode: 1380 	restart loop
+RET           //mem loc: 38e   opcode: ee
+SPRITE 0000   //mem loc: 390   opcode: 0		snake is stored in memory starting from here
+SPRITE 0000   //mem loc: 392   opcode: 0
+SPRITE 0a0a   //mem loc: 394   opcode: a0a
+SPRITE 0b0a   //mem loc: 396   opcode: b0a
+SPRITE 0c0a   //mem loc: 398   opcode: c0a
+RET           //mem loc: 39a   opcode: ee

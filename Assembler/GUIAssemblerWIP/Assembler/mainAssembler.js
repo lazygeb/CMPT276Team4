@@ -1,34 +1,45 @@
 
 let inputElement = document.getElementById("myFile");
 inputElement.addEventListener("change", handleFiles, false);
+let dissembledFile = undefined;
+let assembledFile = undefined;
 
 function handleFiles() {
     file = this.files[0];
-    console.log("main");
     
     let reader = new FileReader();
     let result;
     let lines;
+    dissembledFile = undefined;
+    assembledFile = undefined;
     reader.onload = function(event) {
         result = reader.result; //result = contents of file
         lines = this.result.split('\n');
-        if (document.getElementById('convertTypes').selectedOptions[0].text){
-            assemblerMain(lines);
+        if (document.getElementById("convertTypes").value === "assem"){
+            assembledFile = assemblerMain(lines);
         }
         else {
             //dissemble
+            dissembledFile = dissemblerMain(lines);
         }
-    
     };
     reader.readAsText(file);
 }
+
+document.getElementById("submitFile").addEventListener("click", function(){
+    if (dissembledFile != undefined) {
+        download("assemblyProgram.txt",dissembledFile);
+    } 
+    else if (assembledFile != undefined) {
+        download("program.txt",assembledFile);
+    }
+});
 // Start file download.
 document.getElementById("textConvertButton").addEventListener("click", function(){
     // Generate download of hello.txt file with some content
     var text = document.getElementById("textBox").value;
     lines = text.split('\n');
-    assemblerMain(lines);
-    console.log("we out here");
+    download("program.txt",assemblerMain(lines));
 }, false);
 
 let txtFileElement = document.getElementById("loadFile");
@@ -44,11 +55,8 @@ function loadTxt() {
         text += reader.result; //result = contents of file
         console.log(text);
         document.getElementById("textBox").value = text;
-    }
+    };
     reader.readAsText(file, 'UTF-8')
-
-    
-   // });
 }
 
 

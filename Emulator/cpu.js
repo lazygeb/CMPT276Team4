@@ -191,75 +191,17 @@ class Chip8{
     //Maps keyboard input to chip8 hex keyboard
     //check for key presses, call this every cycle
     keydown(key){
-	/*
-        let keyMap = {
-            49: 1,
-            50: 2,
-            51: 3,
-            52: 12,
-            81: 4,
-            87: 5,
-            69: 6,
-            82: 13,
-            65: 7,
-            83: 8,
-            68: 9,
-            70: 14,
-            90: 10,
-            88: 0,
-            67: 11,
-            86: 15,
-        };
-        let handler = (e) => {
-            if (keyMap[e.keyCode] !== undefined){
-                this.keyState[keyMap[e.keyCode]] = 1;
-                this.waitKey = keyMap[e.keyCode]; 
-            }
-        };
-        document.addEventListener('keydown', handler, false);
-		*/
 		this.keyState[key] = 1;
         this.waitKey = key; 
     }
 
     keyup(key){
-	/*
-        let keyMap = {
-            49: 1,
-            50: 2,
-            51: 3,
-            52: 12,
-            81: 4,
-            87: 5,
-            69: 6,
-            82: 13,
-            65: 7,
-            83: 8,
-            68: 9,
-            70: 14,
-            90: 10,
-            88: 0,
-            67: 11,
-            86: 15,
-        };
-        let handler = (e) =>{
-            if (keyMap[e.keyCode] !== undefined){
-                setTimeout(()=>{ //timeout added to ensure that there is time for keydown to be processed 
-                    this.keyState[keyMap[e.keyCode]] = 0; 
-                },10);
-            }
-        };
-        document.addEventListener('keyup', handler, false);
-		*/
         this.keyState[key] = 0;
     }
 
     //For opcode 0xFX0A. Signals to emulator if next opcode should 
     //should be read depending if key was pressed or not
     waitForKeyPressed() {
-        // this.keydown();
-        // this.keyup();
-
         if (this.waitKey !== undefined) { //key has been pressed
             let key = this.waitKey; //temp variable to store the key pressed 
             this.waitKey = undefined; //reset variable and waitForKeyFlag
@@ -331,14 +273,6 @@ class Chip8{
 		document.getElementById("ST").innerHTML = this.soundTimer;
 		document.getElementById("DT").innerHTML = this.delayTimer;
 		document.getElementById("SP").innerHTML = this.stackPointer.toString(16);
-
-		//if (this.lastOpcode !== opcode) {
-			//var currLog = "<p>" + opcode + "</p> <br>";
-			//document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
-		//}
-
-		//this.lastOpcode = opcode;
-		//debug.log(this.lastOpcode + " " + opcode);
 		if (!this.logToggle) return;
         this.updateHTMLOpcodeLog(opcode)
     }
@@ -358,13 +292,8 @@ class Chip8{
 			} else {
 				document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);
 			}
-
-			//let currLog =  "<p>" + time + ": " + "<strong>" + opcode + " --> " + this.instruction + "</strong>" + "</p> <br>";
-			//document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
 		}
-
 		this.lastOpcode = parseInt(opcode, 16);
-		//debug.log(this.lastOpcode + " " + opcode);
     }
 
 	updateHTMLLogMessage(message) {	
@@ -374,16 +303,12 @@ class Chip8{
 
 		const paragraph = document.createElement('p');
 		paragraph.innerHTML = time + ": " + "<strong>" + message + "</strong>" + "<br>";
-		//let currLog =  <p> + time + ": " + "<strong>" + message + "</strong>" + "</p> <br>";
-		//document.getElementById("log").insertAdjacentHTML("afterbegin", currLog);
 		document.getElementById("log").insertBefore(paragraph, document.getElementById("log").firstElementChild);
 		if (this.logCount < 16) {
 			this.logCount++;
 		} else {
 			document.getElementById("log").removeChild(document.getElementById("log").lastElementChild);
 		}
-		
-		//debug.log(this.lastOpcode + " " + opcode);
     }
 
     deepCopy(newChip) { //copies all values into newChip object reference

@@ -64,8 +64,6 @@ function clrDisp() {
     chip.updateHTML(0x00E0.toString(16));
 }
 
-//add function ret here
-
 function ret() {
     let works = true;
     chip.stackPointer = 2;

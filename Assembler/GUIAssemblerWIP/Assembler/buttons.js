@@ -1,6 +1,5 @@
 function openTab(evt, mnemonic) {
-    console.log(document.getElementById(mnemonic).style.display);
-    if (document.getElementById(mnemonic).style.display == "block") { 
+    if (document.getElementById(mnemonic).style.display == "inline-block") { 
         close(evt,mnemonic);
     } 
     else {
@@ -48,27 +47,40 @@ function close(evt, mnemonic) {
 }
 
 function mnemButton(evt, mnemonic) {
-    //document.getElementById(mnemonic).addEventListener("click", function(){
-    console.log(mnemonic.toString())
-    var text = document.getElementById("textBox").value;
+    let text = document.getElementById("textBox").value;
     if (text != '') {
         text += '\n';
     }
     text += mnemonic;
     document.getElementById("textBox").value = text;
-   // });
 }
 
 function hideElements() {
 	let scroll = document.getElementById("convertTypes");
-	if (scroll.options[scroll.selectedIndex].value === "dis") {
+	if (scroll.options[scroll.selectedIndex].value === "disem") {
 		document.getElementById("mnemonicOptions").style.display = "none";
-		document.getElementById("rightcol").style.display = "none";
+		document.getElementById("secondWrapper").style.display = "none";
 	} else {
 		document.getElementById("mnemonicOptions").style.display = "inline-block";
-		document.getElementById("rightcol").style.display = "inline-block";
+		document.getElementById("secondWrapper").style.display = "inline-block";
 	}
 }
+
+document.getElementById("clearButton").addEventListener("click", function(){
+    let text = "";
+    document.getElementById("textBox").value = text;
+});
+
+document.getElementById("manualButton").addEventListener("click", function(){
+    if (document.getElementById("manualText").style.display == "inline-block") {
+        document.getElementById("manualText").style.display = "none";
+    }
+    else {
+        document.getElementById("manualText").style.display = "inline-block";
+    }
+    
+});
+
 
 
 
