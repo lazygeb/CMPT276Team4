@@ -55,9 +55,11 @@ function clrDisp() {
     }
     if (!isClear || chip.drawFlag !== true) {
         console.log("Opcode 00E0: Failed");
+		chip.updateHTMLLogMessage("Opcode 00E0: Failed");
     }
     else {
         console.log("Opcode 00E0: Pass");
+		chip.updateHTMLLogMessage("Opcode 00E0: Pass");
     }
     chip.updateHTML(0x00E0.toString(16));
 }
@@ -77,9 +79,11 @@ function ret() {
     }
     if (works) {
         console.log("Opcode 00EE: Pass");
+		chip.updateHTMLLogMessage("Opcode 00EE: Pass");
     }
     else {
         console.log("Opcode 00EE: Failed");
+		chip.updateHTMLLogMessage("Opcode 00EE: Failed");
     }
     chip.updateHTML(0x00EE.toString(16));
 }
@@ -92,8 +96,10 @@ function oneNNN() {
     }
     if (!works) {
         console.log("Opcode 1nnn: Failed");
+		chip.updateHTMLLogMessage("Opcode 1nnn: Failed");
     } else {
         console.log("Opcode 1nnn: Pass");
+		chip.updateHTMLLogMessage("Opcode 1nnn: Pass");
     }
     chip.updateHTML(0x1ABC.toString(16));
 }
@@ -114,9 +120,11 @@ function twoNNN() {
     }
     if (works === false) {
         console.log("Opcode 2nnn: Failed");
+		chip.updateHTMLLogMessage("Opcode 2nnn: Failed");
     }
     else {
         console.log("Opcode 2nnn: Pass");
+		chip.updateHTMLLogMessage("Opcode 2nnn: Pass");
     }
     chip.updateHTML(0x2ABC.toString(16));
 }
@@ -137,9 +145,11 @@ function threeXKK() { //opcode 0x3xkk, if register Vx == kk, skip to next instru
     }
     if (!works) {
         console.log("Opcode 3xkk: Failed");
+		chip.updateHTMLLogMessage("Opcode 3xkk: Failed");
     }
     else {
         console.log("Opcode 3xkk: Pass");
+		chip.updateHTMLLogMessage("Opcode 3xkk: Pass");
     }
     chip.updateHTML(0x35A6.toString(16));
 }
@@ -160,9 +170,11 @@ function fourXKK() { //opcode 0x4xkk --> SNE Vx, byte -- if this.register Vx != 
     }
     if (!works) {
         console.log("Opcode 4xkk: Failed");
+		chip.updateHTMLLogMessage("Opcode 4xkk: Failed");
     }
     else {
         console.log("Opcode 4xkk: Pass");
+		chip.updateHTMLLogMessage("Opcode 4xkk: Pass");
     }
     chip.updateHTML(0x45A7.toString(16));
 }
@@ -178,9 +190,11 @@ function fiveXY0(){ //opcode 0x5xy0 --> SE Vx, Vy -- if this.register Vx & Vy ar
     }
     if (!works) {
         console.log("Opcode 5xy0: Failed");
+		chip.updateHTMLLogMessage("Opcode 5xy0: Failed");
     }
     else {
         console.log("Opcode 5xy0: Pass");
+		chip.updateHTMLLogMessage("Opcode 5xy0: Pass");
     }
     chip.updateHTML(0x5560.toString(16));
 }
@@ -194,9 +208,11 @@ function sixXKK(){ //opcode 0x6xkk --> LD Vx, byte -- place value kk into this.r
     }
     if (!works) {
         console.log("Opcode 6xkk: Failed");
+		chip.updateHTMLLogMessage("Opcode 6xkk: Failed");
     }
     else {
         console.log("Opcode 6xkk: Pass");
+		chip.updateHTMLLogMessage("Opcode 6xkk: Pass");
     }
     chip.updateHTML(0x65A6.toString(16));
 }
@@ -210,9 +226,11 @@ function sevenXKK(){  //opcode 0x7xkk --> ADD Vx, byte -- add value kk to Vx and
 	}
 	if (!works) {
         console.log("Opcode 7xkk: Failed");
+		chip.updateHTMLLogMessage("Opcode 7xkk: Failed");
     }
     else {
         console.log("Opcode 7xkk: Pass");
+		chip.updateHTMLLogMessage("Opcode 7xkk: Pass");
     }
     chip.updateHTML(0x75A6.toString(16));
 }
@@ -227,9 +245,11 @@ function eightXY1(){ //opcode 8xy1 --> OR Vx, Vy -- set Vx = Vx OR Vy (bitwise O
 	}
 	if (!works) {
         console.log("Opcode 8xy1: Failed");
+		chip.updateHTMLLogMessage("Opcode 8xy1: Failed");
     }
     else {
         console.log("Opcode 8xy1: Pass");
+		chip.updateHTMLLogMessage("Opcode 8xy1: Pass");
     }
     chip.updateHTML(0x8561.toString(16));
 }
@@ -244,9 +264,11 @@ function eightXY2() { //opcode 8xy2 --> AND Vx, Vy -- set Vx = Vx and Vy
     }
     if (works) {
         console.log("Opcode 8xy2: Pass");
+		chip.updateHTMLLogMessage("Opcode 8xy2: Pass");
     }
     else {
         console.log("Opcode 8xy2: Failed");
+		chip.updateHTMLLogMessage("Opcode 8xy2: Failed");
     }
     chip.updateHTML(0x8AC2.toString(16));
 }
@@ -261,9 +283,11 @@ function eightXY3() { //opcode 8xy3 --> XOR Vx, Vy -- set Vx = Vx XOR Vy
     }
     if (works) {
         console.log("Opcode 8xy3: Pass");
+		chip.updateHTMLLogMessage("Opcode 8xy3: Pass");
     }
     else {
         console.log("Opcode 8xy3: Failed");
+		chip.updateHTMLLogMessage("Opcode 8xy3: Failed");
     }
     chip.updateHTML(0x8BE3.toString(16));
 }
@@ -282,9 +306,11 @@ function eightXY4() { //opcode 8xy4 --> ADD Vx, Vy -- set Vx = Vx + Vy, set VF =
 
     if (works) {
         console.log("Opcode 8xy4: Pass");
+		chip.updateHTMLLogMessage("Opcode 8xy4: Pass");
     }
     else {
-        console.log("Opcode 8xy4: Failed")
+        console.log("Opcode 8xy4: Failed");
+		chip.updateHTMLLogMessage("Opcode 8xy4: Failed");
     }
     chip.updateHTML(0x89B4.toString(16));
 }
@@ -302,9 +328,11 @@ function eightXY5() { //opcode 8xy5 --> SUB Vx, Vy -- set Vx = Vx - Vy, set VF =
     }
     if (works) {
         console.log("Opcode 8xy5: Pass");
+		chip.updateHTMLLogMessage("Opcode 8xy5: Pass");
     }
     else {
         console.log("Opcode 8xy5: Failed");
+		chip.updateHTMLLogMessage("Opcode 8xy5: Failed");
     }
     chip.updateHTML(0x80E5.toString(16));
 }
@@ -321,9 +349,11 @@ function eightXY6() { //opcode 8xy6 --> SHR Vx {, Vy} -- set Vx = Vx SHR 1 => if
     }
     if (works) {
         console.log("Opcode 8xy6: Pass");
+		chip.updateHTMLLogMessage("Opcode 8xy6: Pass");
     }
     else {
         console.log("Opcode 8xy6: Failed");
+		chip.updateHTMLLogMessage("Opcode 8xy6: Failed");
     }
     chip.updateHTML(0x8806.toString(16));
 }
@@ -341,9 +371,11 @@ function eightXY7(){ //opcode 8xy7 --> SUBN Vx, Vy -- set Vx = Vy - Vx, set VF =
 	}
 	if (!works) {
         console.log("Opcode 8xy7: Failed");
+		chip.updateHTMLLogMessage("Opcode 8xy7: Failed");
     }
     else {
         console.log("Opcode 8xy7: Pass");
+		chip.updateHTMLLogMessage("Opcode 8xy7: Pass");
     }
     chip.updateHTML(0x8567.toString(16));
 }
@@ -360,9 +392,11 @@ function eightXYE() { //opcode 8xyE --> SHL Vx, {, Vy} -- set Vx = Vx SHL 1
     }
     if (works) {
         console.log("Opcode 8xyE: Pass");
+		chip.updateHTMLLogMessage("Opcode 8xyE: Pass");
     }
     else {
         console.log("Opcode 8xyE: Failed");
+		chip.updateHTMLLogMessage("Opcode 8xyE: Failed");
     }
     chip.updateHTML(0x830E.toString(16));
 }
@@ -384,9 +418,11 @@ function CXKK() {
     }
     if (works) {
         console.log("Opcode Cxkk: Pass");
+		chip.updateHTMLLogMessage("Opcode Cxkk: Pass");
     }
     else {
         console.log("Opcode Cxkk: Failed");
+		chip.updateHTMLLogMessage("Opcode Cxkk: Failed");
     }
 }
 
@@ -406,9 +442,11 @@ function DXYN(){  //opcode Dxyn --> DRW Vx, Vy, nibble --> Display n-sprite star
 	}
 	if (!works) {
         console.log("Opcode Dxyn: Collision Flag Failed");
+		chip.updateHTMLLogMessage("Opcode Dxyn: Collision Flag Failed");
     }
     else {
         console.log("Opcode Dxyn: Pass");
+		chip.updateHTMLLogMessage("Opcode Dxyn: Pass");
     }
 }
 
@@ -449,9 +487,11 @@ function EX9E() {
 
     if (!works) {
         console.log("Opcode Ex9E: Failed");
+		chip.updateHTMLLogMessage("Opcode Ex9E: Failed");
     }
     else {
         console.log("Opcode Ex9E: Pass");
+		chip.updateHTMLLogMessage("Opcode Ex9E: Pass");
     }
 }
 
@@ -492,9 +532,11 @@ function EXA1(){
 
     if (!works) {
         console.log("Opcode ExA1: Failed");
+		chip.updateHTMLLogMessage("Opcode ExA1: Failed");
     }
     else {
         console.log("Opcode ExA1: Pass");
+		chip.updateHTMLLogMessage("Opcode ExA1: Pass");
     }
 }
 
@@ -524,9 +566,11 @@ function FX07() {
     }
     if (!works) {
         console.log("Opcode Fx07: Failed");
+		chip.updateHTMLLogMessage("Opcode Fx07: Failed");
     }
     else {
         console.log("Opcode Fx07: Pass");
+		chip.updateHTMLLogMessage("Opcode Fx07: Pass");
     }
 }
 
@@ -567,9 +611,11 @@ function FX18() {
     //}
     if (!works) {
         console.log("Opcode Fx18: Failed");
+		chip.updateHTMLLogMessage("Opcode Fx18: Failed");
     }
     else {
         console.log("Opcode Fx18: Pass");
+		chip.updateHTMLLogMessage("Opcode Fx18: Pass");
     }
 }
     
@@ -599,9 +645,11 @@ function FX15(){
    }
     if (!works) {
         console.log("Opcode Fx15: Failed");
+		chip.updateHTMLLogMessage("Opcode Fx15: Failed");
     }
     else {
         console.log("Opcode Fx15: Pass");
+		chip.updateHTMLLogMessage("Opcode Fx15: Pass");
     }
 }
 
@@ -615,9 +663,11 @@ function FX1E () { //opcode 0xFx1E --> ADD I, Vx -- set I = I + Vx
     }
     if (works) {
         console.log("Opcode Fx1E: Pass");
+		chip.updateHTMLLogMessage("Opcode Fx1E: Pass");
     }
     else {
         console.log("Opcode Fx1E: Failed");
+		chip.updateHTMLLogMessage("Opcode Fx1E: Failed");
     }
     chip.updateHTML(0xF81E.toString(16));
 }
@@ -634,9 +684,11 @@ function FX29 () { //opcode 0xFx29 --> LD F, Vx -- set I = location of sprite fo
     }
     if (works) {
         console.log("Opcode Fx29: Pass");
+		chip.updateHTMLLogMessage("Opcode Fx29: Pass");
     }
     else {
         console.log("Opcode Fx29: Failed");
+		chip.updateHTMLLogMessage("Opcode Fx29: Failed");
     }
     chip.updateHTML(0xF029.toString(16));
 }
@@ -655,9 +707,11 @@ function FX33 () { //opcode 0xFx33 --> LD B, Vx -- store BCD representation of V
     }
     if (works) {
         console.log("Opcode Fx33: Pass");
+		chip.updateHTMLLogMessage("Opcode Fx33: Pass");
     }
     else {
         console.log("Opcode Fx33: Failed");
+		chip.updateHTMLLogMessage("Opcode Fx33: Failed");
     }
     chip.updateHTML(0xFA33.toString(16));
 }
@@ -668,9 +722,11 @@ function ANNN () { //opcode Annn --> LD I, addr -- set this.register I = nnn
     let tmp = chip.indexRegister;
     if (tmp=== 0x0123) {
         console.log("Opcode ANNN: Pass");
+		chip.updateHTMLLogMessage("Opcode ANNN: Pass");
     }
     else {
         console.log("Opcode ANNN: Failed");
+		chip.updateHTMLLogMessage("Opcode ANNN: Failed");
     }
     chip.updateHTML(opcode.toString(16));
 }
@@ -681,9 +737,11 @@ function BNNN () { //opcode Bnnn --> JP V0, addr -- jump to location nnn + V0
     chip.oneCycle(opcode);
     if (chip.programCounter === 0x0002) { 
         console.log("Opcode BNNN: Pass");
+		chip.updateHTMLLogMessage("Opcode BNNN: Pass");
     }
     else {
         console.log("Opcode BNNN: Failed");
+		chip.updateHTMLLogMessage("Opcode BNNN: Failed");
     }
     chip.updateHTML(opcode.toString(16));
 }
@@ -696,9 +754,11 @@ function eightXY0(){ //opcode 8xy0 --> LD Vx, Vy -- set Vx = Vy
     chip.oneCycle(opcode);
     if (chip.register[1] === vy) { 
         console.log("Opcode 8XY0: Pass");
+		chip.updateHTMLLogMessage("Opcode 8XY0: Pass");
     }
     else {
         console.log("Opcode 8XY0: Failed");
+		chip.updateHTMLLogMessage("Opcode 8XY0: Failed");
     }
     chip.updateHTML(opcode.toString(16));
 }
@@ -720,13 +780,16 @@ function  nineXY0(){//opcode 9xy0 --> SNE Vx, Vy -- skip next instruction if Vx 
     chip.oneCycle(opcode);
     if (chip.programCounter !== 0) {
         console.log("Opcode 9xy0: Pass");
+		chip.updateHTMLLogMessage("Opcode 9xy0: Pass");
         works = false;
     }
     if (works) {
         console.log("Opcode 9xy0: Pass");
+		chip.updateHTMLLogMessage("Opcode 9xy0: Pass");
     }
     else {
         console.log("Opcode 9xy0: Failed");
+		chip.updateHTMLLogMessage("Opcode 9xy0: Failed");
     }
     chip.updateHTML(opcode.toString(16));
 }
@@ -747,9 +810,11 @@ function FX55(){//opcode 0xFx55 --> LD [I], Vx -- Store registers V0 through Vx 
     }
     if (works) {
         console.log("Opcode Fx55: Pass");
+		chip.updateHTMLLogMessage("Opcode Fx55: Pass");
     }
     else {
         console.log("Opcode Fx55: Failed");
+		chip.updateHTMLLogMessage("Opcode Fx55: Failed");
     }
     chip.updateHTML(opcode.toString(16));
 }
@@ -771,9 +836,11 @@ function FX65(){ //opcode 0xFx65 --> LD Vx, [I] -- Read registers V0 through Vx 
     }
     if (works) {
         console.log("Opcode Fx65: Pass");
+		chip.updateHTMLLogMessage("Opcode Fx65: Pass");
     }
     else {
         console.log("Opcode Fx65: Failed");
+		chip.updateHTMLLogMessage("Opcode Fx65: Failed");
     }
     chip.updateHTML(opcode.toString(16));
 }
@@ -819,22 +886,26 @@ function FX0A() {
         //if tpc -2 != pc -> problem, only for interval 0 
         if (intervalCount === 0 && tempPC - 2 !== chip.programCounter) {
             console.log("Opcode Fx0A: Failed");
+			chip.updateHTMLLogMessage("Opcode Fx0A: Failed");
             clearInterval(runEmulator);
         }
         //if tpc != pc -> problem, only for interval 1 since key has been pressed 
         if (intervalCount === 1 && tempPC !== chip.programCounter) {
             console.log("Opcode Fx0A: Failed");
+			chip.updateHTMLLogMessage("Opcode Fx0A: Failed");
             clearInterval(runEmulator);
         }
         
         if (intervalCount === 1 && tempPC === chip.programCounter) {
             console.log("Opcode Fx0A: Pass");
+			chip.updateHTMLLogMessage("Opcode Fx0A: Pass");
 
             clearInterval(runEmulator);
         }
 
         if (intervalCount > 1) {
             console.log("Opcode Fx0A: Failed");
+			chip.updateHTMLLogMessage("Opcode Fx0A: Failed");
             clearInterval(runEmulator);
         }
 
