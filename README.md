@@ -86,8 +86,8 @@ We have refered to this document: https://github.com/vinheim3/CHIP-8/tree/master
 
 To load snake into the emulator follow these steps:
 1) Go to the web browser by clicking the index.html
-2) Click load rom
-3) Go into the snake file and choose the snek.txt
+2) Click the drop down menu that says choose game
+3) Choose Snake
 4) Click start emulation
 5) You can move around using w,a,s,d keys and eat the pellets that have been dropped.
 
@@ -95,10 +95,10 @@ To load snake into the emulator follow these steps:
 
 To load Flappy Bird into the emulator follow these steps:
 1) Go to the web browser by clicking the index.html
-2) Click load rom
-3) Go into the snake file and choose the FlappyBird.txt
+2) Click the drop down menu that says choose game
+3) Choose Flappy Bird
 4) Click start emulation
-5) You can fly using the w key. Avoid getting hit by the poles to get a point.
+5) You can move around using w,a,s,d keys and eat the pellets that have been dropped.
 
    
 ## **Emulator Bugs**
