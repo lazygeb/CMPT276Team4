@@ -1,30 +1,36 @@
 # CMPT276-Chip8-Group4 
 Team 4 Members: Gabriele Dal Cengio, Lina Dang-Nguyen, Nishan Ghimire, Mathieu Laflamme, Harman Singh, Calvin So
 
-## **Release 3**
+## **Release 4**
 
 ## **Summary of changes from previous release**
 ### **What was implemented**
-The backwards step has been completed and fully tested. It works with all the games. We were able to optimize it to make it more efficient so that it does not use as much memory. Previously, it would go up to 3-4gb of memory.
+**PLANNED FEATURES:**
 
-We also optimized keyboard input and UI. For the keyboard input, the changes were specific to the wait key. Previously, it would keep on running the same opcode until the key was hit but now the system actually pauses until a keyboard is hit. This prevents the emulator from making redundant calls. The buttons for the visualizer controls have also been improved. You cannot click the play and forward buttons without pausing first. The buttons will be greyed out if the user is not allowed to click it. This improves the user experience so they will not try to click buttons that they aren’t allowed to. Another improvement to the visualizer is when users click the start emulation without any ROMs running, the screen will prompt them to load a ROM.  There were also many bugs fixed and this will be outlined in the [bugs section](#Emulator-bugs). 
+Our games have been completed and fully tested. Snake can be moved around with the w, a, s, d keys and is equipped with collision detection. The snake grows when it eats pellets and dies if it collides into its tail or the wall. Floppy bird can jump using the w key. There are 4 different variations of pipes that will spawn for the bird to go through. The score is incremented on the right side of the screen. The games have been tested by a small group of users and the whole development team. Through these testings, we are confident that our games are ready for the release and definitely playable. 
 
-### **What was not implemented**
-The completion of Snake has not been completed.  We have begun development of it but due to the overwhelming number of bugs and optimizations, we are behind schedule. Planning and designing for snake required some time as well. Since the bugs have been fixed, we will have two people developing Flappy Bird and another two working on Snake. The remaining two will work on perfecting the program for the final release.
+**UNPLANNED FEATURES:**
 
-Showing the keyboard input will not be implemented in the system, unfortunately. We have tried it out on the visualizer but it causes the website to lag. As a result, we decided to no longer include it in the use cases. 
+Since the games were the only thing left for this release, we have made a series of improvements to the project. The first improvement was the UI. We decided to change up the colours to make it look less like a prototype. Pink was chosen as our main colour due to its inviting nature and uniqueness. The font was also changed to meet the overall aesthetic. 
+
+The next thing that was improved was the assembler. We decided to add an interface to it so that users can easily use it. One of the problems we had with our previous assembler was that no one wanted to read the documentation and as a result, they had difficulty using it. So we converted the java into javascript and created a web interface that allowed game development to be done at ease. 
+
+The emulator and visualizer have also been improved. We discovered in testing that the log slowed down the system quite a bit. As a result, we have created a toggle button which allows users to play the games with decreased lag. We wanted to keep the log still because it was great for debugging. 
+
 
 ### **List of all system changes:**
-- UI: Buttons will be grayed out if user is not allowed to click button. Number of opcodes that show in the log has been decreased.
-- Emulator: WaitKey pauses the whole system until a key is pressed instead of re-running the same opcode. 
-- Visualizer: New default screen and step backwards button has been completed. 
-- Snake: Set up the game. Snake shows on screen but cannot move yet
+- UI: Changed UI colour scheme to pink 
+- Emulator: Increased speed due to log toggle
+- Visualizer: Added a log toggle 
+- Snake: Completed game
+- Flappy Bird: Completed game
+- Assembler: Created an html webpage for the interface
 
 ## **README**
 
 ### **README Emulator**
 
-The development of the Emulator has been fully completed in terms on functionality. The bugs from release 2 have been completed except two minor bugs. 
+The development of the Emulator has been fully completed in terms on functionality. 
 
 To run the emulator, follow these instructions:
 
@@ -33,10 +39,15 @@ To run the emulator, follow these instructions:
 3) Navigate to the rom folder and open the maze.txt example file
 4) Dismiss the alert and press the start emulation button
 
+### **README Run Emulator Tests**
+1) Open index.html in google chrome
+2) Click run tests 
+3) Output of the tests will show in the log
+
 
 ### **README Visualizer Step Controls**
 
-The visualizer has pause functionality, resume functionality and step forward functionality. All of this is indicated within the log as well. The step backwards functionality will be done for next release.
+The visualizer has pause functionality, resume functionality and step forward functionality. 
 
 To use the step controls, follow these instructions:
 
@@ -46,21 +57,29 @@ To use the step controls, follow these instructions:
 ### **README Assembler**
 The assembler follows instructions from the following reference: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#memmap. The assembler transforms assembly language instructions into chip8 supported opcodes. For example it will take SE V3 VA and output 53A0. Because we have created our own assembler, the assembly language used has been slightly modified from the reference noted above.
 
-
 ### How to run it:
-- In the same folder as this document, you’ll find a .jar file and an intellij project folder.
--	To run assembler, navigate to your java environment and run something like the following command: java -jar Chip8 Assembler.jar “fileDirectoryForAssemblyLangFile.txt”
--	The assembler will place your opcode file in the same folder as the .jar file. It will be named programFile.txt
+Getting to the assembler:  
+1) Open up the emulator. 
+2) At the bottom right corner, there will be a button that says **open in new tab**. Click it to be redirected to the assembler
+  
 
-### How it works:
--	The assembler reads in 1 line at a time, so only place 1 instruction per line.
--	It then splits the line into tokens, using the space “ “ as a separator.
--	When writing instructions, only place 1 per line and separate each part of the instruction by a space, nothing else (no commas).
--	Please see the exampleAssembly.txt file for an example of each instruction being used.
-   
-### **README Testing**
+Converting using assembler:
+1) In the section that says convert file, make sure the drop down menu is on the assembler. 
+2) Click choose file
+3) Choose the assemblerSampleProgram.txt, which is located in the assembler folder
+4) Click convert file and a copy of the file will be downloaded into your computer 
 
-The html page will have a button called "Run Opcode Tests", which will automatically test all the opcodes to see if it passed or failed. Please use the Google Chrome browser. To see whether the opcodes have passed or not, right click and select inspect. Then go to the console tab in the inspector and this will display text as to if the tests have passed. 
+
+Converting using the disassembler:
+1) In the section that says convert file, make sure the drop down menu is on the disassembler. 
+2) Click choose file
+3) Choose the disassemblerSampleProgram.txt, which is located in the assembler folder
+4) Click convert file and a copy of the file will be downloaded into your computer 
+
+Using the text box on the webpage: 
+1) Make sure you are in the assembler setting
+2) Click any of the buttons located in the mnemonics section
+3) If they have any variables like: x, y, nibble, addr, byte, Vx, Vy make sure to change it to a correct value. More instructions on this can be found in the manual button located on the top right of the screen.
 
 ### **README Snake**
 We have refered to this document: https://github.com/vinheim3/CHIP-8/tree/master/Snake during our development of the game
@@ -68,43 +87,22 @@ We have refered to this document: https://github.com/vinheim3/CHIP-8/tree/master
 To load snake into the emulator follow these steps:
 1) Go to the web browser by clicking the index.html
 2) Click load rom
-3) Go into the snake file and choose the SnakeROMfornow.txt
+3) Go into the snake file and choose the snek.txt
 4) Click start emulation
+5) You can move around using w,a,s,d keys and eat the pellets that have been dropped.
+
+### **README Flappy Bird**
+
+To load Flappy Bird into the emulator follow these steps:
+1) Go to the web browser by clicking the index.html
+2) Click load rom
+3) Go into the snake file and choose the FlappyBird.txt
+4) Click start emulation
+5) You can fly using the w key. Avoid getting hit by the poles to get a point.
+
    
 ## **Emulator Bugs**
-
-These bugs have been found through unit testing and integrated testing by using public domain roms provided through the following website: [https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html]
-
-### **Fixed bugs from last release**
-1) Clicking the run emulator multiple times causes it to glitch
-2) Paddle graphics glitch when the ball hits it 
-3) Rom input currently does not work properly. The input has to be copy and pasted to text files in order to run.
-4) Games don’t end after all lives have been used up. 
-5) Log delay in visualizer lags the entire program substantially
-
-### **Fixed bugs that were found this release**
-1) Page crashes after a few minutes when left open because of the backwards step was using too much memory. 
-2) Could click step forward, backwards and play even though the program was not paused
-3) Faulty wait for key, which did not work the external roms.
-4) Many external ROMs would not work. These games were: 
-   - **Connect 4**  
-  Before:
-  ![image](https://cdn.discordapp.com/attachments/513589409661059082/555541036621889537/image.png)
-  After: 
-  ![image](https://cdn.discordapp.com/attachments/513589409661059082/555550962367070218/Screen_Shot_2019-03-13_at_5.35.58_PM.png)
-
-   - **Rush Hour**  
-  Before:
-  ![image](https://cdn.discordapp.com/attachments/513589409661059082/555541016149622795/image_1.png)
-  After:
-  ![image](https://cdn.discordapp.com/attachments/513589409661059082/555554042051559435/Screen_Shot_2019-03-13_at_5.52.50_PM.png)
-   
-   - **Tic Tac Toe**
-  ![image](https://cdn.discordapp.com/attachments/513589409661059082/555558784450428968/unknown.png)
-  Before: Could not get input of all the slots in the grid  
-  After: Game fully functions
-  
-
+All bugs have been fixed in release 3.
 
 --------------------------------------------------------------------
 ## **Introduction** 
@@ -115,7 +113,7 @@ The goal of this project is to develop an interpreter like the original Chip-8 a
 
 
 ### **Planned Use Cases**
-#### Release 0: Runnable Emulator [COMPLETED]
+#### Release 1: Runnable Emulator [COMPLETED]
 
 - [x] Have memory, register and intial opcodes set up
 - [x] Output graphics
@@ -123,23 +121,23 @@ The goal of this project is to develop an interpreter like the original Chip-8 a
 - [x] External Rom inputs
   
 
-#### Release 1: Runnable Visualizer & Assembler [COMPLETED]
+#### Release 2: Runnable Visualizer & Assembler [COMPLETED]
 
 - [x] Display log for registers, memory, pc, index, sound timer, delay timer, stack
-- [ ] Provide interface feedback for users by showing keyboard presses (UNFINISHED)
-- [x] Allow user control by creating buttons to step through, go back and pause the program (STEP BACK UNIFINISHED)
+- [ ] <s>Provide interface feedback for users by showing keyboard presses (REMOVED FEATURE)</s> 
+- [x] Allow user control by creating buttons to step through, go back and pause the program 
  - [x] Assembler can change mnemonics to opcodes, which can be ran in the emulator
  - [x] Emulator and Visualizer will be fully functional on Google Chrome
 
-#### Release 2: Completed Snake Game & Completed Visualizer [COMPLETED]
+#### Release 3: Completed Visualizer [COMPLETED]
 
-- [ ] Provide interface feedback for users by showing keyboard presses  [REMOVED FEATURE]
-- [x] Allow user to step back one step (unfinished from release 1) 
-- [ ] Have snake game polished and playable 
+- [ ] <s>Provide interface feedback for users by showing keyboard presses (REMOVED FEATURE)</s>
+- [x] Allow user to step back one step 
 
-#### Release 3: Completed Snake Game & Completed Flappy Bird Game
-- [ ] Have snake game polished and playable (unfinished from release 2)
-- [ ] Have flappy bird game polished and playable
+#### Release 4: Completed Snake Game, Completed Flappy Bird Game, GUI Assembler [COMPLETED]
+- [x] Have snake game polished and playable (unfinished from release 2)
+- [x] Have flappy bird game polished and playable
+- [x] Have an assembler interface that is easy to use and required less documentation reading.
 
 
 ## **Table of Contents**
@@ -157,10 +155,11 @@ The goal of this project is to develop an interpreter like the original Chip-8 a
     - [Main Language and Libraries ](#Main-Language-and-Libraries)
   
   - [Work Breakdown and Project Schedule](#Work-Breakdown-and-Project-Schedule)
-    - [Timeline [UPDATED]](#Timeline-[UPDATED])
-    - [Work breakdown [UPDATED]](#Work-breakdown)
+    - [Timeline](#Timeline)
+    - [Work breakdown](#Work-breakdown)
 
   - [References](#References)
+  - [Post Mortem](#Post-Mortem)
 
 ## **Project Organization**
 
@@ -265,7 +264,7 @@ Work Breakdown: **Assembler**
 | Testing   | 4 days                  | Feb 23      |
 
 
-### **Release 3: March 13 2019** [UPDATED]
+### **Release 3: March 13 2019** 
 Deliverables for Release 3:  
 - Snake (Game 1): Finish development and testing by Mar 9
 - Step backwards for Visualizer: Finish by Mar 4
@@ -284,18 +283,48 @@ Work Breakdown: **Snake**
 Deliverables for Release 4:  
 - Flappy Bird: Finish development and testing by April 3 
 - Snake: Finish development and testing by April 3  
+- GUI Assembler: Finish development and testing by April 3
 
 Work Breakdown: **Flappy Bird** 
 
 | Feature        | Estimated Time Required | Finish Date |
 | -------------- | ----------------------- | ----------- |
-| Flappy Bird    | 2 weeks                 | Mar 27      |
-| Snake   **(DELAYED)**  | 2 weeks                 | Mar 27       |
-| System Testing | 1 weeks                 | April 3     |
+| Flappy Bird    | 2 weeks                 |  April 3      |
+| Snake   **(DELAYED)**  | 2 weeks                 |  April 3       |
+| GUI Assembler  | 2 weeks                 |  April 3       |
+
 
 ## **References**
 Chip 8 information and history: https://en.wikipedia.org/wiki/CHIP-8
 
 Cowgod's Chip 8 Technical Reference: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
 
+# Post-Mortem
+
+This will be our final release. There will be no more added features or optimizations since the completed product is sufficient for our use case. This is evident in the user testing that we have conducted.  Users were able to use the emulator at ease and were moderately satisfied. The only lacking aspect of our project that was expressed by the test users was the speed of the emulator.
+
+Overall our project was successful and our team dynamic was satisfactory.
+
+### **What Worked?**
+Our success was due to our detailed breakdown of what needed to be completed. This gave us a strong direction on how to proceed in the following weeks and allowed us to stay relatively on schedule. We did not do this for snake and ended up not being able to finish it for release 3. Using this breakdown, we used trello to organize and set reminders as to when things needed to be completed. Then every meeting we would refer to this and adjust it depending on the current status of the project. 
+
+### **What Didn’t Work?**
+Although our project was quite smooth, the only thing that didn't work was the definite roles that we set in the beginning. We did not really follow it because when we were struggling, we would help each other and therefore, some people would take on small aspects of each others roles. 
+
+### **Improvements**
+Now that we have all completed a project, there are a few improvements that we would like to make. The first one would be better automatized testing. Since we decided to not use Jest because of the learning curve, our automatized testing was done through our html file using if/else statements. Even though what we currently have is sufficient, using a testing framework would have allowed our automatized testing to be conducted in a more convenient way. Also, now that we all have web development experience, we definitely would have like to create a much more efficient emulator that would work at a faster rate. 
+
+### **Biggest Unexpected Challenge**
+
+Communication was definitely a challenge at first. The project manager would have to constantly ask for the status of everyone’s part. Once things got into the flow and the expectation has been established, our communication did improve. Therefore, setting the expectation early on in the project would be good so that there is time to talk to any members who are having trouble meeting this. 
+
+### **Was all the testing worth it**
+Yes, all of the testing we that we’ve conducted was definitely worth it. The automatized unit testing allowed us to be fully confident in our program and that it is functional. There were many bugs that would have not been found without testing such as the backwards step causing the whole browser to fail and the sprite bug that drew pixels in wrong locations.
+
+Then our user testing allowed us to make the user interface a product that users would actually use. We were able to use their input to make their experience better. One of the ways we were able to incorporate their valued opinions was through the colour scheme. Originally we were going to keep it with the grey but users mentioned that the design was too plain. Hence why we changed it up after release 3.
+
+### **What advice would you give to the next students who take 276?**
+Through our learnings, we recommend that for future students, every team member works on the development of the emulator together. The development of the emulator allows the programmer to truly know how the system works, which applies to game and tool development. The emulator was definitely one of the most important parts of the project so having a high bus factor on it would be beneficial as well. 
+
+To ensure productivity we also recommend that specific goals are set after each meeting so that everyone has something to bring to the table for the next meeting. This also allows people to budget their time accordingly to their schedule and ensures things are completed on schedule. If someone is not able to complete their portion, communicate with them and see why they are struggling. It is important to have a strong team dynamic when working in a project.
 

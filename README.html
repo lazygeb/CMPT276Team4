@@ -23,23 +23,27 @@
     <body>
         <h1 id="cmpt276-chip8-group4">CMPT276-Chip8-Group4</h1>
 <p>Team 4 Members: Gabriele Dal Cengio, Lina Dang-Nguyen, Nishan Ghimire, Mathieu Laflamme, Harman Singh, Calvin So</p>
-<h2 id="release-3"><strong>Release 3</strong></h2>
+<h2 id="release-4"><strong>Release 4</strong></h2>
 <h2 id="summary-of-changes-from-previous-release"><strong>Summary of changes from previous release</strong></h2>
 <h3 id="what-was-implemented"><strong>What was implemented</strong></h3>
-<p>The backwards step has been completed and fully tested. It works with all the games. We were able to optimize it to make it more efficient so that it does not use as much memory. Previously, it would go up to 3-4gb of memory.</p>
-<p>We also optimized keyboard input and UI. For the keyboard input, the changes were specific to the wait key. Previously, it would keep on running the same opcode until the key was hit but now the system actually pauses until a keyboard is hit. This prevents the emulator from making redundant calls. The buttons for the visualizer controls have also been improved. You cannot click the play and forward buttons without pausing first. The buttons will be greyed out if the user is not allowed to click it. This improves the user experience so they will not try to click buttons that they aren’t allowed to. Another improvement to the visualizer is when users click the start emulation without any ROMs running, the screen will prompt them to load a ROM.  There were also many bugs fixed and this will be outlined in the <a href="#Emulator-bugs">bugs section</a>.</p>
-<h3 id="what-was-not-implemented"><strong>What was not implemented</strong></h3>
-<p>The completion of Snake has not been completed.  We have begun development of it but due to the overwhelming number of bugs and optimizations, we are behind schedule. Planning and designing for snake required some time as well. Since the bugs have been fixed, we will have two people developing Flappy Bird and another two working on Snake. The remaining two will work on perfecting the program for the final release.</p>
-<p>Showing the keyboard input will not be implemented in the system, unfortunately. We have tried it out on the visualizer but it causes the website to lag. As a result, we decided to no longer include it in the use cases.</p>
+<p><strong>PLANNED FEATURES:</strong></p>
+<p>Our games have been completed and fully tested. Snake can be moved around with the w, a, s, d keys and is equipped with collision detection. The snake grows when it eats pellets and dies if it collides into its tail or the wall. Floppy bird can jump using the w key. There are 4 different variations of pipes that will spawn for the bird to go through. The score is incremented on the right side of the screen. The games have been tested by a small group of users and the whole development team. Through these testings, we are confident that our games are ready for the release and definitely playable.</p>
+<p><strong>UNPLANNED FEATURES:</strong></p>
+<p>Since the games were the only thing left for this release, we have made a series of improvements to the project. The first improvement was the UI. We decided to change up the colours to make it look less like a prototype. Pink was chosen as our main colour due to its inviting nature and uniqueness. The font was also changed to meet the overall aesthetic.</p>
+<p>The next thing that was improved was the assembler. We decided to add an interface to it so that users can easily use it. One of the problems we had with our previous assembler was that no one wanted to read the documentation and as a result, they had difficulty using it. So we converted the java into javascript and created a web interface that allowed game development to be done at ease.</p>
+<p>The emulator and visualizer have also been improved. We discovered in testing that the log slowed down the system quite a bit. As a result, we have created a toggle button which allows users to play the games with decreased lag. We wanted to keep the log still because it was great for debugging.</p>
 <h3 id="list-of-all-system-changes"><strong>List of all system changes:</strong></h3>
 <ul>
-<li>UI: Buttons will be grayed out if user is not allowed to click button. Number of opcodes that show in the log has been decreased.</li>
-<li>Emulator: WaitKey pauses the whole system until a key is pressed instead of re-running the same opcode.</li>
-<li>Visualizer: New default screen and step backwards button has been completed.</li>
-<li>Snake: Set up the game. Snake shows on screen but cannot move yet</li>
+<li>UI: Changed UI colour scheme to pink</li>
+<li>Emulator: Increased speed due to log toggle</li>
+<li>Visualizer: Added a log toggle</li>
+<li>Snake: Completed game</li>
+<li>Flappy Bird: Completed game</li>
+<li>Assembler: Created an html webpage for the interface</li>
 </ul>
-<h2 id="readme-emulator"><strong>README Emulator</strong></h2>
-<p>The development of the Emulator has been fully completed in terms on functionality. The bugs from release 2 have been completed except two minor bugs.</p>
+<h2 id="readme"><strong>README</strong></h2>
+<h3 id="readme-emulator"><strong>README Emulator</strong></h3>
+<p>The development of the Emulator has been fully completed in terms on functionality.</p>
 <p>To run the emulator, follow these instructions:</p>
 <ol>
 <li>Open index.html in google chrome</li>
@@ -47,101 +51,98 @@
 <li>Navigate to the rom folder and open the maze.txt example file</li>
 <li>Dismiss the alert and press the start emulation button</li>
 </ol>
-<h2 id="readme-visualizer-step-controls"><strong>README Visualizer Step Controls</strong></h2>
-<p>The visualizer has pause functionality, resume functionality and step forward functionality. All of this is indicated within the log as well. The step backwards functionality will be done for next release.</p>
+<h3 id="readme-run-emulator-tests"><strong>README Run Emulator Tests</strong></h3>
+<ol>
+<li>Open index.html in google chrome</li>
+<li>Click run tests</li>
+<li>Output of the tests will show in the log</li>
+</ol>
+<h3 id="readme-visualizer-step-controls"><strong>README Visualizer Step Controls</strong></h3>
+<p>The visualizer has pause functionality, resume functionality and step forward functionality.</p>
 <p>To use the step controls, follow these instructions:</p>
 <ol>
 <li>While the emulator is running, click on the pause icon (two vertical bars)</li>
 <li>While the emulator is in the pause state, you may either press the resume icon (arrow to the right),the step forward icon (the &quot;+1&quot; icon) or the step backwards icon (the &quot;-1&quot; icon)</li>
 </ol>
-<h2 id="readme-assembler"><strong>README Assembler</strong></h2>
+<h3 id="readme-assembler"><strong>README Assembler</strong></h3>
 <p>The assembler follows instructions from the following reference: <a href="http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#memmap">http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#memmap</a>. The assembler transforms assembly language instructions into chip8 supported opcodes. For example it will take SE V3 VA and output 53A0. Because we have created our own assembler, the assembly language used has been slightly modified from the reference noted above.</p>
 <h3 id="how-to-run-it">How to run it:</h3>
-<ul>
-<li>In the same folder as this document, you’ll find a .jar file and an intellij project folder.</li>
-<li>To run assembler, navigate to your java environment and run something like the following command: java -jar Chip8 Assembler.jar “fileDirectoryForAssemblyLangFile.txt”</li>
-<li>The assembler will place your opcode file in the same folder as the .jar file. It will be named programFile.txt</li>
-</ul>
-<h3 id="how-it-works">How it works:</h3>
-<ul>
-<li>The assembler reads in 1 line at a time, so only place 1 instruction per line.</li>
-<li>It then splits the line into tokens, using the space “ “ as a separator.</li>
-<li>When writing instructions, only place 1 per line and separate each part of the instruction by a space, nothing else (no commas).</li>
-<li>Please see the exampleAssembly.txt file for an example of each instruction being used.</li>
-</ul>
-<h2 id="readme-testing"><strong>README Testing</strong></h2>
-<p>The html page will have a button called &quot;Run Opcode Tests&quot;, which will automatically test all the opcodes to see if it passed or failed. Please use the Google Chrome browser. To see whether the opcodes have passed or not, right click and select inspect. Then go to the console tab in the inspector and this will display text as to if the tests have passed.</p>
-<h2 id="readme-snake"><strong>README Snake</strong></h2>
+<p>Getting to the assembler:</p>
+<ol>
+<li>Open up the emulator.</li>
+<li>At the bottom right corner, there will be a button that says <strong>open in new tab</strong>. Click it to be redirected to the assembler</li>
+</ol>
+<p>Converting using assembler:</p>
+<ol>
+<li>In the section that says convert file, make sure the drop down menu is on the assembler.</li>
+<li>Click choose file</li>
+<li>Choose the assemblerSampleProgram.txt, which is located in the assembler folder</li>
+<li>Click convert file and a copy of the file will be downloaded into your computer</li>
+</ol>
+<p>Converting using the disassembler:</p>
+<ol>
+<li>In the section that says convert file, make sure the drop down menu is on the disassembler.</li>
+<li>Click choose file</li>
+<li>Choose the disassemblerSampleProgram.txt, which is located in the assembler folder</li>
+<li>Click convert file and a copy of the file will be downloaded into your computer</li>
+</ol>
+<p>Using the text box on the webpage:</p>
+<ol>
+<li>Make sure you are in the assembler setting</li>
+<li>Click any of the buttons located in the mnemonics section</li>
+<li>If they have any variables like: x, y, nibble, addr, byte, Vx, Vy make sure to change it to a correct value. More instructions on this can be found in the manual button located on the top right of the screen.</li>
+</ol>
+<h3 id="readme-snake"><strong>README Snake</strong></h3>
+<p>We have refered to this document: <a href="https://github.com/vinheim3/CHIP-8/tree/master/Snake">https://github.com/vinheim3/CHIP-8/tree/master/Snake</a> during our development of the game</p>
+<p>To load snake into the emulator follow these steps:</p>
+<ol>
+<li>Go to the web browser by clicking the index.html</li>
+<li>Click load rom</li>
+<li>Go into the snake file and choose the snek.txt</li>
+<li>Click start emulation</li>
+<li>You can move around using w,a,s,d keys and eat the pellets that have been dropped.</li>
+</ol>
+<h3 id="readme-flappy-bird"><strong>README Flappy Bird</strong></h3>
+<p>To load Flappy Bird into the emulator follow these steps:</p>
+<ol>
+<li>Go to the web browser by clicking the index.html</li>
+<li>Click load rom</li>
+<li>Go into the snake file and choose the FlappyBird.txt</li>
+<li>Click start emulation</li>
+<li>You can fly using the w key. Avoid getting hit by the poles to get a point.</li>
+</ol>
 <h2 id="emulator-bugs"><strong>Emulator Bugs</strong></h2>
-<p>These bugs have been found through unit testing and integrated testing by using public domain roms provided through the following website: [<a href="https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html">https://www.zophar.net/pdroms/chip8/chip-8-games-pack.html</a>]</p>
-<h3 id="fixed-bugs-from-last-release"><strong>Fixed bugs from last release</strong></h3>
-<ol>
-<li>Clicking the run emulator multiple times causes it to glitch</li>
-<li>Paddle graphics glitch when the ball hits it</li>
-<li>Rom input currently does not work properly. The input has to be copy and pasted to text files in order to run.</li>
-<li>Games don’t end after all lives have been used up.</li>
-<li>Log delay in visualizer lags the entire program substantially</li>
-</ol>
-<h3 id="fixed-bugs-that-were-found-this-release"><strong>Fixed bugs that were found this release</strong></h3>
-<ol>
-<li>Page crashes after a few minutes when left open because of the backwards step was using too much memory.</li>
-<li>Could click step forward, backwards and play even though the program was not paused</li>
-<li>Faulty wait for key, which did not work the external roms.</li>
-<li>Many external ROMs would not work. These games were:
-<ul>
-<li>
-<p><strong>Connect 4</strong><br>
-Before:
-<img src="https://cdn.discordapp.com/attachments/513589409661059082/555541036621889537/image.png" alt="image">
-After:
-<img src="https://cdn.discordapp.com/attachments/513589409661059082/555550962367070218/Screen_Shot_2019-03-13_at_5.35.58_PM.png" alt="image"></p>
-</li>
-<li>
-<p><strong>Rush Hour</strong><br>
-Before:
-<img src="https://cdn.discordapp.com/attachments/513589409661059082/555541016149622795/image_1.png" alt="image">
-After:
-<img src="https://cdn.discordapp.com/attachments/513589409661059082/555554042051559435/Screen_Shot_2019-03-13_at_5.52.50_PM.png" alt="image"></p>
-</li>
-<li>
-<p><strong>Tic Tac Toe</strong>
-<img src="https://cdn.discordapp.com/attachments/513589409661059082/555558784450428968/unknown.png" alt="image">
-Before: Could not get input of all the slots in the grid<br>
-After: Game fully functions</p>
-</li>
-</ul>
-</li>
-</ol>
+<p>All bugs have been fixed in release 3.</p>
 <hr>
 <h2 id="introduction"><strong>Introduction</strong></h2>
 <p>Chip-8 is an interpreter, which was developed in the 70s to run programs such as games like Pong, Tetris, and Pac-Man.</p>
 <p>The goal of this project is to develop an interpreter like the original Chip-8 and two games to play with it. Our first game will be snake, which is more of a classic game. Whereas, our second game will be more of a newer, contempory game with retro aspects. This game will be a recreation of the hit game Flappy Bird. In order to simplify the development of these games, we will create an assembler and visualizer to help create and debug the game.</p>
 <h3 id="planned-use-cases"><strong>Planned Use Cases</strong></h3>
-<h4 id="release-0-runnable-emulator-completed">Release 0: Runnable Emulator [COMPLETED]</h4>
+<h4 id="release-1-runnable-emulator-completed">Release 1: Runnable Emulator [COMPLETED]</h4>
 <ul class="contains-task-list">
 <li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Have memory, register and intial opcodes set up</li>
 <li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Output graphics</li>
 <li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Input keyboard commands</li>
 <li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> External Rom inputs</li>
 </ul>
-<h4 id="release-1-runnable-visualizer--assembler-completed">Release 1: Runnable Visualizer &amp; Assembler [COMPLETED]</h4>
+<h4 id="release-2-runnable-visualizer--assembler-completed">Release 2: Runnable Visualizer &amp; Assembler [COMPLETED]</h4>
 <ul class="contains-task-list">
 <li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Display log for registers, memory, pc, index, sound timer, delay timer, stack</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Provide interface feedback for users by showing keyboard presses (UNFINISHED)</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Allow user control by creating buttons to step through, go back and pause the program (STEP BACK UNIFINISHED)</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> <s>Provide interface feedback for users by showing keyboard presses (REMOVED FEATURE)</s></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Allow user control by creating buttons to step through, go back and pause the program</li>
 <li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Assembler can change mnemonics to opcodes, which can be ran in the emulator</li>
 <li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Emulator and Visualizer will be fully functional on Google Chrome</li>
 </ul>
-<h4 id="release-2-completed-snake-game--completed-visualizer-completed">Release 2: Completed Snake Game &amp; Completed Visualizer [COMPLETED]</h4>
+<h4 id="release-3-completed-visualizer-completed">Release 3: Completed Visualizer [COMPLETED]</h4>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Provide interface feedback for users by showing keyboard presses  [REMOVED FEATURE]</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Allow user to step back one step (unfinished from release 1)</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Have snake game polished and playable</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> <s>Provide interface feedback for users by showing keyboard presses (REMOVED FEATURE)</s></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Allow user to step back one step</li>
 </ul>
-<h4 id="release-3-completed-snake-game--completed-flappy-bird-game">Release 3: Completed Snake Game &amp; Completed Flappy Bird Game</h4>
+<h4 id="release-4-completed-snake-game-completed-flappy-bird-game-gui-assembler-completed">Release 4: Completed Snake Game, Completed Flappy Bird Game, GUI Assembler [COMPLETED]</h4>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Have snake game polished and playable (unfinished from release 2)</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> Have flappy bird game polished and playable</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Have snake game polished and playable (unfinished from release 2)</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Have flappy bird game polished and playable</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox"> Have an assembler interface that is easy to use and required less documentation reading.</li>
 </ul>
 <h2 id="table-of-contents"><strong>Table of Contents</strong></h2>
 <ul>
@@ -169,12 +170,15 @@ After: Game fully functions</p>
 <li>
 <p><a href="#Work-Breakdown-and-Project-Schedule">Work Breakdown and Project Schedule</a></p>
 <ul>
-<li><a href="#Timeline-%5BUPDATED%5D">Timeline [UPDATED]</a></li>
-<li><a href="#Work-breakdown">Work breakdown [UPDATED]</a></li>
+<li><a href="#Timeline">Timeline</a></li>
+<li><a href="#Work-breakdown">Work breakdown</a></li>
 </ul>
 </li>
 <li>
 <p><a href="#References">References</a></p>
+</li>
+<li>
+<p><a href="#Post-Mortem">Post Mortem</a></p>
 </li>
 </ul>
 <h2 id="project-organization"><strong>Project Organization</strong></h2>
@@ -361,7 +365,7 @@ After: Game fully functions</p>
 </tr>
 </tbody>
 </table>
-<h3 id="release-3-march-13-2019-updated"><strong>Release 3: March 13 2019</strong> [UPDATED]</h3>
+<h3 id="release-3-march-13-2019"><strong>Release 3: March 13 2019</strong></h3>
 <p>Deliverables for Release 3:</p>
 <ul>
 <li>Snake (Game 1): Finish development and testing by Mar 9</li>
@@ -404,6 +408,7 @@ After: Game fully functions</p>
 <ul>
 <li>Flappy Bird: Finish development and testing by April 3</li>
 <li>Snake: Finish development and testing by April 3</li>
+<li>GUI Assembler: Finish development and testing by April 3</li>
 </ul>
 <p>Work Breakdown: <strong>Flappy Bird</strong></p>
 <table>
@@ -418,16 +423,16 @@ After: Game fully functions</p>
 <tr>
 <td>Flappy Bird</td>
 <td>2 weeks</td>
-<td>Mar 27</td>
+<td>April 3</td>
 </tr>
 <tr>
 <td>Snake   <strong>(DELAYED)</strong></td>
 <td>2 weeks</td>
-<td>Mar 27</td>
+<td>April 3</td>
 </tr>
 <tr>
-<td>System Testing</td>
-<td>1 weeks</td>
+<td>GUI Assembler</td>
+<td>2 weeks</td>
 <td>April 3</td>
 </tr>
 </tbody>
@@ -435,6 +440,23 @@ After: Game fully functions</p>
 <h2 id="references"><strong>References</strong></h2>
 <p>Chip 8 information and history: <a href="https://en.wikipedia.org/wiki/CHIP-8">https://en.wikipedia.org/wiki/CHIP-8</a></p>
 <p>Cowgod's Chip 8 Technical Reference: <a href="http://devernay.free.fr/hacks/chip8/C8TECH10.HTM">http://devernay.free.fr/hacks/chip8/C8TECH10.HTM</a></p>
+<h1 id="post-mortem">Post-Mortem</h1>
+<p>This will be our final release. There will be no more added features or optimizations since the completed product is sufficient for our use case. This is evident in the user testing that we have conducted.  Users were able to use the emulator at ease and were moderately satisfied. The only lacking aspect of our project that was expressed by the test users was the speed of the emulator.</p>
+<p>Overall our project was successful and our team dynamic was satisfactory.</p>
+<h3 id="what-worked"><strong>What Worked?</strong></h3>
+<p>Our success was due to our detailed breakdown of what needed to be completed. This gave us a strong direction on how to proceed in the following weeks and allowed us to stay relatively on schedule. We did not do this for snake and ended up not being able to finish it for release 3. Using this breakdown, we used trello to organize and set reminders as to when things needed to be completed. Then every meeting we would refer to this and adjust it depending on the current status of the project.</p>
+<h3 id="what-didnt-work"><strong>What Didn’t Work?</strong></h3>
+<p>Although our project was quite smooth, the only thing that didn't work was the definite roles that we set in the beginning. We did not really follow it because when we were struggling, we would help each other and therefore, some people would take on small aspects of each others roles.</p>
+<h3 id="improvements"><strong>Improvements</strong></h3>
+<p>Now that we have all completed a project, there are a few improvements that we would like to make. The first one would be better automatized testing. Since we decided to not use Jest because of the learning curve, our automatized testing was done through our html file using if/else statements. Even though what we currently have is sufficient, using a testing framework would have allowed our automatized testing to be conducted in a more convenient way. Also, now that we all have web development experience, we definitely would have like to create a much more efficient emulator that would work at a faster rate.</p>
+<h3 id="biggest-unexpected-challenge"><strong>Biggest Unexpected Challenge</strong></h3>
+<p>Communication was definitely a challenge at first. The project manager would have to constantly ask for the status of everyone’s part. Once things got into the flow and the expectation has been established, our communication did improve. Therefore, setting the expectation early on in the project would be good so that there is time to talk to any members who are having trouble meeting this.</p>
+<h3 id="was-all-the-testing-worth-it"><strong>Was all the testing worth it</strong></h3>
+<p>Yes, all of the testing we that we’ve conducted was definitely worth it. The automatized unit testing allowed us to be fully confident in our program and that it is functional. There were many bugs that would have not been found without testing such as the backwards step causing the whole browser to fail and the sprite bug that drew pixels in wrong locations.</p>
+<p>Then our user testing allowed us to make the user interface a product that users would actually use. We were able to use their input to make their experience better. One of the ways we were able to incorporate their valued opinions was through the colour scheme. Originally we were going to keep it with the grey but users mentioned that the design was too plain. Hence why we changed it up after release 3.</p>
+<h3 id="what-advice-would-you-give-to-the-next-students-who-take-276"><strong>What advice would you give to the next students who take 276?</strong></h3>
+<p>Through our learnings, we recommend that for future students, every team member works on the development of the emulator together. The development of the emulator allows the programmer to truly know how the system works, which applies to game and tool development. The emulator was definitely one of the most important parts of the project so having a high bus factor on it would be beneficial as well.</p>
+<p>To ensure productivity we also recommend that specific goals are set after each meeting so that everyone has something to bring to the table for the next meeting. This also allows people to budget their time accordingly to their schedule and ensures things are completed on schedule. If someone is not able to complete their portion, communicate with them and see why they are struggling. It is important to have a strong team dynamic when working in a project.</p>
 
     </body>
     </html>
