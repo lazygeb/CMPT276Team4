@@ -1,9 +1,12 @@
+//Has all the handlers for converting the text file
 
+//Converter section
 let inputElement = document.getElementById("myFile");
 inputElement.addEventListener("change", handleFiles, false);
 let dissembledFile = undefined;
 let assembledFile = undefined;
 
+//Gets the file and converts it
 function handleFiles() {
     file = this.files[0];
     
@@ -26,6 +29,7 @@ function handleFiles() {
     reader.readAsText(file);
 }
 
+//File is only downloaded if convert file is clicked
 document.getElementById("submitFile").addEventListener("click", function(){
     if (dissembledFile != undefined) {
         download("assemblyProgram.txt",dissembledFile);
@@ -34,7 +38,8 @@ document.getElementById("submitFile").addEventListener("click", function(){
         download("program.txt",assembledFile);
     }
 });
-// Start file download.
+
+//Downloads the converted file from the text box
 document.getElementById("textConvertButton").addEventListener("click", function(){
     // Generate download of hello.txt file with some content
     var text = document.getElementById("textBox").value;
@@ -45,6 +50,7 @@ document.getElementById("textConvertButton").addEventListener("click", function(
 let txtFileElement = document.getElementById("loadFile");
 txtFileElement.addEventListener("change", loadTxt, false);
 
+//Loads up any text files into the text box
 function loadTxt() {
     file = this.files[0];
     

@@ -1,3 +1,7 @@
+//Handlers for all the buttons on the page: Mnemonics buttons & Manual button
+//https://www.w3schools.com/howto/howto_js_tabs.asp is used for the open and close functions 
+
+//Allows the tabs in the mnemonics to be open and closed
 function openTab(evt, mnemonic) {
     if (document.getElementById(mnemonic).style.display == "inline-block") { 
         close(evt,mnemonic);
@@ -8,6 +12,7 @@ function openTab(evt, mnemonic) {
     
 }
 
+//Opens the tab
 function open(evt, mnemonic) {
     // Declare all variables
     var i, tabcontent, tablinks;
@@ -27,6 +32,7 @@ function open(evt, mnemonic) {
     evt.currentTarget.className += " active";
 }
 
+//Closes the tab
 function close(evt, mnemonic) {
     // Declare all variables
     var i, tabcontent, tablinks;
@@ -45,7 +51,7 @@ function close(evt, mnemonic) {
     document.getElementById(mnemonic).style.display = "none";
     evt.currentTarget.className += "";
 }
-
+//prints the mnemonic into the text box
 function mnemButton(evt, mnemonic) {
     let text = document.getElementById("textBox").value;
     if (text != '') {
@@ -55,6 +61,7 @@ function mnemButton(evt, mnemonic) {
     document.getElementById("textBox").value = text;
 }
 
+//hides all the assembler features when the disassembler option is chosen
 function hideElements() {
 	let scroll = document.getElementById("convertTypes");
 	if (scroll.options[scroll.selectedIndex].value === "disem") {
@@ -66,11 +73,13 @@ function hideElements() {
 	}
 }
 
+//clears the text box
 document.getElementById("clearButton").addEventListener("click", function(){
     let text = "";
     document.getElementById("textBox").value = text;
 });
 
+//opens up the manual
 document.getElementById("manualButton").addEventListener("click", function(){
     if (document.getElementById("manualText").style.display == "inline-block") {
         document.getElementById("manualText").style.display = "none";
